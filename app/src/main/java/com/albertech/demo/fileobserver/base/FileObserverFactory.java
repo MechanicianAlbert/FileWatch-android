@@ -13,13 +13,15 @@ class FileObserverFactory {
         void onFileEvent(int event, String path);
     }
 
-    class SingleDirectoryObserver extends FileObserver {
+    static class SingleDirectoryObserver extends FileObserver {
 
+        private String mPath;
         private IFileEvent mListener;
 
 
         SingleDirectoryObserver(String path, int mask) {
             super(path, mask);
+            mPath = path;
         }
 
         void setListener(IFileEvent listener) {
@@ -28,6 +30,12 @@ class FileObserverFactory {
 
         @Override
         public void onEvent(int event, String path) {
+            event &= ALL_EVENTS;
+            if (event == DELETE_SELF) {
+                path = mPath;
+            } else if (event == MOVE_SELF) {
+                path = mPath;
+            }
             mListener.onFileEvent(event, path);
         }
     }
@@ -60,6 +68,7 @@ class FileObserverFactory {
         SingleDirectoryObserver o = new SingleDirectoryObserver(path, EVENT_MASK);
         OBSERVERS.put(path, o);
         o.setListener(LISTENER);
+        o.startWatching();
         return o;
     }
 }

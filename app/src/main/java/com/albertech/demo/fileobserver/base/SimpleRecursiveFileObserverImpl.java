@@ -1,16 +1,12 @@
 package com.albertech.demo.fileobserver.base;
 
 import android.os.FileObserver;
-import android.util.Log;
-
-import com.albertech.demo.fileobserver.base.IRecursiveFileObserver;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
-
 
 
 public class SimpleRecursiveFileObserverImpl implements IRecursiveFileObserver, FileObserverFactory.IFileEvent {
@@ -34,7 +30,7 @@ public class SimpleRecursiveFileObserverImpl implements IRecursiveFileObserver, 
             s.push(path());
             while (!s.isEmpty()) {
                 String path = s.pop();
-                if (!OBSERVERS.containsKey(path)) {
+                if (!OBSERVERS.containsKey(path) || OBSERVERS.get(path) == null) {
                     FACTORY.create(path);
                 }
                 File f = new File(path);
@@ -66,6 +62,16 @@ public class SimpleRecursiveFileObserverImpl implements IRecursiveFileObserver, 
         }
     };
 
+    private final void releaseInvalidPathObserver(String path) {
+        try {
+            FileObserver o = OBSERVERS.get(path);
+            o.stopWatching();
+            OBSERVERS.remove(path);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void createObservers() {
@@ -85,8 +91,15 @@ public class SimpleRecursiveFileObserverImpl implements IRecursiveFileObserver, 
     @Override
     public final void onFileEvent(int event, String path) {
         event &= FileObserver.ALL_EVENTS;
-        if (event == FileObserver.CREATE) {
-            createObservers();
+        switch (event) {
+            case FileObserver.CREATE:
+            case FileObserver.MOVED_FROM:
+                createObservers();
+                break;
+            case FileObserver.DELETE_SELF:
+            case FileObserver.MOVE_SELF:
+                releaseInvalidPathObserver(path);
+                break;
         }
         onEvent(event, path);
     }

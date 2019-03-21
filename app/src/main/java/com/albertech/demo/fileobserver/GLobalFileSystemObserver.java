@@ -4,8 +4,9 @@ import android.os.Environment;
 import android.os.FileObserver;
 import android.util.Log;
 
-import com.albertech.demo.fileobserver.base.IRecursiveFileObserver;
 import com.albertech.demo.fileobserver.base.SimpleRecursiveFileObserverImpl;
+
+import java.io.File;
 
 
 public class GLobalFileSystemObserver extends SimpleRecursiveFileObserverImpl {
@@ -26,6 +27,7 @@ public class GLobalFileSystemObserver extends SimpleRecursiveFileObserverImpl {
 
 
     private static final String PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
+    private static final String PATH1 = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "AAAA1").getAbsolutePath();
     private static final int EVENTS = FileObserver.CREATE
             | FileObserver.DELETE_SELF
             | FileObserver.DELETE
@@ -37,17 +39,19 @@ public class GLobalFileSystemObserver extends SimpleRecursiveFileObserverImpl {
 
     @Override
     protected String path() {
-        return PATH;
+        return PATH1;
     }
 
     @Override
     protected int eventMask() {
-        return FileObserver.ALL_EVENTS;
+        return EVENTS;
     }
 
     @Override
     protected void onEvent(int event, String path) {
-        Log.e("AAA", Helper.name(event) + ": " + path);
+//        if (event == FileObserver.CREATE) {
+            Log.e("AAA", Helper.name(event) + ": " + path);
+//        }
     }
 
     public void init() {
