@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.albertech.demo.fileobserver.GLobalFileSystemObserver;
-import com.example.anydemo.R;
 
 
 public class MainActivity extends AppCompatActivity {

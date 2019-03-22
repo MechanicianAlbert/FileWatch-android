@@ -1,6 +1,7 @@
 package com.albertech.demo.fileobserver.base;
 
 import android.os.FileObserver;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -9,12 +10,10 @@ import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-public class SimpleRecursiveFileObserverImpl implements IRecursiveFileObserver, FileObserverFactory.IFileEvent {
+public class SimpleRecursiveFileObserverImpl implements IRecursiveFileObserver, IFileEvent {
 
 
     private final Map<String, FileObserver> OBSERVERS = new ConcurrentHashMap<>();
-
-    private final FileObserverFactory FACTORY = new FileObserverFactory(OBSERVERS, this, eventMask());
 
     private final FileFilter FILE_FILTER = new FileFilter() {
         @Override
@@ -31,7 +30,7 @@ public class SimpleRecursiveFileObserverImpl implements IRecursiveFileObserver, 
             while (!s.isEmpty()) {
                 String path = s.pop();
                 if (!OBSERVERS.containsKey(path) || OBSERVERS.get(path) == null) {
-                    FACTORY.create(path);
+                    createSingleDirectoryObserver(path);
                 }
                 File f = new File(path);
                 File[] children = f.listFiles(FILE_FILTER);
@@ -61,6 +60,15 @@ public class SimpleRecursiveFileObserverImpl implements IRecursiveFileObserver, 
             }
         }
     };
+
+
+    private final void createSingleDirectoryObserver(String path) {
+        Log.e("AAA", "为路径 " + path + " 生成新的监听器");
+        SingleDirectoryObserver o = new SingleDirectoryObserver(path, eventMask());
+        OBSERVERS.put(path, o);
+        o.setListener(this);
+        o.startWatching();
+    }
 
     private final void releaseInvalidPathObserver(String path) {
         try {
