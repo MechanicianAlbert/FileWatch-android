@@ -8,12 +8,16 @@ import java.io.FileFilter;
 import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class SimpleRecursiveFileObserverImpl implements IRecursiveFileObserver, IFileEvent {
 
 
     private final Map<String, FileObserver> OBSERVERS = new ConcurrentHashMap<>();
+
+    private final ExecutorService EXECUTOR = Executors.newCachedThreadPool();
 
     private final FileFilter FILE_FILTER = new FileFilter() {
         @Override
@@ -83,17 +87,17 @@ public class SimpleRecursiveFileObserverImpl implements IRecursiveFileObserver, 
 
     @Override
     public void createObservers() {
-        new Thread(OBSERVER_CREATER).start();
+        EXECUTOR.execute(OBSERVER_CREATER);
     }
 
     @Override
     public final void startWatching() {
-        new Thread(START_WATCHING).start();
+        EXECUTOR.execute(START_WATCHING);
     }
 
     @Override
     public final void stopWatching() {
-        new Thread(STOP_WATCHING).start();
+        EXECUTOR.execute(STOP_WATCHING);
     }
 
     @Override
