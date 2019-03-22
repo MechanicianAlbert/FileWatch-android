@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
 public class SimpleRecursiveFileObserverImpl implements IRecursiveFileObserver, IFileEvent {
 
 
-    private final Map<String, FileObserver> OBSERVERS = new ConcurrentHashMap<>();
+    private final Map<String, SingleDirectoryObserver> OBSERVERS = new ConcurrentHashMap<>();
 
     private final ExecutorService EXECUTOR = Executors.newCachedThreadPool();
 
@@ -76,8 +76,11 @@ public class SimpleRecursiveFileObserverImpl implements IRecursiveFileObserver, 
 
     private final void releaseInvalidPathObserver(String path) {
         try {
-            FileObserver o = OBSERVERS.get(path);
-            o.stopWatching();
+            SingleDirectoryObserver o = OBSERVERS.get(path);
+            if (o != null) {
+                o.stopWatching();
+                o.removeListener();
+            }
             OBSERVERS.remove(path);
         } catch (Exception e) {
             e.printStackTrace();
@@ -101,7 +104,7 @@ public class SimpleRecursiveFileObserverImpl implements IRecursiveFileObserver, 
     }
 
     @Override
-    public final void onFileEvent(int event, String path) {
+    public final void onFileEvent(String selfPath, int event, String eventPath) {
         event &= FileObserver.ALL_EVENTS;
         switch (event) {
             case FileObserver.CREATE:
@@ -110,10 +113,10 @@ public class SimpleRecursiveFileObserverImpl implements IRecursiveFileObserver, 
                 break;
             case FileObserver.DELETE_SELF:
             case FileObserver.MOVE_SELF:
-                releaseInvalidPathObserver(path);
+                releaseInvalidPathObserver(eventPath);
                 break;
         }
-        onEvent(event, path);
+        onEvent(selfPath, event, eventPath);
     }
 
 
@@ -125,7 +128,7 @@ public class SimpleRecursiveFileObserverImpl implements IRecursiveFileObserver, 
         return FileObserver.ALL_EVENTS;
     }
 
-    protected void onEvent(int event, String path) {
+    protected void onEvent(String parentPath, int event, String eventPath) {
 
     }
 

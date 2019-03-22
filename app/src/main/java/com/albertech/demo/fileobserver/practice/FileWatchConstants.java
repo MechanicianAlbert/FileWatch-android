@@ -7,7 +7,9 @@ import java.io.File;
 
 public interface FileWatchConstants {
 
-    String PATH = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "AAAA1").getAbsolutePath();
+    String PATH1 = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "AAAA1").getAbsolutePath();
+    String PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
+
     int EVENTS = FileObserver.CREATE
             | FileObserver.DELETE_SELF
             | FileObserver.DELETE

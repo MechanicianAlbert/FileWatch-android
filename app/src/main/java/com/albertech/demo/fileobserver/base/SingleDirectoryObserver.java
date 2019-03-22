@@ -6,27 +6,33 @@ import android.os.FileObserver;
 
 public class SingleDirectoryObserver extends FileObserver {
 
-    private String mPath;
+    private final String SELF_PATH;
     private IFileEvent mListener;
 
 
     SingleDirectoryObserver(String path, int mask) {
         super(path, mask);
-        mPath = path;
+        SELF_PATH = path;
     }
 
     void setListener(IFileEvent listener) {
         mListener = listener;
     }
 
+    void removeListener() {
+        mListener = null;
+    }
+
     @Override
     public void onEvent(int event, String path) {
         event &= ALL_EVENTS;
         if (event == DELETE_SELF) {
-            path = mPath;
+            path = SELF_PATH;
         } else if (event == MOVE_SELF) {
-            path = mPath;
+            path = SELF_PATH;
         }
-        mListener.onFileEvent(event, path);
+        if (mListener != null) {
+            mListener.onFileEvent(SELF_PATH, event, path);
+        }
     }
 }

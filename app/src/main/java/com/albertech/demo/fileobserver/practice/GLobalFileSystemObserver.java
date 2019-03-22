@@ -4,8 +4,8 @@ package com.albertech.demo.fileobserver.practice;
 import com.albertech.demo.fileobserver.api.IFileWatch;
 import com.albertech.demo.fileobserver.base.SimpleRecursiveFileObserverImpl;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class GLobalFileSystemObserver extends SimpleRecursiveFileObserverImpl implements FileWatchConstants {
@@ -25,7 +25,7 @@ public class GLobalFileSystemObserver extends SimpleRecursiveFileObserverImpl im
     }
 
 
-    private final Set<IFileWatch> WATCHERS = new HashSet<>();
+    private final Map<IFileWatch, String> WATCHERS = new HashMap<>();
 
 
     @Override
@@ -39,8 +39,8 @@ public class GLobalFileSystemObserver extends SimpleRecursiveFileObserverImpl im
     }
 
     @Override
-    protected void onEvent(int event, String path) {
-        notifyFileEvents(event, path);
+    protected void onEvent(String parentPath, int event, String path) {
+        notifyFileEvents(parentPath, event, path);
     }
 
 
@@ -48,8 +48,8 @@ public class GLobalFileSystemObserver extends SimpleRecursiveFileObserverImpl im
         createObservers();
     }
 
-    public void registerFileSystemWatch(IFileWatch watch) {
-        WATCHERS.add(watch);
+    public void registerFileSystemWatch(IFileWatch watch, String subscribePath) {
+        WATCHERS.put(watch, subscribePath);
     }
 
     public void unregisterFileSystemWatch(IFileWatch watch) {
@@ -57,10 +57,13 @@ public class GLobalFileSystemObserver extends SimpleRecursiveFileObserverImpl im
     }
 
 
-    private void notifyFileEvents(int event, String path) {
-        for (IFileWatch watcher : WATCHERS) {
+    private void notifyFileEvents(String parentPath, int event, String path) {
+        for (IFileWatch watcher : WATCHERS.keySet()) {
             if (watcher != null) {
-                watcher.onEvent(event, path);
+                String subscribePath = WATCHERS.get(watcher);
+                if (parentPath.startsWith(subscribePath)) {
+                    watcher.onEvent(event, path);
+                }
             }
         }
     }

@@ -9,9 +9,8 @@ import com.albertech.demo.fileobserver.api.IFileWatch;
 import com.albertech.demo.fileobserver.base.IRecursiveFileObserver;
 import com.albertech.demo.fileobserver.base.SimpleRecursiveFileObserverImpl;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class FileWatchService extends Service implements FileWatchConstants {
@@ -25,8 +24,8 @@ public class FileWatchService extends Service implements FileWatchConstants {
             SERVICE = service;
         }
 
-        public void registerFileSystemWatch(IFileWatch watcher) {
-            SERVICE.registerFileSystemWatch(watcher);
+        public void registerFileSystemWatch(IFileWatch watcher, String subscribePath) {
+            SERVICE.registerFileSystemWatch(watcher, subscribePath);
         }
 
         public void unregisterFileSystemWatch(IFileWatch watcher) {
@@ -35,7 +34,7 @@ public class FileWatchService extends Service implements FileWatchConstants {
     }
 
 
-    private final Set<IFileWatch> WATCHERS = new HashSet<>();
+    private final Map<IFileWatch, String> WATCHERS = new HashMap<>();
     private final FileWatchBinder mBinder = new FileWatchBinder(this);
 
 
@@ -51,8 +50,8 @@ public class FileWatchService extends Service implements FileWatchConstants {
         }
 
         @Override
-        protected void onEvent(int event, String path) {
-            notifyFileEvents(event, path);
+        protected void onEvent(String parentPath, int event, String path) {
+            notifyFileEvents(parentPath, event, path);
         }
     };
 
@@ -76,18 +75,21 @@ public class FileWatchService extends Service implements FileWatchConstants {
     }
 
 
-    void registerFileSystemWatch(IFileWatch watch) {
-        WATCHERS.add(watch);
+    void registerFileSystemWatch(IFileWatch watch, String subscribePath) {
+        WATCHERS.put(watch, subscribePath);
     }
 
     void unregisterFileSystemWatch(IFileWatch watch) {
         WATCHERS.remove(watch);
     }
 
-    private void notifyFileEvents(int event, String path) {
-        for (IFileWatch watcher : WATCHERS) {
+    private void notifyFileEvents(String parentPath, int event, String path) {
+        for (IFileWatch watcher : WATCHERS.keySet()) {
             if (watcher != null) {
-                watcher.onEvent(event, path);
+                String subscribePath = WATCHERS.get(watcher);
+                if (parentPath.startsWith(subscribePath)) {
+                    watcher.onEvent(event, path);
+                }
             }
         }
     }
