@@ -2,25 +2,25 @@ package com.albertech.demo.fileobserver.practice;
 
 
 import com.albertech.demo.fileobserver.api.IFileWatch;
-import com.albertech.demo.fileobserver.base.SimpleRecursiveFileObserverImpl;
+import com.albertech.demo.fileobserver.core.SimpleRecursiveFileWatcherImpl;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class GLobalFileSystemObserver extends SimpleRecursiveFileObserverImpl implements FileWatchConstants {
+public class GLobalFileWatchSingleton extends SimpleRecursiveFileWatcherImpl implements FileWatchDefaultConfig {
 
     private static class Holder {
-        private static GLobalFileSystemObserver INSTANCE = new GLobalFileSystemObserver();
+        private static GLobalFileWatchSingleton INSTANCE = new GLobalFileWatchSingleton();
     }
 
-    private GLobalFileSystemObserver() {
+    private GLobalFileWatchSingleton() {
         if (Holder.INSTANCE != null) {
             throw new RuntimeException("This class cannot be instantiate more than once");
         }
     }
 
-    public static GLobalFileSystemObserver getInstance() {
+    public static GLobalFileWatchSingleton getInstance() {
         return Holder.INSTANCE;
     }
 
@@ -39,8 +39,8 @@ public class GLobalFileSystemObserver extends SimpleRecursiveFileObserverImpl im
     }
 
     @Override
-    protected void onEvent(String parentPath, int event, String path) {
-        notifyFileEvents(parentPath, event, path);
+    protected void onEvent(int event, String path) {
+        notifyFileEvents(event, path);
     }
 
 
@@ -57,11 +57,11 @@ public class GLobalFileSystemObserver extends SimpleRecursiveFileObserverImpl im
     }
 
 
-    private void notifyFileEvents(String parentPath, int event, String path) {
+    private void notifyFileEvents(int event, String path) {
         for (IFileWatch watcher : WATCHERS.keySet()) {
             if (watcher != null) {
                 String subscribePath = WATCHERS.get(watcher);
-                if (parentPath.startsWith(subscribePath)) {
+                if (path.startsWith(subscribePath)) {
                     watcher.onEvent(event, path);
                 }
             }

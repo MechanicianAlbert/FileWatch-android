@@ -6,39 +6,48 @@ import android.os.Binder;
 
 
 import com.albertech.demo.fileobserver.api.IFileWatch;
-import com.albertech.demo.fileobserver.base.IRecursiveFileObserver;
-import com.albertech.demo.fileobserver.base.SimpleRecursiveFileObserverImpl;
+import com.albertech.demo.fileobserver.core.IRecursiveFileWatcher;
+import com.albertech.demo.fileobserver.core.SimpleRecursiveFileWatcherImpl;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class FileWatchService extends Service implements FileWatchConstants {
+public class GlobalFileWatchService extends Service implements FileWatchDefaultConfig {
 
     public static class FileWatchBinder extends Binder {
 
-        private final FileWatchService SERVICE;
+        private GlobalFileWatchService mService;
 
 
-        public FileWatchBinder(FileWatchService service) {
-            SERVICE = service;
+        FileWatchBinder(GlobalFileWatchService service) {
+            mService = service;
         }
 
         public void registerFileSystemWatch(IFileWatch watcher, String subscribePath) {
-            SERVICE.registerFileSystemWatch(watcher, subscribePath);
+            subscribePath = subscribePath != null ? subscribePath : "";
+            if (mService != null) {
+                mService.registerFileSystemWatch(watcher, subscribePath);
+            }
         }
 
         public void unregisterFileSystemWatch(IFileWatch watcher) {
-            SERVICE.unregisterFileSystemWatch(watcher);
+            if (mService != null) {
+                mService.unregisterFileSystemWatch(watcher);
+            }
+        }
+
+        void releaseService() {
+            mService = null;
         }
     }
 
 
     private final Map<IFileWatch, String> WATCHERS = new HashMap<>();
-    private final FileWatchBinder mBinder = new FileWatchBinder(this);
+    private FileWatchBinder mBinder;
 
 
-    private final IRecursiveFileObserver OBSERVER = new SimpleRecursiveFileObserverImpl() {
+    private final IRecursiveFileWatcher OBSERVER = new SimpleRecursiveFileWatcherImpl() {
         @Override
         protected String path() {
             return PATH;
@@ -50,8 +59,8 @@ public class FileWatchService extends Service implements FileWatchConstants {
         }
 
         @Override
-        protected void onEvent(String parentPath, int event, String path) {
-            notifyFileEvents(parentPath, event, path);
+        protected void onEvent(int event, String path) {
+            notifyFileEvents(event, path);
         }
     };
 
@@ -64,6 +73,7 @@ public class FileWatchService extends Service implements FileWatchConstants {
     @Override
     public void onCreate() {
         super.onCreate();
+        mBinder = new FileWatchBinder(this);
         OBSERVER.createObservers();
     }
 
@@ -72,6 +82,8 @@ public class FileWatchService extends Service implements FileWatchConstants {
         super.onDestroy();
         WATCHERS.clear();
         OBSERVER.stopWatching();
+        mBinder.releaseService();
+        mBinder = null;
     }
 
 
@@ -83,11 +95,11 @@ public class FileWatchService extends Service implements FileWatchConstants {
         WATCHERS.remove(watch);
     }
 
-    private void notifyFileEvents(String parentPath, int event, String path) {
+    private void notifyFileEvents(int event, String path) {
         for (IFileWatch watcher : WATCHERS.keySet()) {
             if (watcher != null) {
                 String subscribePath = WATCHERS.get(watcher);
-                if (parentPath.startsWith(subscribePath)) {
+                if (path.startsWith(subscribePath)) {
                     watcher.onEvent(event, path);
                 }
             }

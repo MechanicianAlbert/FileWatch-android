@@ -1,10 +1,8 @@
 package com.albertech.demo;
 
 import android.app.Application;
-import android.content.Intent;
 
-import com.albertech.demo.fileobserver.practice.FileWatchService;
-import com.albertech.demo.fileobserver.practice.GLobalFileSystemObserver;
+import com.albertech.demo.fileobserver.practice.GLobalFileWatchSingleton;
 
 
 public class MyApplication extends Application {
@@ -13,8 +11,8 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        GLobalFileSystemObserver.getInstance().init();
+        GLobalFileWatchSingleton.getInstance().init();
 
-//        startService(new Intent(getApplicationContext(), FileWatchService.class));
+//        startService(new Intent(getApplicationContext(), GlobalFileWatchService.class));
     }
 }

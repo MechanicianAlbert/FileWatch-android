@@ -1,6 +1,7 @@
-package com.albertech.demo.fileobserver.base;
+package com.albertech.demo.fileobserver.core;
 
 import android.os.FileObserver;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.File;
@@ -12,21 +13,22 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-public class SimpleRecursiveFileObserverImpl implements IRecursiveFileObserver, IFileEvent {
-
+public class SimpleRecursiveFileWatcherImpl implements IRecursiveFileWatcher, IFileEventListener {
 
     private final Map<String, SingleDirectoryObserver> OBSERVERS = new ConcurrentHashMap<>();
 
     private final ExecutorService EXECUTOR = Executors.newCachedThreadPool();
 
     private final FileFilter FILE_FILTER = new FileFilter() {
+
         @Override
         public boolean accept(File f) {
-            return f.isDirectory() && !".".equals(f.getName()) && !"..".equals(f.getName());
+            return isValidReadableDirectory(f);
         }
     };
 
     private final Runnable OBSERVER_CREATER = new Runnable() {
+
         @Override
         public void run() {
             Stack<String> s = new Stack<>();
@@ -48,6 +50,7 @@ public class SimpleRecursiveFileObserverImpl implements IRecursiveFileObserver, 
     };
 
     private final Runnable START_WATCHING = new Runnable() {
+
         @Override
         public void run() {
             for (FileObserver o : OBSERVERS.values()) {
@@ -57,6 +60,7 @@ public class SimpleRecursiveFileObserverImpl implements IRecursiveFileObserver, 
     };
 
     private final Runnable STOP_WATCHING = new Runnable() {
+
         @Override
         public void run() {
             for (FileObserver o : OBSERVERS.values()) {
@@ -68,23 +72,39 @@ public class SimpleRecursiveFileObserverImpl implements IRecursiveFileObserver, 
 
     private final void createSingleDirectoryObserver(String path) {
         Log.e("AAA", "为路径 " + path + " 生成新的监听器");
-        SingleDirectoryObserver o = new SingleDirectoryObserver(path, eventMask());
+        int eventMask = eventMask() & FileObserver.ALL_EVENTS;
+        SingleDirectoryObserver o = new SingleDirectoryObserver(path, eventMask, this);
         OBSERVERS.put(path, o);
-        o.setListener(this);
         o.startWatching();
     }
 
     private final void releaseInvalidPathObserver(String path) {
         try {
-            SingleDirectoryObserver o = OBSERVERS.get(path);
+            SingleDirectoryObserver o = OBSERVERS.remove(path);
             if (o != null) {
-                o.stopWatching();
-                o.removeListener();
+                o.release();
+                Log.e("AAA", "为路径 " + path + " 释放监听器");
             }
-            OBSERVERS.remove(path);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private final boolean isValidReadableDirectoryPath(String path) {
+        if (TextUtils.isEmpty(path)) {
+            return false;
+        } else {
+            File f = new File(path);
+            return isValidReadableDirectory(f);
+        }
+    }
+
+    private final boolean isValidReadableDirectory(File f) {
+        return f != null
+                && f.canRead()
+                && f.isDirectory()
+                && !".".equals(f.getName())
+                && !"..".equals(f.getName());
     }
 
 
@@ -104,31 +124,32 @@ public class SimpleRecursiveFileObserverImpl implements IRecursiveFileObserver, 
     }
 
     @Override
-    public final void onFileEvent(String selfPath, int event, String eventPath) {
-        event &= FileObserver.ALL_EVENTS;
+    public final void onFileEvent(int event, String fullPath) {
         switch (event) {
             case FileObserver.CREATE:
-            case FileObserver.MOVED_FROM:
-                createObservers();
+            case FileObserver.MOVED_TO:
+                if (isValidReadableDirectoryPath(fullPath)) {
+                    createSingleDirectoryObserver(fullPath);
+                }
                 break;
-            case FileObserver.DELETE_SELF:
-            case FileObserver.MOVE_SELF:
-                releaseInvalidPathObserver(eventPath);
+            case FileObserver.DELETE:
+            case FileObserver.MOVED_FROM:
+                releaseInvalidPathObserver(fullPath);
                 break;
         }
-        onEvent(selfPath, event, eventPath);
+        onEvent(event, fullPath);
     }
 
 
     protected String path() {
-        return "/storage/emulated/0/DCIM";
+        return "/storage/emulated/0/AAAA";
     }
 
     protected int eventMask() {
         return FileObserver.ALL_EVENTS;
     }
 
-    protected void onEvent(String parentPath, int event, String eventPath) {
+    protected void onEvent(int event, String eventPath) {
 
     }
 
