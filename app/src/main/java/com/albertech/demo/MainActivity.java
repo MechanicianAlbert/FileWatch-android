@@ -8,9 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import com.albertech.demo.filewatch.api.FileWatch;
-import com.albertech.demo.filewatch.api.IFileWatchSubscriber;
-import com.albertech.demo.filewatch.api.IFileWatchUnsubscribe;
+import com.albertech.filewatch.api.FileWatch;
+import com.albertech.filewatch.api.IFileWatchSubscriber;
+import com.albertech.filewatch.api.IFileWatchUnsubscribe;
 
 
 public class MainActivity extends AppCompatActivity implements IFileWatchSubscriber {

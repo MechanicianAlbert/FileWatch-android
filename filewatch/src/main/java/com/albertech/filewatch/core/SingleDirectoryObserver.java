@@ -1,4 +1,4 @@
-package com.albertech.demo.filewatch.core;
+package com.albertech.filewatch.core;
 
 import android.os.FileObserver;
 import android.util.Log;

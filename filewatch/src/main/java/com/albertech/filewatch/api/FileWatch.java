@@ -1,9 +1,10 @@
-package com.albertech.demo.filewatch.api;
+package com.albertech.filewatch.api;
 
 import android.content.Context;
 import android.os.FileObserver;
 
-import com.albertech.demo.filewatch.core.FileWatchServiceConnection;
+import com.albertech.filewatch.core.FileWatchServiceConnection;
+
 
 
 

@@ -1,4 +1,6 @@
-package com.albertech.demo.filewatch.core;
+package com.albertech.filewatch.core;
+
+
 
 public interface IFileWatch {
 

@@ -1,4 +1,4 @@
-package com.albertech.demo.filewatch.core;
+package com.albertech.filewatch.core;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
-import com.albertech.demo.filewatch.api.IFileWatchSubscriber;
-import com.albertech.demo.filewatch.api.IFileWatchUnsubscribe;
+import com.albertech.filewatch.api.IFileWatchSubscriber;
+import com.albertech.filewatch.api.IFileWatchUnsubscribe;
 
 
 

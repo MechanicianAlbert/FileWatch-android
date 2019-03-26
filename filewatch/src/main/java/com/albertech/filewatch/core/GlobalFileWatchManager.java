@@ -1,10 +1,10 @@
-package com.albertech.demo.filewatch.core;
+package com.albertech.filewatch.core;
 
 import android.os.Environment;
 import android.os.FileObserver;
 import android.text.TextUtils;
 
-import com.albertech.demo.filewatch.api.IFileWatchSubscriber;
+import com.albertech.filewatch.api.IFileWatchSubscriber;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -14,6 +14,7 @@ import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 
 
 public class GlobalFileWatchManager implements IGlobalFileWatch, IFileWatch {

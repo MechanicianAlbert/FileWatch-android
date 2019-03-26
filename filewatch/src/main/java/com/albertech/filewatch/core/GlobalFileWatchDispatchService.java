@@ -1,4 +1,4 @@
-package com.albertech.demo.filewatch.core;
+package com.albertech.filewatch.core;
 
 import android.app.Service;
 import android.content.Intent;
@@ -6,10 +6,12 @@ import android.os.Binder;
 import android.os.Environment;
 import android.os.FileObserver;
 
-import com.albertech.demo.filewatch.api.IFileWatchSubscriber;
+import com.albertech.filewatch.api.IFileWatchSubscriber;
 
 import java.util.HashMap;
 import java.util.Map;
+
+
 
 
 public class GlobalFileWatchDispatchService extends Service {
