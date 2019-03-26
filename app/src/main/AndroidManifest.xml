@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".filewatch.practice.GlobalFileWatchService" />
+        <service android:name=".filewatch.core.GlobalFileWatchDispatchService" />
     </application>
 
 </manifest>

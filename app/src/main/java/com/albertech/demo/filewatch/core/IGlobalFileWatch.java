@@ -1,11 +1,13 @@
 package com.albertech.demo.filewatch.core;
 
 
-public interface IRecursiveFileWatcher {
-
-    void createObservers();
+public interface IGlobalFileWatch {
 
     void startWatching();
+
+    void resumeWatching();
+
+    void pauseWatching();
 
     void stopWatching();
 

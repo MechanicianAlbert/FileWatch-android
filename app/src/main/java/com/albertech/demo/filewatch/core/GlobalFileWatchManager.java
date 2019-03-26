@@ -4,10 +4,11 @@ import android.os.Environment;
 import android.os.FileObserver;
 import android.text.TextUtils;
 
-import com.albertech.demo.filewatch.api.IFileWatch;
+import com.albertech.demo.filewatch.api.IFileWatchSubscriber;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,9 +16,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-public class GlobalFileWatcher implements IRecursiveFileWatcher, IFileEventListener {
+public class GlobalFileWatchManager implements IGlobalFileWatch, IFileWatch {
 
-    private static final String TAG = GlobalFileWatcher.class.getSimpleName();
+    private static final String TAG = GlobalFileWatchManager.class.getSimpleName();
 
 
     private final Map<String, SingleDirectoryObserver> OBSERVERS = new ConcurrentHashMap<>();
@@ -41,7 +42,7 @@ public class GlobalFileWatcher implements IRecursiveFileWatcher, IFileEventListe
             while (!s.isEmpty()) {
                 String path = s.pop();
 
-                SingleDirectoryObserver o = OBSERVERS.get(path);
+                FileObserver o = OBSERVERS.get(path);
                 if (o != null) {
                     o.startWatching();
                 } else {
@@ -59,7 +60,7 @@ public class GlobalFileWatcher implements IRecursiveFileWatcher, IFileEventListe
         }
     };
 
-    private final Runnable START_WATCHING = new Runnable() {
+    private final Runnable RESUME_WATCHING = new Runnable() {
 
         @Override
         public void run() {
@@ -69,7 +70,7 @@ public class GlobalFileWatcher implements IRecursiveFileWatcher, IFileEventListe
         }
     };
 
-    private final Runnable STOP_WATCHING = new Runnable() {
+    private final Runnable PAUSE_WATCHING = new Runnable() {
 
         @Override
         public void run() {
@@ -79,12 +80,26 @@ public class GlobalFileWatcher implements IRecursiveFileWatcher, IFileEventListe
         }
     };
 
+    private final Runnable OBSERVER_DESTROYER = new Runnable() {
+
+        @Override
+        public void run() {
+            mListener = null;
+            Iterator<String> i = OBSERVERS.keySet().iterator();
+            while (i.hasNext()) {
+                releaseInvalidPathObserver(i.next());
+            }
+        }
+    };
+
     private final String WATCH_PATH;
     private final int EVENT_MASK;
-    private IFileWatch mListener;
 
 
-    private GlobalFileWatcher(String path, int eventMask, IFileWatch listener) {
+    private IFileWatchSubscriber mListener;
+
+
+    private GlobalFileWatchManager(String path, int eventMask, IFileWatchSubscriber listener) {
         WATCH_PATH = path;
         EVENT_MASK = eventMask & FileObserver.ALL_EVENTS;
         mListener = listener;
@@ -96,13 +111,9 @@ public class GlobalFileWatcher implements IRecursiveFileWatcher, IFileEventListe
     }
 
     private void releaseInvalidPathObserver(String path) {
-        try {
-            SingleDirectoryObserver o = OBSERVERS.remove(path);
-            if (o != null) {
-                o.release();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        SingleDirectoryObserver o = OBSERVERS.remove(path);
+        if (o != null) {
+            o.release();
         }
     }
 
@@ -125,18 +136,23 @@ public class GlobalFileWatcher implements IRecursiveFileWatcher, IFileEventListe
 
 
     @Override
-    public final void createObservers() {
+    public final void startWatching() {
         EXECUTOR.execute(OBSERVER_CREATER);
     }
 
     @Override
-    public final void startWatching() {
-        EXECUTOR.execute(START_WATCHING);
+    public void resumeWatching() {
+        EXECUTOR.execute(RESUME_WATCHING);
+    }
+
+    @Override
+    public final void pauseWatching() {
+        EXECUTOR.execute(PAUSE_WATCHING);
     }
 
     @Override
     public final void stopWatching() {
-        EXECUTOR.execute(STOP_WATCHING);
+        EXECUTOR.execute(OBSERVER_DESTROYER);
     }
 
     @Override
@@ -153,7 +169,7 @@ public class GlobalFileWatcher implements IRecursiveFileWatcher, IFileEventListe
                 releaseInvalidPathObserver(fullPath);
                 break;
         }
-        if (mListener != null) {
+        if (mListener != null && event > 0) {
             mListener.onEvent(event, fullPath);
         }
     }
@@ -167,7 +183,7 @@ public class GlobalFileWatcher implements IRecursiveFileWatcher, IFileEventListe
 
         private String mWatchPath = DEFAULT_WATCH_PATH;
         private int mEventMask = DEFAULT_WATCH_EVENT;
-        private IFileWatch mListener;
+        private IFileWatchSubscriber mListener;
 
 
         public Builder path(String path) {
@@ -180,14 +196,14 @@ public class GlobalFileWatcher implements IRecursiveFileWatcher, IFileEventListe
             return this;
         }
 
-        public Builder listener(IFileWatch listener) {
+        public Builder listener(IFileWatchSubscriber listener) {
             mListener = listener;
             return this;
         }
 
-        public GlobalFileWatcher build() {
+        public GlobalFileWatchManager build() {
             try {
-                return new GlobalFileWatcher(mWatchPath, mEventMask, mListener);
+                return new GlobalFileWatchManager(mWatchPath, mEventMask, mListener);
             } finally {
                 mListener = null;
             }

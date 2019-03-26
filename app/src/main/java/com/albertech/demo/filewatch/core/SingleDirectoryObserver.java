@@ -12,10 +12,10 @@ public class SingleDirectoryObserver extends FileObserver {
 
 
     private final String SELF_PATH;
-    private IFileEventListener mListener;
+    private IFileWatch mListener;
 
 
-    SingleDirectoryObserver(String path, int mask, IFileEventListener listener) {
+    SingleDirectoryObserver(String path, int mask, IFileWatch listener) {
         super(path, mask);
         SELF_PATH = path;
         mListener = listener;
@@ -32,7 +32,7 @@ public class SingleDirectoryObserver extends FileObserver {
     @Override
     public void onEvent(int event, String path) {
         event &= ALL_EVENTS;
-        String realPath = SELF_PATH + File.separator + path;
+        String realPath = path != null ? (SELF_PATH + File.separator + path) : SELF_PATH;
         if (mListener != null) {
             mListener.onFileEvent(event, realPath);
         }

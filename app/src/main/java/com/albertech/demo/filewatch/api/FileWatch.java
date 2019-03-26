@@ -1,11 +1,22 @@
 package com.albertech.demo.filewatch.api;
 
+import android.content.Context;
 import android.os.FileObserver;
 
-public class FileWatchHelper {
+import com.albertech.demo.filewatch.core.FileWatchServiceConnection;
 
-    private FileWatchHelper() {
 
+
+public class FileWatch {
+
+
+    private FileWatch() {
+        throw new RuntimeException("This class cannot be instantiated");
+    }
+
+
+    public static IFileWatchUnsubscribe subscribeFileWatch(Context context, IFileWatchSubscriber subscriber, String path) {
+        return new FileWatchServiceConnection(context, subscriber, path);
     }
 
     public static String name(int event) {

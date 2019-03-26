@@ -1,7 +1,7 @@
 package com.albertech.demo.filewatch.api;
 
 
-public interface IFileWatch {
+public interface IFileWatchSubscriber {
 
     void onEvent(int event, String path);
 
