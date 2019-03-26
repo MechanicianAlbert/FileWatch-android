@@ -1,13 +1,13 @@
-package com.albertech.demo.fileobserver.practice;
+package com.albertech.demo.filewatch.practice;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 
 
-import com.albertech.demo.fileobserver.api.IFileWatch;
-import com.albertech.demo.fileobserver.core.IRecursiveFileWatcher;
-import com.albertech.demo.fileobserver.core.SimpleRecursiveFileWatcherImpl;
+import com.albertech.demo.filewatch.api.IFileWatch;
+import com.albertech.demo.filewatch.core.IRecursiveFileWatcher;
+import com.albertech.demo.filewatch.core.GlobalFileWatcher;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +20,7 @@ public class GlobalFileWatchService extends Service implements FileWatchDefaultC
         private GlobalFileWatchService mService;
 
 
-        FileWatchBinder(GlobalFileWatchService service) {
+        private FileWatchBinder(GlobalFileWatchService service) {
             mService = service;
         }
 
@@ -37,32 +37,27 @@ public class GlobalFileWatchService extends Service implements FileWatchDefaultC
             }
         }
 
-        void releaseService() {
+        private void releaseService() {
             mService = null;
         }
     }
 
 
     private final Map<IFileWatch, String> WATCHERS = new HashMap<>();
+
+    private final IRecursiveFileWatcher OBSERVER = new GlobalFileWatcher.Builder()
+            .path(PATH)
+            .eventMask(EVENTS)
+            .listener(new IFileWatch() {
+                @Override
+                public void onEvent(int event, String path) {
+                    notifyFileEvents(event, path);
+                }
+            })
+            .build();
+
+
     private FileWatchBinder mBinder;
-
-
-    private final IRecursiveFileWatcher OBSERVER = new SimpleRecursiveFileWatcherImpl() {
-        @Override
-        protected String path() {
-            return PATH;
-        }
-
-        @Override
-        protected int eventMask() {
-            return EVENTS;
-        }
-
-        @Override
-        protected void onEvent(int event, String path) {
-            notifyFileEvents(event, path);
-        }
-    };
 
 
     @Override

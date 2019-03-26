@@ -1,8 +1,10 @@
-package com.albertech.demo.fileobserver.core;
+package com.albertech.demo.filewatch.core;
 
+import android.os.Environment;
 import android.os.FileObserver;
 import android.text.TextUtils;
-import android.util.Log;
+
+import com.albertech.demo.filewatch.api.IFileWatch;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -13,13 +15,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-public class SimpleRecursiveFileWatcherImpl implements IRecursiveFileWatcher, IFileEventListener {
+public class GlobalFileWatcher implements IRecursiveFileWatcher, IFileEventListener {
+
+    private static final String TAG = GlobalFileWatcher.class.getSimpleName();
+
 
     private final Map<String, SingleDirectoryObserver> OBSERVERS = new ConcurrentHashMap<>();
 
     private final ExecutorService EXECUTOR = Executors.newCachedThreadPool();
 
-    private final FileFilter FILE_FILTER = new FileFilter() {
+    private final FileFilter VALID_READABLE_DIRECTORY_FILTER = new FileFilter() {
 
         @Override
         public boolean accept(File f) {
@@ -32,14 +37,19 @@ public class SimpleRecursiveFileWatcherImpl implements IRecursiveFileWatcher, IF
         @Override
         public void run() {
             Stack<String> s = new Stack<>();
-            s.push(path());
+            s.push(WATCH_PATH);
             while (!s.isEmpty()) {
                 String path = s.pop();
-                if (!OBSERVERS.containsKey(path) || OBSERVERS.get(path) == null) {
+
+                SingleDirectoryObserver o = OBSERVERS.get(path);
+                if (o != null) {
+                    o.startWatching();
+                } else {
                     createSingleDirectoryObserver(path);
                 }
+
                 File f = new File(path);
-                File[] children = f.listFiles(FILE_FILTER);
+                File[] children = f.listFiles(VALID_READABLE_DIRECTORY_FILTER);
                 if (children != null) {
                     for (File child : children) {
                         s.push(child.getAbsolutePath());
@@ -69,28 +79,34 @@ public class SimpleRecursiveFileWatcherImpl implements IRecursiveFileWatcher, IF
         }
     };
 
+    private final String WATCH_PATH;
+    private final int EVENT_MASK;
+    private IFileWatch mListener;
 
-    private final void createSingleDirectoryObserver(String path) {
-        Log.e("AAA", "为路径 " + path + " 生成新的监听器");
-        int eventMask = eventMask() & FileObserver.ALL_EVENTS;
-        SingleDirectoryObserver o = new SingleDirectoryObserver(path, eventMask, this);
-        OBSERVERS.put(path, o);
-        o.startWatching();
+
+    private GlobalFileWatcher(String path, int eventMask, IFileWatch listener) {
+        WATCH_PATH = path;
+        EVENT_MASK = eventMask & FileObserver.ALL_EVENTS;
+        mListener = listener;
     }
 
-    private final void releaseInvalidPathObserver(String path) {
+
+    private void createSingleDirectoryObserver(String path) {
+        OBSERVERS.put(path, new SingleDirectoryObserver(path, EVENT_MASK, this));
+    }
+
+    private void releaseInvalidPathObserver(String path) {
         try {
             SingleDirectoryObserver o = OBSERVERS.remove(path);
             if (o != null) {
                 o.release();
-                Log.e("AAA", "为路径 " + path + " 释放监听器");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private final boolean isValidReadableDirectoryPath(String path) {
+    private boolean isValidReadableDirectoryPath(String path) {
         if (TextUtils.isEmpty(path)) {
             return false;
         } else {
@@ -99,7 +115,7 @@ public class SimpleRecursiveFileWatcherImpl implements IRecursiveFileWatcher, IF
         }
     }
 
-    private final boolean isValidReadableDirectory(File f) {
+    private boolean isValidReadableDirectory(File f) {
         return f != null
                 && f.canRead()
                 && f.isDirectory()
@@ -109,7 +125,7 @@ public class SimpleRecursiveFileWatcherImpl implements IRecursiveFileWatcher, IF
 
 
     @Override
-    public void createObservers() {
+    public final void createObservers() {
         EXECUTOR.execute(OBSERVER_CREATER);
     }
 
@@ -137,19 +153,45 @@ public class SimpleRecursiveFileWatcherImpl implements IRecursiveFileWatcher, IF
                 releaseInvalidPathObserver(fullPath);
                 break;
         }
-        onEvent(event, fullPath);
+        if (mListener != null) {
+            mListener.onEvent(event, fullPath);
+        }
     }
 
 
-    protected String path() {
-        return "/storage/emulated/0/AAAA";
-    }
+    public static final class Builder {
 
-    protected int eventMask() {
-        return FileObserver.ALL_EVENTS;
-    }
+        private static final String DEFAULT_WATCH_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
+        private static final int DEFAULT_WATCH_EVENT = FileObserver.ALL_EVENTS;
 
-    protected void onEvent(int event, String eventPath) {
+
+        private String mWatchPath = DEFAULT_WATCH_PATH;
+        private int mEventMask = DEFAULT_WATCH_EVENT;
+        private IFileWatch mListener;
+
+
+        public Builder path(String path) {
+            mWatchPath = path;
+            return this;
+        }
+
+        public Builder eventMask(int eventMask) {
+            mEventMask = eventMask;
+            return this;
+        }
+
+        public Builder listener(IFileWatch listener) {
+            mListener = listener;
+            return this;
+        }
+
+        public GlobalFileWatcher build() {
+            try {
+                return new GlobalFileWatcher(mWatchPath, mEventMask, mListener);
+            } finally {
+                mListener = null;
+            }
+        }
 
     }
 

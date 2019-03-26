@@ -1,4 +1,4 @@
-package com.albertech.demo.fileobserver.core;
+package com.albertech.demo.filewatch.core;
 
 
 public interface IRecursiveFileWatcher {

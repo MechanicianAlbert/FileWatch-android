@@ -2,6 +2,7 @@ package com.albertech.demo;
 
 import android.Manifest;
 import android.content.ComponentName;
+import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Environment;
 import android.os.IBinder;
@@ -10,21 +11,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.albertech.demo.fileobserver.api.FileWatchHelper;
-import com.albertech.demo.fileobserver.practice.GlobalFileWatchService;
-import com.albertech.demo.fileobserver.practice.GLobalFileWatchSingleton;
-import com.albertech.demo.fileobserver.api.IFileWatch;
-
-import java.io.File;
+import com.albertech.demo.filewatch.api.FileWatchHelper;
+import com.albertech.demo.filewatch.practice.GlobalFileWatchService;
+import com.albertech.demo.filewatch.api.IFileWatch;
 
 
 public class MainActivity extends AppCompatActivity implements IFileWatch {
 
-    private String PATH = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "AAAA").getAbsolutePath();
-    private String PATH1 = Environment.getExternalStorageDirectory().getAbsolutePath();
-
-
     private String[] PERMISSIONS = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private String PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
 
     private final ServiceConnection CONNECTION = new ServiceConnection() {
 
@@ -55,15 +50,13 @@ public class MainActivity extends AppCompatActivity implements IFileWatch {
 
         ActivityCompat.requestPermissions(this, PERMISSIONS, 0);
 
-        GLobalFileWatchSingleton.getInstance().registerFileSystemWatch(this, PATH);
-//        bindService(new Intent(getApplicationContext(), GlobalFileWatchService.class), CONNECTION, BIND_AUTO_CREATE);
+        bindService(new Intent(getApplicationContext(), GlobalFileWatchService.class), CONNECTION, BIND_AUTO_CREATE);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        GLobalFileWatchSingleton.getInstance().unregisterFileSystemWatch(this);
-//        unbindService(CONNECTION);
+        unbindService(CONNECTION);
     }
 
     @Override

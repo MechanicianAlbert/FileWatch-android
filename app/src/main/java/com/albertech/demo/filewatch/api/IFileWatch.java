@@ -1,4 +1,4 @@
-package com.albertech.demo.fileobserver.api;
+package com.albertech.demo.filewatch.api;
 
 
 public interface IFileWatch {
