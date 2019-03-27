@@ -3,7 +3,7 @@ package com.albertech.filewatch.api;
 import android.content.Context;
 import android.os.FileObserver;
 
-import com.albertech.filewatch.core.FileWatchServiceConnection;
+import com.albertech.filewatch.service.FileWatchServiceConnection;
 
 
 

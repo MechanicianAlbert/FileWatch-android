@@ -1,4 +1,4 @@
-package com.albertech.filewatch.core;
+package com.albertech.filewatch.watch;
 
 import android.os.FileObserver;
 import android.util.Log;
@@ -34,7 +34,7 @@ public class SingleDirectoryObserver extends FileObserver {
         event &= ALL_EVENTS;
         String realPath = path != null ? (SELF_PATH + File.separator + path) : SELF_PATH;
         if (mListener != null) {
-            mListener.onFileEvent(event, realPath);
+            mListener.onEvent(event, realPath);
         }
     }
 }

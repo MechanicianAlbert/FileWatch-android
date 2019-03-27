@@ -3,6 +3,6 @@
     package="com.albertech.filewatch" >
 
     <application>
-        <service android:name="com.albertech.filewatch.core.GlobalFileWatchDispatchService" />
+        <service android:name="com.albertech.filewatch.service.FileWatchService" />
     </application>
 </manifest>

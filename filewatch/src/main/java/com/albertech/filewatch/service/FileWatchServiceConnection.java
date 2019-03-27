@@ -1,4 +1,4 @@
-package com.albertech.filewatch.core;
+package com.albertech.filewatch.service;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.os.IBinder;
 
 import com.albertech.filewatch.api.IFileWatchSubscriber;
 import com.albertech.filewatch.api.IFileWatchUnsubscribe;
-
+import com.albertech.filewatch.watch.IFileWatchDispatch;
 
 
 public class FileWatchServiceConnection implements ServiceConnection, IFileWatchUnsubscribe {
@@ -16,7 +16,7 @@ public class FileWatchServiceConnection implements ServiceConnection, IFileWatch
     private Context mContext;
     private IFileWatchSubscriber mSubscriber;
     private String mPath;
-    private GlobalFileWatchDispatchService.FileWatchBinder mBinder;
+    private IFileWatchDispatch mBinder;
     private volatile boolean mHadUnboundService;
 
 
@@ -30,15 +30,15 @@ public class FileWatchServiceConnection implements ServiceConnection, IFileWatch
 
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
-        if (service instanceof GlobalFileWatchDispatchService.FileWatchBinder) {
-            mBinder = (GlobalFileWatchDispatchService.FileWatchBinder) service;
+        if (service instanceof IFileWatchDispatch) {
+            mBinder = (IFileWatchDispatch) service;
             mBinder.subscribeFileWatch(mSubscriber, mPath);
         }
     }
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
-
+        release();
     }
 
     @Override
@@ -56,7 +56,7 @@ public class FileWatchServiceConnection implements ServiceConnection, IFileWatch
 
 
     private Intent createFileWatchServiceIntent() {
-        return new Intent(mContext, GlobalFileWatchDispatchService.class);
+        return new Intent(mContext, FileWatchService.class);
     }
 
     private void release() {

@@ -1,8 +1,8 @@
-package com.albertech.filewatch.core;
+package com.albertech.filewatch.watch;
 
 
 
-public interface IGlobalFileWatch {
+public interface IFileWatchBus {
 
     void startWatching();
 

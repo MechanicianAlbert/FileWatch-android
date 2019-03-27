@@ -1,10 +1,8 @@
-package com.albertech.filewatch.core;
+package com.albertech.filewatch.watch;
 
 import android.os.Environment;
 import android.os.FileObserver;
 import android.text.TextUtils;
-
-import com.albertech.filewatch.api.IFileWatchSubscriber;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -17,9 +15,9 @@ import java.util.concurrent.Executors;
 
 
 
-public class GlobalFileWatchManager implements IGlobalFileWatch, IFileWatch {
+public class FileWatchBus implements IFileWatchBus, IFileWatch {
 
-    private static final String TAG = GlobalFileWatchManager.class.getSimpleName();
+    private static final String TAG = FileWatchBus.class.getSimpleName();
 
 
     private final Map<String, SingleDirectoryObserver> OBSERVERS = new ConcurrentHashMap<>();
@@ -97,10 +95,10 @@ public class GlobalFileWatchManager implements IGlobalFileWatch, IFileWatch {
     private final int EVENT_MASK;
 
 
-    private IFileWatchSubscriber mListener;
+    private IFileWatch mListener;
 
 
-    private GlobalFileWatchManager(String path, int eventMask, IFileWatchSubscriber listener) {
+    private FileWatchBus(String path, int eventMask, IFileWatch listener) {
         WATCH_PATH = path;
         EVENT_MASK = eventMask & FileObserver.ALL_EVENTS;
         mListener = listener;
@@ -157,7 +155,7 @@ public class GlobalFileWatchManager implements IGlobalFileWatch, IFileWatch {
     }
 
     @Override
-    public final void onFileEvent(int event, String fullPath) {
+    public final void onEvent(int event, String fullPath) {
         switch (event) {
             case FileObserver.CREATE:
             case FileObserver.MOVED_TO:
@@ -184,7 +182,7 @@ public class GlobalFileWatchManager implements IGlobalFileWatch, IFileWatch {
 
         private String mWatchPath = DEFAULT_WATCH_PATH;
         private int mEventMask = DEFAULT_WATCH_EVENT;
-        private IFileWatchSubscriber mListener;
+        private IFileWatch mListener;
 
 
         public Builder path(String path) {
@@ -197,14 +195,14 @@ public class GlobalFileWatchManager implements IGlobalFileWatch, IFileWatch {
             return this;
         }
 
-        public Builder listener(IFileWatchSubscriber listener) {
+        public Builder listener(IFileWatch listener) {
             mListener = listener;
             return this;
         }
 
-        public GlobalFileWatchManager build() {
+        public FileWatchBus build() {
             try {
-                return new GlobalFileWatchManager(mWatchPath, mEventMask, mListener);
+                return new FileWatchBus(mWatchPath, mEventMask, mListener);
             } finally {
                 mListener = null;
             }
