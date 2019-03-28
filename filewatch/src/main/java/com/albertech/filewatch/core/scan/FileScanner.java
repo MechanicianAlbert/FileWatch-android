@@ -1,4 +1,4 @@
-package com.albertech.filewatch.content.scan;
+package com.albertech.filewatch.core.scan;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,9 +9,6 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
-
-import com.albertech.filewatch.api.IFileScan;
-
 import java.io.File;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -21,7 +18,7 @@ public class FileScanner extends BroadcastReceiver implements IFileScan {
     private static final String TAG = FileScanner.class.getSimpleName();
 
 
-    private final String EXT_ROOT_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
+    private final String EXTERNAL_ROOT_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
 
     private final LinkedBlockingQueue<String> SCAN_TASK_QUEUE = new LinkedBlockingQueue<>();
 
@@ -47,22 +44,34 @@ public class FileScanner extends BroadcastReceiver implements IFileScan {
 
 
     private Context mContext;
+    private IFileScanListener mListener;
     private Thread mScanThread;
     private volatile boolean mIsScanning;
 
 
-    public FileScanner(Context context) {
+    public FileScanner(Context context, IFileScanListener listener) {
         if (context == null) {
             throw new NullPointerException("Context is null");
         }
         mContext = context;
+        mListener = listener;
         watchScan();
         startExecuteScanTask();
     }
 
+    @Override
+    public void init() {
+        // TODO: 2019/3/28
+    }
 
+    @Override
+    public void release() {
+        // TODO: 2019/3/28
+    }
+
+    @Override
     public void scan(String path) {
-        SCAN_TASK_QUEUE.add(TextUtils.isEmpty(path) ? EXT_ROOT_PATH : path);
+        SCAN_TASK_QUEUE.add(TextUtils.isEmpty(path) ? EXTERNAL_ROOT_PATH : path);
         checkScanThread();
     }
 
@@ -105,14 +114,24 @@ public class FileScanner extends BroadcastReceiver implements IFileScan {
     @Override
     public final void onReceive(Context context, Intent intent) {
         String action;
-        if (intent != null && !TextUtils.isEmpty(action = intent.getAction())) {
+        Uri uri;
+        String path;
+        if (intent != null
+                && !TextUtils.isEmpty(action = intent.getAction())
+                && (uri = intent.getData()) != null
+                && !TextUtils.isEmpty(path = uri.getPath())) {
+
             if (Intent.ACTION_MEDIA_SCANNER_STARTED.equals(action)) {
-                Log.d(TAG, "Scan started, path: " + intent.getData());
+                Log.d(TAG, "Scan started, path: " + path);
             } else if (Intent.ACTION_MEDIA_SCANNER_FINISHED.equals(action)) {
-                Log.d(TAG, "Scan finished, path: " + intent.getData());
+                Log.d(TAG, "Scan finished, path: " + path);
                 synchronized (SCAN_TASK_QUEUE) {
                     mIsScanning = false;
                     SCAN_TASK_QUEUE.notify();
+                }
+
+                if (mListener != null) {
+                    mListener.onScanResult(path);
                 }
             }
         }

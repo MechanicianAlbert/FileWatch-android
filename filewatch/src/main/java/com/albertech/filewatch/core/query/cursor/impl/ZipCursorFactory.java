@@ -1,46 +1,26 @@
-package com.albertech.filewatch.content.query.cursor.impl;
+package com.albertech.filewatch.core.query.cursor.impl;
 
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
-import com.albertech.filewatch.content.query.cursor.AbsCursorFactory;
+import com.albertech.filewatch.core.query.cursor.AbsCursorFactory;
 
 
-public class DocCursorFactory extends AbsCursorFactory {
+public class ZipCursorFactory extends AbsCursorFactory {
 
     private final String[] DOC_TYPES = new String[]{
             "%",
-            "%.pdf",
-            "%.xml",
-            "%.html",
-            "%.asm",
-            "%.text/x-asm",
-            "%.def",
-            "%.in",
-            "%.rc",
-            "%.list",
-            "%.log",
-            "%.pl",
-            "%.prop",
-            "%.properties",
-            "%.rc",
-            "%.doc",
-            "%.docx",
-            "%.msg",
-            "%.odt",
-            "%.pages",
-            "%.rtf",
-            "%.txt",
-            "%.wpd",
-            "%.wps"
+            "%.zip",
+            "%.rar",
+            "%.7z"
     };
 
-    public DocCursorFactory() {
+    public ZipCursorFactory() {
 
     }
 
-    public DocCursorFactory(String[] projection) {
+    public ZipCursorFactory(String[] projection) {
         super(projection);
     }
 

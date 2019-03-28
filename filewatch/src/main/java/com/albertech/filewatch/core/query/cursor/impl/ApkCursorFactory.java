@@ -1,26 +1,24 @@
-package com.albertech.filewatch.content.query.cursor.impl;
+package com.albertech.filewatch.core.query.cursor.impl;
 
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
-import com.albertech.filewatch.content.query.cursor.AbsCursorFactory;
+import com.albertech.filewatch.core.query.cursor.AbsCursorFactory;
 
 
-public class ZipCursorFactory extends AbsCursorFactory {
+public class ApkCursorFactory extends AbsCursorFactory {
 
     private final String[] DOC_TYPES = new String[]{
             "%",
-            "%.zip",
-            "%.rar",
-            "%.7z"
+            "%.apk"
     };
 
-    public ZipCursorFactory() {
+    public ApkCursorFactory() {
 
     }
 
-    public ZipCursorFactory(String[] projection) {
+    public ApkCursorFactory(String[] projection) {
         super(projection);
     }
 

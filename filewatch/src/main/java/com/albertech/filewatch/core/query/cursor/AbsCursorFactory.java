@@ -1,4 +1,4 @@
-package com.albertech.filewatch.content.query.cursor;
+package com.albertech.filewatch.core.query.cursor;
 
 import android.content.Context;
 import android.database.Cursor;

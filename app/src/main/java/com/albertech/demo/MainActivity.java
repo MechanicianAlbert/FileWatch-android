@@ -6,13 +6,11 @@ import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.RadioGroup;
 
 
 import com.albertech.filewatch.api.FileHelper;
-import com.albertech.filewatch.api.IFileQuery;
-import com.albertech.filewatch.api.IFileScan;
+import com.albertech.filewatch.core.query.IFileQuery;
 import com.albertech.filewatch.api.IFileWatchSubscriber;
 import com.albertech.filewatch.api.IFileWatchUnsubscribe;
 
@@ -36,13 +34,25 @@ public class MainActivity extends AppCompatActivity {
     private final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
 
 
-    private IFileScan mScanner;
-    private IFileQuery mQuery;
     private IFileWatchUnsubscribe mUnsubscribe;
     private IFileWatchSubscriber mSubscriber = new IFileWatchSubscriber() {
         @Override
-        public void onEvent(int event, String path) {
-            Log.e(TAG, FileHelper.fileOperationName(event) + ": " + path);
+        public void onEvent(int event, String parentPath, String childPath) {
+            Log.e(TAG, FileHelper.fileOperationName(event) + ": " + childPath);
+        }
+
+        @Override
+        public void onScanResult(String path) {
+            Log.e(TAG, "Scan finish: " + path);
+        }
+
+        @Override
+        public void onQueryResult(String path, List<String> list) {
+            Log.e(TAG, "Query finish:");
+            Log.e(TAG, "Parent path: " + path + "\n");
+            for (int i = 0; i < list.size(); i++) {
+                Log.e(TAG, "\tFile: " + list.get(i) + "\n");
+            }
         }
     };
 
@@ -68,18 +78,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        View.OnClickListener l = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.btn1) {
-                    show(mFileType, mPath);
-                } else if (v.getId() == R.id.btn2) {
-                    refresh(mPath);
-                }
-            }
-        };
-        findViewById(R.id.btn1).setOnClickListener(l);
-        findViewById(R.id.btn2).setOnClickListener(l);
+//        View.OnClickListener l = new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (v.getId() == R.id.btn1) {
+//                    show(mFileType, mPath);
+//                } else if (v.getId() == R.id.btn2) {
+//                    refresh(mPath);
+//                }
+//            }
+//        };
+//        findViewById(R.id.btn1).setOnClickListener(l);
+//        findViewById(R.id.btn2).setOnClickListener(l);
 
         RadioGroup.OnCheckedChangeListener cl = new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -114,25 +124,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initFileHelper() {
-        mQuery = FileHelper.createDefaultFileQuery(getApplicationContext());
-        mScanner = FileHelper.createDefaultFileScanner(getApplicationContext());
         mUnsubscribe = FileHelper.subscribeFileWatch(getApplicationContext(), mSubscriber, SDCARD_PATH);
     }
 
-    private void show(final int type, final String path) {
-        EXECUTOR.execute(new Runnable() {
-            public void run() {
-                Log.e(TAG, "Query, file type: " + FileHelper.fileTypeName(type) + ", parent path: " + path);
-                List<String> query = mQuery.queryFileByTypeAndPath(type, path);
-                for (int i = 0; i < query.size(); i++) {
-                    Log.e(TAG, query.get(i));
-                }
-            }
-        });
-    }
-
-    private void refresh(String path) {
-        mScanner.scan(path);
-    }
+    
 
 }

@@ -1,6 +1,4 @@
-package com.albertech.filewatch.api;
-
-import java.util.List;
+package com.albertech.filewatch.core.query;
 
 
 public interface IFileQuery {
@@ -14,5 +12,5 @@ public interface IFileQuery {
     int APK = 6;
 
 
-    List<String> queryFileByTypeAndPath(int type, String path);
+    void queryFileByTypeAndPath(int type, String path, IFileQureyListener listener);
 }

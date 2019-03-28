@@ -1,4 +1,4 @@
-package com.albertech.filewatch.watch;
+package com.albertech.filewatch.core.watch;
 
 import android.os.Environment;
 import android.os.FileObserver;
@@ -15,9 +15,9 @@ import java.util.concurrent.Executors;
 
 
 
-public class FileWatchBus implements IFileWatchBus, IFileWatch {
+public class FileWatcher implements IFileWatch, IFileWatchListener {
 
-    private static final String TAG = FileWatchBus.class.getSimpleName();
+    private static final String TAG = FileWatcher.class.getSimpleName();
 
 
     private final Map<String, SingleDirectoryObserver> OBSERVERS = new ConcurrentHashMap<>();
@@ -95,10 +95,10 @@ public class FileWatchBus implements IFileWatchBus, IFileWatch {
     private final int EVENT_MASK;
 
 
-    private IFileWatch mListener;
+    private IFileWatchListener mListener;
 
 
-    private FileWatchBus(String path, int eventMask, IFileWatch listener) {
+    private FileWatcher(String path, int eventMask, IFileWatchListener listener) {
         WATCH_PATH = path;
         EVENT_MASK = eventMask & FileObserver.ALL_EVENTS;
         mListener = listener;
@@ -155,7 +155,7 @@ public class FileWatchBus implements IFileWatchBus, IFileWatch {
     }
 
     @Override
-    public final void onEvent(int event, String fullPath) {
+    public final void onEvent(int event, String parentPath, String fullPath) {
         switch (event) {
             case FileObserver.CREATE:
             case FileObserver.MOVED_TO:
@@ -169,7 +169,7 @@ public class FileWatchBus implements IFileWatchBus, IFileWatch {
                 break;
         }
         if (mListener != null && event > 0) {
-            mListener.onEvent(event, fullPath);
+            mListener.onEvent(event, parentPath, fullPath);
         }
     }
 
@@ -182,7 +182,7 @@ public class FileWatchBus implements IFileWatchBus, IFileWatch {
 
         private String mWatchPath = DEFAULT_WATCH_PATH;
         private int mEventMask = DEFAULT_WATCH_EVENT;
-        private IFileWatch mListener;
+        private IFileWatchListener mListener;
 
 
         public Builder path(String path) {
@@ -195,14 +195,14 @@ public class FileWatchBus implements IFileWatchBus, IFileWatch {
             return this;
         }
 
-        public Builder listener(IFileWatch listener) {
+        public Builder listener(IFileWatchListener listener) {
             mListener = listener;
             return this;
         }
 
-        public FileWatchBus build() {
+        public FileWatcher build() {
             try {
-                return new FileWatchBus(mWatchPath, mEventMask, mListener);
+                return new FileWatcher(mWatchPath, mEventMask, mListener);
             } finally {
                 mListener = null;
             }

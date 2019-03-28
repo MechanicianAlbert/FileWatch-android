@@ -3,11 +3,9 @@ package com.albertech.filewatch.api;
 import android.content.Context;
 import android.os.FileObserver;
 
-import com.albertech.filewatch.content.query.FileQueryer;
-import com.albertech.filewatch.content.scan.FileScanner;
-import com.albertech.filewatch.api.service.FileWatchServiceConnection;
-
-
+import com.albertech.filewatch.core.query.FileQueryer;
+import com.albertech.filewatch.core.query.IFileQuery;
+import com.albertech.filewatch.core.dispatch.FileWatchServiceConnection;
 
 
 public class FileHelper {
@@ -18,15 +16,15 @@ public class FileHelper {
 
 
     public static IFileWatchUnsubscribe subscribeFileWatch(Context context, IFileWatchSubscriber subscriber, String path) {
-        return new FileWatchServiceConnection(context, subscriber, path);
+        return subscribeFileWatch(context, subscriber, IFileQuery.FILE, path);
+    }
+
+    public static IFileWatchUnsubscribe subscribeFileWatch(Context context, IFileWatchSubscriber subscriber, int type, String path) {
+        return new FileWatchServiceConnection(context, subscriber, type, path);
     }
 
     public static IFileQuery createDefaultFileQuery(Context context) {
         return new FileQueryer(context);
-    }
-
-    public static IFileScan createDefaultFileScanner(Context context) {
-        return new FileScanner(context);
     }
 
     public static String fileOperationName(int event) {
