@@ -3,15 +3,16 @@ package com.albertech.filewatch.api;
 import android.content.Context;
 import android.os.FileObserver;
 
-import com.albertech.filewatch.service.FileWatchServiceConnection;
+import com.albertech.filewatch.content.query.FileQueryer;
+import com.albertech.filewatch.content.scan.FileScanner;
+import com.albertech.filewatch.api.service.FileWatchServiceConnection;
 
 
 
 
-public class FileWatch {
+public class FileHelper {
 
-
-    private FileWatch() {
+    private FileHelper() {
         throw new RuntimeException("This class cannot be instantiated");
     }
 
@@ -20,8 +21,16 @@ public class FileWatch {
         return new FileWatchServiceConnection(context, subscriber, path);
     }
 
-    public static String name(int event) {
-        String name;
+    public static IFileQuery createDefaultFileQuery(Context context) {
+        return new FileQueryer(context);
+    }
+
+    public static IFileScan createDefaultFileScanner(Context context) {
+        return new FileScanner(context);
+    }
+
+    public static String fileOperationName(int event) {
+        String name = "其他";
         event &= FileObserver.ALL_EVENTS;
         switch (event) {
             case FileObserver.ACCESS:
@@ -60,8 +69,33 @@ public class FileWatch {
             case FileObserver.MOVE_SELF:
                 name = "自移动";
                 break;
-            default:
-                name = "其它";
+        }
+        return name;
+    }
+
+    public static String fileTypeName(int type) {
+        String name = "未知";
+        switch (type) {
+            case IFileQuery.IMAGE:
+                name = "图片";
+                break;
+            case IFileQuery.AUDIO:
+                name = "音频";
+                break;
+            case IFileQuery.VIDEO:
+                name = "视频";
+                break;
+            case IFileQuery.DOC:
+                name = "文档";
+                break;
+            case IFileQuery.ZIP:
+                name = "压缩";
+                break;
+            case IFileQuery.APK:
+                name = "安装";
+                break;
+            case IFileQuery.FILE:
+                name = "文件";
                 break;
         }
         return name;

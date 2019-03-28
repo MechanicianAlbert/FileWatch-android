@@ -1,4 +1,4 @@
-package com.albertech.filewatch.service;
+package com.albertech.filewatch.api.service;
 
 import android.app.Service;
 import android.content.Intent;

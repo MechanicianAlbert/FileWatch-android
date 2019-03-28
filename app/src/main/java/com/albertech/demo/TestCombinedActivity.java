@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RadioGroup;
 
-
 import com.albertech.filewatch.api.FileHelper;
 import com.albertech.filewatch.api.IFileQuery;
 import com.albertech.filewatch.api.IFileScan;
@@ -22,9 +21,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-public class MainActivity extends AppCompatActivity {
+public class TestCombinedActivity extends AppCompatActivity {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = TestCombinedActivity.class.getSimpleName();
 
 
     private final String[] PERMISSIONS = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -43,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onEvent(int event, String path) {
             Log.e(TAG, FileHelper.fileOperationName(event) + ": " + path);
+            mScanner.scan(path);
         }
     };
 
