@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.RadioGroup;
 
 
+import com.albertech.demo.func.front.FrontActivity;
 import com.albertech.filewatch.api.FileHelper;
 import com.albertech.filewatch.core.query.IFileQuery;
 import com.albertech.filewatch.api.IFileWatchSubscriber;
@@ -20,9 +21,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-public class MainActivity extends AppCompatActivity {
+public class Main1Activity extends AppCompatActivity {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = Main1Activity.class.getSimpleName();
 
 
     private final String[] PERMISSIONS = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -63,7 +64,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        FrontActivity.start(getApplicationContext());
+        finish();
+
+        setContentView(R.layout.activity_main1);
 
         ActivityCompat.requestPermissions(this, PERMISSIONS, 0);
 

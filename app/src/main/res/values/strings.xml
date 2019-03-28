@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">FileWatchDemo</string>
+
+    <string name="str_title_category">分类</string>
+    <string name="str_title_hierarchy">路径</string>
+
+    <string name="str_category_image">图片</string>
+    <string name="str_category_audio">音乐</string>
+    <string name="str_category_video">视频</string>
+    <string name="str_category_doc">文档</string>
+    <string name="str_category_apk">安装包</string>
+    <string name="str_category_zip">压缩包</string>
+    <string name="str_category_download">下载</string>
 </resources>
