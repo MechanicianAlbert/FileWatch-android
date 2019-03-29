@@ -54,10 +54,10 @@ public abstract class AbsCursorFactory implements ICursorFactory {
 
         if (templateAvailable) {
             if (recursive) {
-                b.append(MediaStore.Files.FileColumns.DATA).append(" LIKE ? AND ");
+                b.append(MediaStore.Files.FileColumns.DATA).append(" LIKE ? AND (");
             } else {
                 b.append(MediaStore.Files.FileColumns.DATA).append(" LIKE ? AND ");
-                b.append(MediaStore.Files.FileColumns.DATA).append(" NOT LIKE ? AND ");
+                b.append(MediaStore.Files.FileColumns.DATA).append(" NOT LIKE ? AND (");
             }
         } else {
             if (recursive) {
@@ -72,7 +72,7 @@ public abstract class AbsCursorFactory implements ICursorFactory {
             for (int i = 0; i < template.length - 1; i++) {
                 b.append(MediaStore.Files.FileColumns.DATA).append(" LIKE ? OR ");
             }
-            b.append(MediaStore.Files.FileColumns.DATA).append(" LIKE ? ");
+            b.append(MediaStore.Files.FileColumns.DATA).append(" LIKE ? )");
         }
 
         String selection = b.toString();

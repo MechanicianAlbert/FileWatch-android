@@ -56,7 +56,7 @@ public class CategoryFragment extends TitleFragment {
             @Override
             public void onClick(View v) {
                 String path = FileQueryHelper.SD_CARD + File.separator + "AAA";
-                FileQueryHelper.getInstance().rDoc(path, new QueryCallback() {
+                FileQueryHelper.getInstance().dDoc(path, new QueryCallback() {
                     @Override
                     public void onResult(String path, List<String> list) {
                         Log.e("AAA", "Parent: " + path);
