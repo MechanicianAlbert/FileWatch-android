@@ -1,4 +1,4 @@
-package com.albertech.demo.func.front;
+package com.albertech.demo.home;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,12 +11,12 @@ import com.albertech.demo.func.category.CategoryFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FrontPagerAdapter extends FragmentPagerAdapter {
+public class HomePagerAdapter extends FragmentPagerAdapter {
 
     private final List<TitleFragment> FRAGMENTS = new ArrayList<>();
 
 
-    public FrontPagerAdapter(FragmentManager fm) {
+    public HomePagerAdapter(FragmentManager fm) {
         super(fm);
         FRAGMENTS.add(CategoryFragment.newInstance());
         FRAGMENTS.add(CategoryFragment.newInstance());

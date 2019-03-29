@@ -6,13 +6,20 @@ import android.util.SparseArray;
 
 
 import com.albertech.filewatch.core.query.cursor.ICursorFactory;
-import com.albertech.filewatch.core.query.cursor.impl.ApkCursorFactory;
-import com.albertech.filewatch.core.query.cursor.impl.AudioCursorFactory;
-import com.albertech.filewatch.core.query.cursor.impl.DocCursorFactory;
-import com.albertech.filewatch.core.query.cursor.impl.FileCursorFactory;
-import com.albertech.filewatch.core.query.cursor.impl.ImageCursorFactory;
-import com.albertech.filewatch.core.query.cursor.impl.VideoCursorFactory;
-import com.albertech.filewatch.core.query.cursor.impl.ZipCursorFactory;
+import com.albertech.filewatch.core.query.cursor.impl.direct.DApkCursorFactory;
+import com.albertech.filewatch.core.query.cursor.impl.direct.DAudioCursorFactory;
+import com.albertech.filewatch.core.query.cursor.impl.direct.DDocCursorFactory;
+import com.albertech.filewatch.core.query.cursor.impl.direct.DFileCursorFactory;
+import com.albertech.filewatch.core.query.cursor.impl.direct.DImageCursorFactory;
+import com.albertech.filewatch.core.query.cursor.impl.direct.DVideoCursorFactory;
+import com.albertech.filewatch.core.query.cursor.impl.direct.DZipCursorFactory;
+import com.albertech.filewatch.core.query.cursor.impl.recursive.RApkCursorFactory;
+import com.albertech.filewatch.core.query.cursor.impl.recursive.RAudioCursorFactory;
+import com.albertech.filewatch.core.query.cursor.impl.recursive.RDocCursorFactory;
+import com.albertech.filewatch.core.query.cursor.impl.recursive.RFileCursorFactory;
+import com.albertech.filewatch.core.query.cursor.impl.recursive.RImageCursorFactory;
+import com.albertech.filewatch.core.query.cursor.impl.recursive.RVideoCursorFactory;
+import com.albertech.filewatch.core.query.cursor.impl.recursive.RZipCursorFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -31,16 +38,16 @@ public class FileQueryer implements IFileQuery {
         private String mPath;
         private IFileQureyListener mListener;
 
-        QueryTask(Context context, int type, String path, IFileQureyListener listener) {
+        QueryTask(Context context, int type, String path, boolean recursive, IFileQureyListener listener) {
             mContext = context;
-            mType = type;
+            mType = recursive ? -type : type;
             mPath = path;
             mListener = listener;
         }
 
         @Override
         public void run() {
-            List<String> list= new ArrayList<>();
+            List<String> list = new ArrayList<>();
             ICursorFactory factory = CURSOR_FACTORIES.get(mType);
             if (factory != null) {
                 Cursor cursor = factory.createCursor(mContext, mPath);
@@ -75,13 +82,21 @@ public class FileQueryer implements IFileQuery {
 
 
     private void initCursorFactories() {
-        CURSOR_FACTORIES.put(FILE, new FileCursorFactory());
-        CURSOR_FACTORIES.put(IMAGE, new ImageCursorFactory());
-        CURSOR_FACTORIES.put(AUDIO, new AudioCursorFactory());
-        CURSOR_FACTORIES.put(VIDEO, new VideoCursorFactory());
-        CURSOR_FACTORIES.put(DOC, new DocCursorFactory());
-        CURSOR_FACTORIES.put(ZIP, new ZipCursorFactory());
-        CURSOR_FACTORIES.put(APK, new ApkCursorFactory());
+        CURSOR_FACTORIES.put(IMAGE, new DImageCursorFactory());
+        CURSOR_FACTORIES.put(AUDIO, new DAudioCursorFactory());
+        CURSOR_FACTORIES.put(VIDEO, new DVideoCursorFactory());
+        CURSOR_FACTORIES.put(DOC, new DDocCursorFactory());
+        CURSOR_FACTORIES.put(ZIP, new DZipCursorFactory());
+        CURSOR_FACTORIES.put(APK, new DApkCursorFactory());
+        CURSOR_FACTORIES.put(FILE, new DFileCursorFactory());
+
+        CURSOR_FACTORIES.put(-IMAGE, new RImageCursorFactory());
+        CURSOR_FACTORIES.put(-AUDIO, new RAudioCursorFactory());
+        CURSOR_FACTORIES.put(-VIDEO, new RVideoCursorFactory());
+        CURSOR_FACTORIES.put(-DOC, new RDocCursorFactory());
+        CURSOR_FACTORIES.put(-ZIP, new RZipCursorFactory());
+        CURSOR_FACTORIES.put(-APK, new RApkCursorFactory());
+        CURSOR_FACTORIES.put(-FILE, new RFileCursorFactory());
     }
 
     private static void close(Closeable... closeables) {
@@ -101,7 +116,12 @@ public class FileQueryer implements IFileQuery {
 
     @Override
     public void queryFileByTypeAndPath(int type, String path, IFileQureyListener listener) {
-        EXECUTOR.execute(new QueryTask(mContext, type, path, listener));
+        queryFileByTypeAndPath(type, path, false, listener);
+    }
+
+    @Override
+    public void queryFileByTypeAndPath(int type, String path, boolean recursive, IFileQureyListener listener) {
+        EXECUTOR.execute(new QueryTask(mContext, type, path, recursive, listener));
     }
 
 }

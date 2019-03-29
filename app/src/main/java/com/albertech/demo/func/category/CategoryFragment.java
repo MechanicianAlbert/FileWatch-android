@@ -3,15 +3,24 @@ package com.albertech.demo.func.category;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import com.albertech.demo.R;
 import com.albertech.demo.base.fragment.TitleFragment;
+import com.albertech.demo.util.Res;
+import com.albertech.demo.util.query.FileQueryHelper;
+import com.albertech.demo.util.query.QueryCallback;
 
+import java.io.File;
+import java.util.List;
 
 
 public class CategoryFragment extends TitleFragment {
+
+    private final CategoryAdapter ADAPTER = new CategoryAdapter();
+
 
     private EditText mEtSearch;
     private View mBtnSearch;
@@ -25,7 +34,7 @@ public class CategoryFragment extends TitleFragment {
 
     @Override
     public String getTitle() {
-        return "分类";
+        return Res.string(R.string.str_title_category);
     }
 
     @Override
@@ -42,8 +51,32 @@ public class CategoryFragment extends TitleFragment {
     }
 
     @Override
+    protected void initListener() {
+        mBtnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String path = FileQueryHelper.SD_CARD + File.separator + "AAA";
+                FileQueryHelper.getInstance().rDoc(path, new QueryCallback() {
+                    @Override
+                    public void onResult(String path, List<String> list) {
+                        Log.e("AAA", "Parent: " + path);
+                        print(list);
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
     protected void initData() {
-        CategoryAdapter adapter = new CategoryAdapter(getContext());
-        mRvCategory.setAdapter(adapter);
+        mRvCategory.setAdapter(ADAPTER);
+    }
+
+    private void print(List<String> list) {
+        if (list != null && list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                Log.e("AAA", "Path: " + list.get(i));
+            }
+        }
     }
 }

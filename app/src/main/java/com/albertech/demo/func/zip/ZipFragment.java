@@ -1,4 +1,4 @@
-package com.albertech.demo.func.hierarchy;
+package com.albertech.demo.func.zip;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +9,7 @@ import com.albertech.demo.R;
 import com.albertech.demo.base.fragment.TitleFragment;
 import com.albertech.demo.util.Res;
 
-public class HierarchyFragment extends TitleFragment {
+public class ZipFragment extends TitleFragment {
 
 
 

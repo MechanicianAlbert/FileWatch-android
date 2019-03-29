@@ -15,10 +15,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <View
+        <ImageView
             android:id="@+id/btn_hierarchy_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="@dimen/btn_search_size"
+            android:layout_height="@dimen/btn_search_size" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

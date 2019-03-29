@@ -16,12 +16,17 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void init() {
         initArgs(getIntent());
+        initPermission();
         initView();
         initListener();
         initData();
     }
 
     protected void initArgs(Intent intent) {
+
+    }
+
+    protected void initPermission() {
 
     }
 

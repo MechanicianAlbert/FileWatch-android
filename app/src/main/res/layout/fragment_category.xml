@@ -18,8 +18,8 @@
         <ImageView
             android:background="@drawable/ic_launcher"
             android:id="@+id/btn_category_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="@dimen/btn_search_size"
+            android:layout_height="@dimen/btn_search_size" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

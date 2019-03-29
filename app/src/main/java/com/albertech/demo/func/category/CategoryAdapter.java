@@ -1,6 +1,5 @@
 package com.albertech.demo.func.category;
 
-import android.content.Context;
 import android.view.View;
 
 import com.albertech.demo.R;
@@ -11,8 +10,8 @@ import com.albertech.demo.base.recycler.BaseRecyclerAdapter;
 
 public class CategoryAdapter extends BaseRecyclerAdapter<CategoryBean> {
 
-    CategoryAdapter(Context context) {
-        updateData(new ICategoryContract.CategoryModel(context).CATEGORIES);
+    CategoryAdapter() {
+        updateData(new ICategoryContract.CategoryModel().CATEGORIES);
     }
 
 
