@@ -7,6 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <EditText
@@ -18,7 +19,8 @@
         <ImageView
             android:id="@+id/btn_hierarchy_search"
             android:layout_width="@dimen/btn_search_size"
-            android:layout_height="@dimen/btn_search_size" />
+            android:layout_height="@dimen/btn_search_size"
+            android:background="@drawable/ic_operate_search" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
