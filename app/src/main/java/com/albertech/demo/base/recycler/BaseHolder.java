@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
-
+import android.widget.TextView;
 
 
 public class BaseHolder<Adapter extends BaseRecyclerAdapter<Bean>, Bean> extends RecyclerView.ViewHolder
@@ -44,7 +44,14 @@ public class BaseHolder<Adapter extends BaseRecyclerAdapter<Bean>, Bean> extends
         return mItemView;
     }
 
-    private final Bean getItem(int position) {
+    protected final void setText(int id, String text) {
+        TextView tv = $(id);
+        if (tv != null) {
+            tv.setText(text);
+        }
+    }
+
+    protected final Bean getItem(int position) {
         return mAdapter.getItem(position);
     }
 

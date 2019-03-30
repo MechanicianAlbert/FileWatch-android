@@ -1,5 +1,6 @@
 package com.albertech.demo.func.hierarchy;
 
+import android.os.Environment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -7,15 +8,45 @@ import android.widget.EditText;
 
 import com.albertech.demo.R;
 import com.albertech.demo.base.fragment.TitleFragment;
+import com.albertech.demo.crud.query.QueryCallback;
+import com.albertech.demo.crud.query.QueryHelper;
+import com.albertech.demo.crud.query.hierarchy.HierarchyBean;
+import com.albertech.demo.func.category.CategoryFragment;
+import com.albertech.demo.func.hierarchy.adapter.HierarchyAdapter;
 import com.albertech.demo.util.Res;
+
+import java.util.List;
+import java.util.Stack;
+
 
 public class HierarchyFragment extends TitleFragment {
 
+    private final HierarchyAdapter ADAPTER = new HierarchyAdapter() {
+        @Override
+        public boolean onItemClick(int position, HierarchyBean hierarchyBean) {
+            if (hierarchyBean.isDirectory()) {
+                String path = hierarchyBean.path;
+                changePath(path);
+                mHierarchyStack.push(path);
+            }
+            return false;
+        }
+    };
+    private final String SD_CARD_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
+    private final Stack<String> mHierarchyStack = new Stack<>();
 
 
     private EditText mEtSearch;
     private View mBtnSearch;
     private RecyclerView mRvHierarchy;
+
+
+
+    public static HierarchyFragment newInstance() {
+        HierarchyFragment instance = new HierarchyFragment();
+        return instance;
+    }
+
 
     @Override
     public String getTitle() {
@@ -37,6 +68,33 @@ public class HierarchyFragment extends TitleFragment {
 
     @Override
     protected void initData() {
-//        mRvHierarchy.setAdapter();
+        mRvHierarchy.setAdapter(ADAPTER);
+        mHierarchyStack.push(SD_CARD_PATH);
+        changePath(SD_CARD_PATH);
+    }
+
+    public void backToParent() {
+        if (!mHierarchyStack.isEmpty()) {
+            String parent = mHierarchyStack.pop();
+            changePath(parent);
+            if (mHierarchyStack.isEmpty()) {
+                mHierarchyStack.push(SD_CARD_PATH);
+            }
+        }
+    }
+
+
+    private void changePath(String path) {
+        QueryHelper.getInstance().dFile(getContext(), path, new QueryCallback<HierarchyBean>() {
+            @Override
+            public void onResult(String path, final List<HierarchyBean> list) {
+                mRvHierarchy.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ADAPTER.updateData(list);
+                    }
+                });
+            }
+        });
     }
 }

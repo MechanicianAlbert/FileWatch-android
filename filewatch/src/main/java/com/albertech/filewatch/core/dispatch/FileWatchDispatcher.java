@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Binder;
 import android.os.Environment;
 import android.os.FileObserver;
+import android.text.TextUtils;
 
 import com.albertech.filewatch.api.IFileWatchSubscriber;
 import com.albertech.filewatch.core.query.FileQueryer;
@@ -69,6 +70,7 @@ public class FileWatchDispatcher extends Binder implements IFileWatchDispatch,
 
     @Override
     public void subscribeFileWatch(IFileWatchSubscriber subscriber, int type, String path) {
+        path = !TextUtils.isEmpty(path) ? path : WATCH_ROOT_PATH;
         SUBSCRIBED_PATH.put(subscriber, path);
         SUBSCRIBED_TYPE.put(subscriber, type);
     }

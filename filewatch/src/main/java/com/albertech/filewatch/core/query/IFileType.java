@@ -2,6 +2,7 @@ package com.albertech.filewatch.core.query;
 
 public interface IFileType {
 
+    int DIRECTORY = 0;
     int IMAGE = 1;
     int AUDIO = 2;
     int VIDEO = 3;

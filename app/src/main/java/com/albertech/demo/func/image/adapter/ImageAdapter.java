@@ -13,7 +13,7 @@ public class ImageAdapter extends BaseRecyclerAdapter<ImageBean> {
 
     @Override
     public int getItemViewType(int position) {
-        return R.layout.item_image_grid;
+        return R.layout.item_image;
     }
 
     @Override

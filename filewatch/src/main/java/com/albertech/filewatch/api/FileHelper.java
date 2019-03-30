@@ -95,6 +95,9 @@ public class FileHelper {
             case IFileQuery.FILE:
                 name = "文件";
                 break;
+            case IFileQuery.DIRECTORY:
+                name = "目录";
+                break;
         }
         return name;
     }

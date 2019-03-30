@@ -20,6 +20,11 @@ public abstract class BaseFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        release();
+    }
 
     protected void initView(View root) {
 
@@ -30,6 +35,10 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected void initData() {
+
+    }
+
+    protected void release() {
 
     }
 

@@ -1,17 +1,16 @@
-package com.albertech.demo.func.image;
+package com.albertech.demo.func.video;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.EditText;
 
 import com.albertech.demo.R;
 import com.albertech.demo.base.fragment.TitleFragment;
 import com.albertech.demo.crud.query.QueryCallback;
 import com.albertech.demo.crud.query.QueryHelper;
-import com.albertech.demo.crud.query.image.ImageBean;
-import com.albertech.demo.func.image.adapter.ImageAdapter;
+import com.albertech.demo.crud.query.video.VideoBean;
+import com.albertech.demo.func.video.adapter.VideoAdapter;
 import com.albertech.demo.util.Res;
 import com.albertech.filewatch.api.FileHelper;
 import com.albertech.filewatch.api.IFileWatchSubscriber;
@@ -21,40 +20,40 @@ import com.albertech.filewatch.core.query.IFileType;
 import java.util.List;
 
 
-public class ImageFragment extends TitleFragment {
+public class VideoFragment extends TitleFragment {
 
-    private final ImageAdapter ADAPTER = new ImageAdapter() {
+    private final VideoAdapter ADAPTER = new VideoAdapter() {
         @Override
-        public boolean onItemClick(int position, ImageBean imageBean) {
+        public boolean onItemClick(int position, VideoBean videoBean) {
             return false;
         }
     };
 
 
-    private RecyclerView mRvImage;
+    private RecyclerView mRvVideo;
     private IFileWatchUnsubscribe mUnsunscribe;
 
 
     @Override
     public String getTitle() {
-        return Res.string(R.string.str_category_image);
+        return Res.string(R.string.str_category_video);
     }
 
     @Override
     protected int layoutRese() {
-        return R.layout.fragment_image;
+        return R.layout.fragment_video;
     }
 
     @Override
     protected void initView(View root) {
-        mRvImage = root.findViewById(R.id.rv_image);
-        mRvImage.setLayoutManager(new GridLayoutManager(getContext(), 3, LinearLayoutManager.VERTICAL, false));
+        mRvVideo = root.findViewById(R.id.rv_video);
+        mRvVideo.setLayoutManager(new GridLayoutManager(getContext(), 2, LinearLayoutManager.VERTICAL, false));
     }
 
     @Override
     protected void initData() {
-        mRvImage.setAdapter(ADAPTER);
-        subscribeFileWatch();
+        mRvVideo.setAdapter(ADAPTER);
+//        subscribeFileWatch();
         update();
     }
 
@@ -89,10 +88,10 @@ public class ImageFragment extends TitleFragment {
     }
 
     private void update() {
-        QueryHelper.getInstance().rImage(getContext(), null, new QueryCallback<ImageBean>() {
+        QueryHelper.getInstance().rVideo(getContext(), null, new QueryCallback<VideoBean>() {
             @Override
-            public void onResult(String path, final List<ImageBean> list) {
-                mRvImage.post(new Runnable() {
+            public void onResult(String path, final List<VideoBean> list) {
+                mRvVideo.post(new Runnable() {
                     @Override
                     public void run() {
                         ADAPTER.updateData(list);

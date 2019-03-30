@@ -23,7 +23,7 @@ public class ImageHolder extends BaseHolder<BaseRecyclerAdapter<ImageBean>, Imag
 
     @Override
     protected void onBind(int position, ImageBean imageBean) {
-        ImageView iv = $(R.id.iv_item_image_grid);
+        ImageView iv = $(R.id.iv_item_image);
         Glide.with(getContext())
                 .load(Uri.fromFile(new File(imageBean.path)))
                 .into(iv);

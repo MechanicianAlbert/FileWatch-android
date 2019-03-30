@@ -1,22 +1,18 @@
-package com.albertech.demo.func.hierarchy;
+package com.albertech.demo.func.hierarchy.adapter;
 
 import android.view.View;
 
 import com.albertech.demo.R;
 import com.albertech.demo.base.recycler.BaseHolder;
 import com.albertech.demo.base.recycler.BaseRecyclerAdapter;
+import com.albertech.demo.crud.query.hierarchy.HierarchyBean;
 
 
 public class HierarchyAdapter extends BaseRecyclerAdapter<HierarchyBean> {
 
-    HierarchyAdapter() {
-
-    }
-
-
     @Override
     public int getItemViewType(int position) {
-        return R.layout.item_category;
+        return R.layout.item_hierarcy;
     }
 
     @Override

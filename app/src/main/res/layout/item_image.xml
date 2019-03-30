@@ -6,8 +6,8 @@
     android:orientation="vertical">
 
     <ImageView
-        android:scaleType="fitXY"
-        android:id="@+id/iv_item_image_grid"
+        android:id="@+id/iv_item_image"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/iv_image_grid_height" />
+        android:layout_height="@dimen/iv_image_height"
+        android:scaleType="fitXY" />
 </LinearLayout>

@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.albertech.demo.base.fragment.TitleFragment;
 import com.albertech.demo.func.category.CategoryFragment;
+import com.albertech.demo.func.hierarchy.HierarchyFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +17,15 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     private final List<TitleFragment> FRAGMENTS = new ArrayList<>();
 
 
-    public HomePagerAdapter(FragmentManager fm) {
+    HomePagerAdapter(FragmentManager fm) {
         super(fm);
-        FRAGMENTS.add(CategoryFragment.newInstance());
-        FRAGMENTS.add(CategoryFragment.newInstance());
     }
+
+    void addFragment(TitleFragment fragment) {
+        FRAGMENTS.add(fragment);
+//        notifyDataSetChanged();
+    }
+
 
     @Nullable
     @Override
