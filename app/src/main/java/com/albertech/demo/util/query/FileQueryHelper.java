@@ -1,8 +1,11 @@
 package com.albertech.demo.util.query;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.os.Environment;
+import android.provider.MediaStore;
 
-import com.albertech.demo.util.Res;
+import com.albertech.demo.bean.BaseFileBean;
 import com.albertech.filewatch.api.FileHelper;
 import com.albertech.filewatch.core.query.IFileQuery;
 import com.albertech.filewatch.core.query.IFileQureyListener;
@@ -33,15 +36,23 @@ public class FileQueryHelper {
 
 
     private void init() {
-        mQueryer = FileHelper.createDefaultFileQuery(Res.context());
+        mQueryer = FileHelper.createDefaultFileQuery();
     }
 
 
-    public void dImage(String path, final QueryCallback callback) {
+    public void dImage(Context context, String path, final QueryCallback<BaseFileBean> callback) {
         if (mQueryer != null) {
-            mQueryer.queryFileByTypeAndPath(mQueryer.IMAGE, path, new IFileQureyListener() {
+            mQueryer.queryFileByTypeAndPath(context, mQueryer.IMAGE, path, new IFileQureyListener<BaseFileBean>() {
+
                 @Override
-                public void onQueryResult(String path, List<String> list) {
+                public BaseFileBean transfer(Cursor cursor) {
+                    BaseFileBean bean = new BaseFileBean();
+                    bean.path = cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA));
+                    return bean;
+                }
+
+                @Override
+                public void onQueryResult(String path, List<BaseFileBean> list) {
                     if (callback != null) {
                         callback.onResult(path, list);
                     }
@@ -50,11 +61,19 @@ public class FileQueryHelper {
         }
     }
 
-    public void dAudio(String path, final QueryCallback callback) {
+    public void dAudio(Context context, String path, final QueryCallback callback) {
         if (mQueryer != null) {
-            mQueryer.queryFileByTypeAndPath(mQueryer.AUDIO, path, new IFileQureyListener() {
+            mQueryer.queryFileByTypeAndPath(context, mQueryer.AUDIO, path, new IFileQureyListener<BaseFileBean>() {
+
                 @Override
-                public void onQueryResult(String path, List<String> list) {
+                public BaseFileBean transfer(Cursor cursor) {
+                    BaseFileBean bean = new BaseFileBean();
+                    bean.path = cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA));
+                    return bean;
+                }
+
+                @Override
+                public void onQueryResult(String path, List<BaseFileBean> list) {
                     if (callback != null) {
                         callback.onResult(path, list);
                     }
@@ -63,11 +82,19 @@ public class FileQueryHelper {
         }
     }
 
-    public void dVideo(String path, final QueryCallback callback) {
+    public void dVideo(Context context, String path, final QueryCallback callback) {
         if (mQueryer != null) {
-            mQueryer.queryFileByTypeAndPath(mQueryer.VIDEO, path, new IFileQureyListener() {
+            mQueryer.queryFileByTypeAndPath(context, mQueryer.VIDEO, path, new IFileQureyListener<BaseFileBean>() {
+
                 @Override
-                public void onQueryResult(String path, List<String> list) {
+                public BaseFileBean transfer(Cursor cursor) {
+                    BaseFileBean bean = new BaseFileBean();
+                    bean.path = cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA));
+                    return bean;
+                }
+
+                @Override
+                public void onQueryResult(String path, List<BaseFileBean> list) {
                     if (callback != null) {
                         callback.onResult(path, list);
                     }
@@ -76,11 +103,19 @@ public class FileQueryHelper {
         }
     }
 
-    public void dDoc(String path, final QueryCallback callback) {
+    public void dDoc(Context context, String path, final QueryCallback callback) {
         if (mQueryer != null) {
-            mQueryer.queryFileByTypeAndPath(mQueryer.DOC, path, new IFileQureyListener() {
+            mQueryer.queryFileByTypeAndPath(context, mQueryer.DOC, path, new IFileQureyListener<BaseFileBean>() {
+
                 @Override
-                public void onQueryResult(String path, List<String> list) {
+                public BaseFileBean transfer(Cursor cursor) {
+                    BaseFileBean bean = new BaseFileBean();
+                    bean.path = cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA));
+                    return bean;
+                }
+
+                @Override
+                public void onQueryResult(String path, List<BaseFileBean> list) {
                     if (callback != null) {
                         callback.onResult(path, list);
                     }
@@ -89,11 +124,19 @@ public class FileQueryHelper {
         }
     }
 
-    public void dZip(String path, final QueryCallback callback) {
+    public void dZip(Context context, String path, final QueryCallback callback) {
         if (mQueryer != null) {
-            mQueryer.queryFileByTypeAndPath(mQueryer.ZIP, path, new IFileQureyListener() {
+            mQueryer.queryFileByTypeAndPath(context, mQueryer.ZIP, path, new IFileQureyListener<BaseFileBean>() {
+
                 @Override
-                public void onQueryResult(String path, List<String> list) {
+                public BaseFileBean transfer(Cursor cursor) {
+                    BaseFileBean bean = new BaseFileBean();
+                    bean.path = cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA));
+                    return bean;
+                }
+
+                @Override
+                public void onQueryResult(String path, List<BaseFileBean> list) {
                     if (callback != null) {
                         callback.onResult(path, list);
                     }
@@ -102,11 +145,19 @@ public class FileQueryHelper {
         }
     }
 
-    public void dApk(String path, final QueryCallback callback) {
+    public void dApk(Context context, String path, final QueryCallback callback) {
         if (mQueryer != null) {
-            mQueryer.queryFileByTypeAndPath(mQueryer.APK, path, new IFileQureyListener() {
+            mQueryer.queryFileByTypeAndPath(context, mQueryer.APK, path, new IFileQureyListener<BaseFileBean>() {
+
                 @Override
-                public void onQueryResult(String path, List<String> list) {
+                public BaseFileBean transfer(Cursor cursor) {
+                    BaseFileBean bean = new BaseFileBean();
+                    bean.path = cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA));
+                    return bean;
+                }
+
+                @Override
+                public void onQueryResult(String path, List<BaseFileBean> list) {
                     if (callback != null) {
                         callback.onResult(path, list);
                     }
@@ -115,11 +166,19 @@ public class FileQueryHelper {
         }
     }
 
-    public void dFile(String path, final QueryCallback callback) {
+    public void dFile(Context context, String path, final QueryCallback callback) {
         if (mQueryer != null) {
-            mQueryer.queryFileByTypeAndPath(mQueryer.FILE, path, new IFileQureyListener() {
+            mQueryer.queryFileByTypeAndPath(context, mQueryer.FILE, path, new IFileQureyListener<BaseFileBean>() {
+
                 @Override
-                public void onQueryResult(String path, List<String> list) {
+                public BaseFileBean transfer(Cursor cursor) {
+                    BaseFileBean bean = new BaseFileBean();
+                    bean.path = cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA));
+                    return bean;
+                }
+
+                @Override
+                public void onQueryResult(String path, List<BaseFileBean> list) {
                     if (callback != null) {
                         callback.onResult(path, list);
                     }
@@ -128,11 +187,19 @@ public class FileQueryHelper {
         }
     }
 
-    public void rImage(String path, final QueryCallback callback) {
+    public void rImage(Context context, String path, final QueryCallback callback) {
         if (mQueryer != null) {
-            mQueryer.queryFileByTypeAndPath(mQueryer.IMAGE, path, true, new IFileQureyListener() {
+            mQueryer.queryFileByTypeAndPath(context, mQueryer.IMAGE, path, true, new IFileQureyListener<BaseFileBean>() {
+
                 @Override
-                public void onQueryResult(String path, List<String> list) {
+                public BaseFileBean transfer(Cursor cursor) {
+                    BaseFileBean bean = new BaseFileBean();
+                    bean.path = cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA));
+                    return bean;
+                }
+
+                @Override
+                public void onQueryResult(String path, List<BaseFileBean> list) {
                     if (callback != null) {
                         callback.onResult(path, list);
                     }
@@ -141,11 +208,19 @@ public class FileQueryHelper {
         }
     }
 
-    public void rAudio(String path, final QueryCallback callback) {
+    public void rAudio(Context context, String path, final QueryCallback callback) {
         if (mQueryer != null) {
-            mQueryer.queryFileByTypeAndPath(mQueryer.AUDIO, path, true, new IFileQureyListener() {
+            mQueryer.queryFileByTypeAndPath(context, mQueryer.AUDIO, path, true, new IFileQureyListener<BaseFileBean>() {
+
                 @Override
-                public void onQueryResult(String path, List<String> list) {
+                public BaseFileBean transfer(Cursor cursor) {
+                    BaseFileBean bean = new BaseFileBean();
+                    bean.path = cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA));
+                    return bean;
+                }
+
+                @Override
+                public void onQueryResult(String path, List<BaseFileBean> list) {
                     if (callback != null) {
                         callback.onResult(path, list);
                     }
@@ -154,11 +229,19 @@ public class FileQueryHelper {
         }
     }
 
-    public void rVideo(String path, final QueryCallback callback) {
+    public void rVideo(Context context, String path, final QueryCallback callback) {
         if (mQueryer != null) {
-            mQueryer.queryFileByTypeAndPath(mQueryer.VIDEO, path, true, new IFileQureyListener() {
+            mQueryer.queryFileByTypeAndPath(context, mQueryer.VIDEO, path, true, new IFileQureyListener<BaseFileBean>() {
+
                 @Override
-                public void onQueryResult(String path, List<String> list) {
+                public BaseFileBean transfer(Cursor cursor) {
+                    BaseFileBean bean = new BaseFileBean();
+                    bean.path = cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA));
+                    return bean;
+                }
+
+                @Override
+                public void onQueryResult(String path, List<BaseFileBean> list) {
                     if (callback != null) {
                         callback.onResult(path, list);
                     }
@@ -167,11 +250,19 @@ public class FileQueryHelper {
         }
     }
 
-    public void rDoc(String path, final QueryCallback callback) {
+    public void rDoc(Context context, String path, final QueryCallback callback) {
         if (mQueryer != null) {
-            mQueryer.queryFileByTypeAndPath(mQueryer.DOC, path, true, new IFileQureyListener() {
+            mQueryer.queryFileByTypeAndPath(context, mQueryer.DOC, path, true, new IFileQureyListener<BaseFileBean>() {
+
                 @Override
-                public void onQueryResult(String path, List<String> list) {
+                public BaseFileBean transfer(Cursor cursor) {
+                    BaseFileBean bean = new BaseFileBean();
+                    bean.path = cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA));
+                    return bean;
+                }
+
+                @Override
+                public void onQueryResult(String path, List<BaseFileBean> list) {
                     if (callback != null) {
                         callback.onResult(path, list);
                     }
@@ -180,11 +271,19 @@ public class FileQueryHelper {
         }
     }
 
-    public void rZip(String path, final QueryCallback callback) {
+    public void rZip(Context context, String path, final QueryCallback callback) {
         if (mQueryer != null) {
-            mQueryer.queryFileByTypeAndPath(mQueryer.ZIP, path, true, new IFileQureyListener() {
+            mQueryer.queryFileByTypeAndPath(context, mQueryer.ZIP, path, true, new IFileQureyListener<BaseFileBean>() {
+
                 @Override
-                public void onQueryResult(String path, List<String> list) {
+                public BaseFileBean transfer(Cursor cursor) {
+                    BaseFileBean bean = new BaseFileBean();
+                    bean.path = cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA));
+                    return bean;
+                }
+
+                @Override
+                public void onQueryResult(String path, List<BaseFileBean> list) {
                     if (callback != null) {
                         callback.onResult(path, list);
                     }
@@ -193,11 +292,19 @@ public class FileQueryHelper {
         }
     }
 
-    public void rApk(String path, final QueryCallback callback) {
+    public void rApk(Context context, String path, final QueryCallback callback) {
         if (mQueryer != null) {
-            mQueryer.queryFileByTypeAndPath(mQueryer.APK, path, true, new IFileQureyListener() {
+            mQueryer.queryFileByTypeAndPath(context, mQueryer.APK, path, true, new IFileQureyListener<BaseFileBean>() {
+
                 @Override
-                public void onQueryResult(String path, List<String> list) {
+                public BaseFileBean transfer(Cursor cursor) {
+                    BaseFileBean bean = new BaseFileBean();
+                    bean.path = cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA));
+                    return bean;
+                }
+
+                @Override
+                public void onQueryResult(String path, List<BaseFileBean> list) {
                     if (callback != null) {
                         callback.onResult(path, list);
                     }
@@ -206,11 +313,19 @@ public class FileQueryHelper {
         }
     }
 
-    public void rFile(String path, final QueryCallback callback) {
+    public void rFile(Context context, String path, final QueryCallback callback) {
         if (mQueryer != null) {
-            mQueryer.queryFileByTypeAndPath(mQueryer.FILE, path, true, new IFileQureyListener() {
+            mQueryer.queryFileByTypeAndPath(context, mQueryer.FILE, path, true, new IFileQureyListener<BaseFileBean>() {
+
                 @Override
-                public void onQueryResult(String path, List<String> list) {
+                public BaseFileBean transfer(Cursor cursor) {
+                    BaseFileBean bean = new BaseFileBean();
+                    bean.path = cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA));
+                    return bean;
+                }
+
+                @Override
+                public void onQueryResult(String path, List<BaseFileBean> list) {
                     if (callback != null) {
                         callback.onResult(path, list);
                     }

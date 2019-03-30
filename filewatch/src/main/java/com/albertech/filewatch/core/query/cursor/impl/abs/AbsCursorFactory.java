@@ -4,35 +4,31 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.util.Log;
 
 import com.albertech.filewatch.core.query.cursor.ICursorFactory;
 
 
 public abstract class AbsCursorFactory implements ICursorFactory {
 
-    protected static final String[] DEFAULT_PROJECTION = new String[]{MediaStore.Files.FileColumns.DATA};
-
-
-    public AbsCursorFactory() {
-
-    }
-
 
     @Override
     public Cursor createCursor(Context context, String path) {
         return context.getContentResolver().query(
                 uri(),
-                new String[]{MediaStore.Files.FileColumns.DATA},
-                createSelectionByPath(path),
+                createProjection(),
+                createSelection(),
                 createSelectionArgsByPath(path),
                 null
         );
     }
 
 
-    protected String createSelectionByPath(String path) {
-        return createSelectionByPath(recursive());
+    protected String[] createProjection() {
+        return new String[]{MediaStore.Files.FileColumns.DATA};
+    }
+
+    protected String createSelection() {
+        return createSelection(recursive());
     }
 
     protected String[] createSelectionArgsByPath(String path) {
@@ -47,7 +43,8 @@ public abstract class AbsCursorFactory implements ICursorFactory {
         return null;
     }
 
-    private String createSelectionByPath(boolean recursive) {
+
+    private String createSelection(boolean recursive) {
         StringBuffer b = new StringBuffer("");
         String[] template = selectionArgs();
         boolean templateAvailable = template != null && template.length > 0;
@@ -76,7 +73,6 @@ public abstract class AbsCursorFactory implements ICursorFactory {
         }
 
         String selection = b.toString();
-        Log.e("AAA", selection);
         return selection;
     }
 
@@ -97,9 +93,6 @@ public abstract class AbsCursorFactory implements ICursorFactory {
                 selectionArgs[i + additionalArgCount] = createParentPathConditionArg(path) + templateArgs[i];
             }
         }
-        for (int i = 0; i < selectionArgs.length; i++) {
-            Log.e("AAA", selectionArgs[i]);
-        }
         return selectionArgs;
     }
 
@@ -111,7 +104,6 @@ public abstract class AbsCursorFactory implements ICursorFactory {
         return path + "/%/%";
     }
 
+
     protected abstract Uri uri();
-
-
 }

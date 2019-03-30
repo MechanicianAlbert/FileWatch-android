@@ -1,6 +1,8 @@
 package com.albertech.filewatch.core.query;
 
 
+import android.content.Context;
+
 public interface IFileQuery {
 
     int IMAGE = 1;
@@ -12,7 +14,7 @@ public interface IFileQuery {
     int FILE = 7;
 
 
-    void queryFileByTypeAndPath(int type, String path, IFileQureyListener listener);
+    void queryFileByTypeAndPath(Context context, int type, String path, IFileQureyListener listener);
 
-    void queryFileByTypeAndPath(int type, String path, boolean recursive, IFileQureyListener listener);
+    void queryFileByTypeAndPath(Context context, int type, String path, boolean recursive, IFileQureyListener listener);
 }

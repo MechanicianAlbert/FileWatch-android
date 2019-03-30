@@ -1,9 +1,11 @@
 package com.albertech.filewatch.core.dispatch;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Binder;
 import android.os.Environment;
 import android.os.FileObserver;
+import android.provider.MediaStore;
 
 import com.albertech.filewatch.api.IFileWatchSubscriber;
 import com.albertech.filewatch.core.query.FileQueryer;
@@ -13,8 +15,8 @@ import com.albertech.filewatch.core.scan.FileScanner;
 import com.albertech.filewatch.core.scan.IFileScan;
 import com.albertech.filewatch.core.scan.IFileScanListener;
 import com.albertech.filewatch.core.watch.FileWatcher;
-import com.albertech.filewatch.core.watch.IFileWatchListener;
 import com.albertech.filewatch.core.watch.IFileWatch;
+import com.albertech.filewatch.core.watch.IFileWatchListener;
 
 import java.util.List;
 import java.util.Map;
@@ -24,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class FileWatchDispatcher extends Binder implements IFileWatchDispatch,
         IFileWatchListener,
         IFileScanListener,
-        IFileQureyListener {
+        IFileQureyListener<String> {
 
     private final Map<IFileWatchSubscriber, String> SUBSCRIBED_PATH = new ConcurrentHashMap<>();
     private final Map<IFileWatchSubscriber, Integer> SUBSCRIBED_TYPE = new ConcurrentHashMap<>();
@@ -53,7 +55,7 @@ public class FileWatchDispatcher extends Binder implements IFileWatchDispatch,
         mWatcher.startWatching();
         mScanner = new FileScanner(mContext, this);
         mScanner.init();
-        mQureyer = new FileQueryer(mContext);
+        mQureyer = new FileQueryer();
     }
 
     void release() {
@@ -97,6 +99,11 @@ public class FileWatchDispatcher extends Binder implements IFileWatchDispatch,
     }
 
     @Override
+    public String transfer(Cursor cursor) {
+        return cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA));
+    }
+
+    @Override
     public void onQueryResult(String path, List<String> list) {
         dispatchQueryResult(path, list);
     }
@@ -121,7 +128,7 @@ public class FileWatchDispatcher extends Binder implements IFileWatchDispatch,
                     subscriber.onScanResult(path);
 
                     if (mQureyer != null) {
-                        mQureyer.queryFileByTypeAndPath(SUBSCRIBED_TYPE.get(subscriber), path, this);
+                        mQureyer.queryFileByTypeAndPath(mContext, SUBSCRIBED_TYPE.get(subscriber), path, this);
                     }
                 }
             }

@@ -9,7 +9,9 @@ import android.widget.EditText;
 
 import com.albertech.demo.R;
 import com.albertech.demo.base.fragment.TitleFragment;
+import com.albertech.demo.bean.BaseFileBean;
 import com.albertech.demo.util.Res;
+import com.albertech.demo.util.ForEachUtil;
 import com.albertech.demo.util.query.FileQueryHelper;
 import com.albertech.demo.util.query.QueryCallback;
 
@@ -56,11 +58,17 @@ public class CategoryFragment extends TitleFragment {
             @Override
             public void onClick(View v) {
                 String path = FileQueryHelper.SD_CARD + File.separator + "AAA";
-                FileQueryHelper.getInstance().dDoc(path, new QueryCallback() {
+                FileQueryHelper.getInstance().dDoc(getContext(), path, new QueryCallback<BaseFileBean>() {
                     @Override
-                    public void onResult(String path, List<String> list) {
+                    public void onResult(String path, List<BaseFileBean> list) {
                         Log.e("AAA", "Parent: " + path);
-                        print(list);
+                        ForEachUtil.forEach(list, new ForEachUtil.ItemHandler<BaseFileBean>() {
+
+                            @Override
+                            public void handle(BaseFileBean item) {
+                                Log.e("AAA", "Path: " + item.path);
+                            }
+                        });
                     }
                 });
             }

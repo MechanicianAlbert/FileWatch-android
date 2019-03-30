@@ -23,8 +23,8 @@ public class FileHelper {
         return new FileWatchServiceConnection(context, subscriber, type, path);
     }
 
-    public static IFileQuery createDefaultFileQuery(Context context) {
-        return new FileQueryer(context);
+    public static IFileQuery createDefaultFileQuery() {
+        return new FileQueryer();
     }
 
     public static String fileOperationName(int event) {
