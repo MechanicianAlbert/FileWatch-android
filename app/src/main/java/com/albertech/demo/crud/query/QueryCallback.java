@@ -1,4 +1,4 @@
-package com.albertech.demo.util.query;
+package com.albertech.demo.crud.query;
 
 import java.util.List;
 

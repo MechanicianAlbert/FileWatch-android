@@ -8,18 +8,6 @@ import com.albertech.filewatch.core.query.cursor.impl.abs.DirectCursorFactory;
 
 public class DApkCursorFactory extends DirectCursorFactory {
 
-
-    public DApkCursorFactory() {
-
-    }
-
-
-    @Override
-    public String getPathColumnName() {
-        return MediaStore.Files.FileColumns.DATA;
-    }
-
-
     @Override
     protected Uri uri() {
         return MediaStore.Files.getContentUri("external");

@@ -23,9 +23,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-
 public class FileQueryer implements IFileQuery {
-
 
     private static final SparseArray<ICursorFactory> CURSOR_FACTORIES = new SparseArray<>();
     private static final ExecutorService EXECUTOR = Executors.newCachedThreadPool();
@@ -56,14 +54,10 @@ public class FileQueryer implements IFileQuery {
 
 
     @Override
-    public void queryFileByTypeAndPath(Context context, int type, String path, IFileQureyListener listener) {
-        queryFileByTypeAndPath(context, type, path, false, listener);
-    }
-
-    @Override
-    public void queryFileByTypeAndPath(Context context, int type, String path, boolean recursive, IFileQureyListener listener) {
-        ICursorFactory factory = CURSOR_FACTORIES.get(recursive ? -type : type);
-        EXECUTOR.execute(new QueryTask<>(context, factory, path, recursive, listener));
+    public void queryFileByTypeAndParentPath(Context context, IFileQueryMisson mission) {
+        int type = mission.type();
+        ICursorFactory factory = CURSOR_FACTORIES.get(mission.recursive() ? -type : type);
+        EXECUTOR.execute(new QueryWork<>(context, factory, mission));
     }
 
 }

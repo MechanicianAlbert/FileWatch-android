@@ -8,18 +8,6 @@ import com.albertech.filewatch.core.query.cursor.impl.abs.DirectCursorFactory;
 
 public class DDocCursorFactory extends DirectCursorFactory {
 
-
-    public DDocCursorFactory() {
-
-    }
-
-
-    @Override
-    public String getPathColumnName() {
-        return MediaStore.Files.FileColumns.DATA;
-    }
-
-
     @Override
     protected Uri uri() {
         return MediaStore.Files.getContentUri("external");
@@ -37,7 +25,10 @@ public class DDocCursorFactory extends DirectCursorFactory {
                 ".pptx",
                 ".pps",
                 ".pages",
-                ".txt"
+                ".txt",
+                ".log",
+                ".xml",
+                ".html"
         };
     }
 

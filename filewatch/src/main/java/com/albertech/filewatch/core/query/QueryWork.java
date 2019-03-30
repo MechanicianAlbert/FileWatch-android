@@ -12,41 +12,41 @@ import java.util.List;
 
 
 
-public class QueryTask<Bean> implements Runnable {
+public class QueryWork<Bean> implements Runnable {
 
 
     private Context mContext;
-    private ICursorFactory mFactory;
-    private String mPath;
-    private IFileQureyListener<Bean> mListener;
+    private ICursorFactory mCursorFactory;
+    private IFileQueryMisson<Bean> mMission;
+    private String mParentPath;
 
 
-    QueryTask(Context context, ICursorFactory factory, String path, boolean recursive, IFileQureyListener<Bean> listener) {
+    QueryWork(Context context, ICursorFactory factory, IFileQueryMisson<Bean> mission) {
         mContext = context;
-        mFactory = factory;
-        mPath = path;
-        mListener = listener;
+        mCursorFactory = factory;
+        mMission = mission;
+        mParentPath = mMission.parentPath();
     }
 
 
     @Override
     public void run() {
         List<Bean> list = new ArrayList<>();
-        if (mFactory != null && mListener != null) {
-            Cursor cursor = mFactory.createCursor(mContext, mPath);
+        if (mCursorFactory != null && mMission != null) {
+            Cursor cursor = mCursorFactory.createCursor(mContext, mMission.projection(), mParentPath);
             while (cursor != null && cursor.moveToNext()) {
-                list.add(mListener.transfer(cursor));
+                list.add(mMission.parse(cursor));
             }
             close(cursor);
-            mListener.onQueryResult(mPath, list);
+            mMission.onQueryResult(mParentPath, list);
         }
-        mListener = null;
+        mMission = null;
         mContext = null;
-        mFactory = null;
+        mCursorFactory = null;
     }
 
 
-    private static void close(Closeable... closeables) {
+    private void close(Closeable... closeables) {
         if (closeables != null && closeables.length > 0) {
             for (Closeable closeable : closeables) {
                 if (closeable != null) {

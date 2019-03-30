@@ -2,7 +2,6 @@ package com.albertech.demo.util;
 
 import android.app.Application;
 
-import com.albertech.demo.util.query.FileQueryHelper;
 
 public class GlobalApplication extends Application {
 
@@ -15,6 +14,5 @@ public class GlobalApplication extends Application {
 
     private void init() {
         Res.setApplication(this);
-        FileQueryHelper.getInstance();
     }
 }

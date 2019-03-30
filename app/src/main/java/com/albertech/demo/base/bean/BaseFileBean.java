@@ -1,4 +1,4 @@
-package com.albertech.demo.bean;
+package com.albertech.demo.base.bean;
 
 public class BaseFileBean {
 

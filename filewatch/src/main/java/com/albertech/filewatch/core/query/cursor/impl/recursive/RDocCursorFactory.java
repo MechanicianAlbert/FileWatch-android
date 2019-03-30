@@ -8,18 +8,6 @@ import com.albertech.filewatch.core.query.cursor.impl.abs.RecursiveCursurFactory
 
 public class RDocCursorFactory extends RecursiveCursurFactory {
 
-
-    public RDocCursorFactory() {
-
-    }
-
-
-    @Override
-    public String getPathColumnName() {
-        return MediaStore.Files.FileColumns.DATA;
-    }
-
-
     @Override
     protected Uri uri() {
         return MediaStore.Files.getContentUri("external");
@@ -37,7 +25,10 @@ public class RDocCursorFactory extends RecursiveCursurFactory {
                 ".pptx",
                 ".pps",
                 ".pages",
-                ".txt"
+                ".txt",
+                ".log",
+                ".xml",
+                ".html"
         };
     }
 

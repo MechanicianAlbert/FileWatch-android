@@ -3,17 +3,15 @@ package com.albertech.demo.func.category;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import com.albertech.demo.R;
 import com.albertech.demo.base.fragment.TitleFragment;
-import com.albertech.demo.bean.BaseFileBean;
 import com.albertech.demo.util.Res;
-import com.albertech.demo.util.ForEachUtil;
-import com.albertech.demo.util.query.FileQueryHelper;
-import com.albertech.demo.util.query.QueryCallback;
+import com.albertech.demo.crud.query.QueryHelper;
+import com.albertech.demo.crud.query.QueryCallback;
+import com.albertech.demo.crud.query.image.ImageBean;
 
 import java.io.File;
 import java.util.List;
@@ -21,7 +19,12 @@ import java.util.List;
 
 public class CategoryFragment extends TitleFragment {
 
-    private final CategoryAdapter ADAPTER = new CategoryAdapter();
+    private final CategoryAdapter ADAPTER = new CategoryAdapter() {
+        @Override
+        public boolean onItemClick(int position) {
+            return false;
+        }
+    };
 
 
     private EditText mEtSearch;
@@ -57,18 +60,12 @@ public class CategoryFragment extends TitleFragment {
         mBtnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String path = FileQueryHelper.SD_CARD + File.separator + "AAA";
-                FileQueryHelper.getInstance().dDoc(getContext(), path, new QueryCallback<BaseFileBean>() {
+                String path = QueryHelper.SD_CARD + File.separator + "AAA";
+                path = "";
+                QueryHelper.getInstance().rImage(getContext(), path, new QueryCallback<ImageBean>() {
                     @Override
-                    public void onResult(String path, List<BaseFileBean> list) {
-                        Log.e("AAA", "Parent: " + path);
-                        ForEachUtil.forEach(list, new ForEachUtil.ItemHandler<BaseFileBean>() {
+                    public void onResult(String path, List<ImageBean> list) {
 
-                            @Override
-                            public void handle(BaseFileBean item) {
-                                Log.e("AAA", "Path: " + item.path);
-                            }
-                        });
                     }
                 });
             }
@@ -80,11 +77,4 @@ public class CategoryFragment extends TitleFragment {
         mRvCategory.setAdapter(ADAPTER);
     }
 
-    private void print(List<String> list) {
-        if (list != null && list.size() > 0) {
-            for (int i = 0; i < list.size(); i++) {
-                Log.e("AAA", "Path: " + list.get(i));
-            }
-        }
-    }
 }

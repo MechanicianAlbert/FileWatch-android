@@ -1,16 +1,13 @@
 package com.albertech.filewatch.core.dispatch;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Binder;
 import android.os.Environment;
 import android.os.FileObserver;
-import android.provider.MediaStore;
 
 import com.albertech.filewatch.api.IFileWatchSubscriber;
 import com.albertech.filewatch.core.query.FileQueryer;
 import com.albertech.filewatch.core.query.IFileQuery;
-import com.albertech.filewatch.core.query.IFileQureyListener;
 import com.albertech.filewatch.core.scan.FileScanner;
 import com.albertech.filewatch.core.scan.IFileScan;
 import com.albertech.filewatch.core.scan.IFileScanListener;
@@ -18,15 +15,13 @@ import com.albertech.filewatch.core.watch.FileWatcher;
 import com.albertech.filewatch.core.watch.IFileWatch;
 import com.albertech.filewatch.core.watch.IFileWatchListener;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
 public class FileWatchDispatcher extends Binder implements IFileWatchDispatch,
         IFileWatchListener,
-        IFileScanListener,
-        IFileQureyListener<String> {
+        IFileScanListener {
 
     private final Map<IFileWatchSubscriber, String> SUBSCRIBED_PATH = new ConcurrentHashMap<>();
     private final Map<IFileWatchSubscriber, Integer> SUBSCRIBED_TYPE = new ConcurrentHashMap<>();
@@ -98,16 +93,6 @@ public class FileWatchDispatcher extends Binder implements IFileWatchDispatch,
         dispatchScanResult(path);
     }
 
-    @Override
-    public String transfer(Cursor cursor) {
-        return cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA));
-    }
-
-    @Override
-    public void onQueryResult(String path, List<String> list) {
-        dispatchQueryResult(path, list);
-    }
-
 
     private void dispatchFileEvents(int event, String parentPash, String childPath) {
         for (IFileWatchSubscriber subscriber : SUBSCRIBED_PATH.keySet()) {
@@ -126,21 +111,6 @@ public class FileWatchDispatcher extends Binder implements IFileWatchDispatch,
                 String subscribePath = SUBSCRIBED_PATH.get(subscriber);
                 if (subscribePath != null && path.startsWith(subscribePath)) {
                     subscriber.onScanResult(path);
-
-                    if (mQureyer != null) {
-                        mQureyer.queryFileByTypeAndPath(mContext, SUBSCRIBED_TYPE.get(subscriber), path, this);
-                    }
-                }
-            }
-        }
-    }
-
-    private void dispatchQueryResult(String path, List<String> list) {
-        for (IFileWatchSubscriber subscriber : SUBSCRIBED_PATH.keySet()) {
-            if (subscriber != null) {
-                String subscribePath = SUBSCRIBED_PATH.get(subscriber);
-                if (subscribePath != null && path.startsWith(subscribePath)) {
-                    subscriber.onQueryResult(path, list);
                 }
             }
         }

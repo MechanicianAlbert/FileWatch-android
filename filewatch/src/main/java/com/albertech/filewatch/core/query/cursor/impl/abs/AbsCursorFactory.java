@@ -3,7 +3,6 @@ package com.albertech.filewatch.core.query.cursor.impl.abs;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.MediaStore;
 
 import com.albertech.filewatch.core.query.cursor.ICursorFactory;
 
@@ -12,27 +11,27 @@ public abstract class AbsCursorFactory implements ICursorFactory {
 
 
     @Override
-    public Cursor createCursor(Context context, String path) {
+    public Cursor createCursor(Context context, String[] projection, String parentPath) {
         return context.getContentResolver().query(
                 uri(),
-                createProjection(),
+                createProjection(projection),
                 createSelection(),
-                createSelectionArgsByPath(path),
+                createSelectionArgsByParentPath(parentPath),
                 null
         );
     }
 
 
-    protected String[] createProjection() {
-        return new String[]{MediaStore.Files.FileColumns.DATA};
+    protected String[] createProjection(String[] projection) {
+        return projection != null ? projection : new String[]{PATH_COLUMN_NAME};
     }
 
     protected String createSelection() {
         return createSelection(recursive());
     }
 
-    protected String[] createSelectionArgsByPath(String path) {
-        return createSelectionArgsByPath(path, recursive());
+    protected String[] createSelectionArgsByParentPath(String parentPath) {
+        return createSelectionArgsByParentPath(parentPath, recursive());
     }
 
     protected boolean recursive() {
@@ -51,32 +50,32 @@ public abstract class AbsCursorFactory implements ICursorFactory {
 
         if (templateAvailable) {
             if (recursive) {
-                b.append(MediaStore.Files.FileColumns.DATA).append(" LIKE ? AND (");
+                b.append(PATH_COLUMN_NAME).append(" LIKE ? AND (");
             } else {
-                b.append(MediaStore.Files.FileColumns.DATA).append(" LIKE ? AND ");
-                b.append(MediaStore.Files.FileColumns.DATA).append(" NOT LIKE ? AND (");
+                b.append(PATH_COLUMN_NAME).append(" LIKE ? AND ");
+                b.append(PATH_COLUMN_NAME).append(" NOT LIKE ? AND (");
             }
         } else {
             if (recursive) {
-                b.append(MediaStore.Files.FileColumns.DATA).append(" LIKE ? ");
+                b.append(PATH_COLUMN_NAME).append(" LIKE ? ");
             } else {
-                b.append(MediaStore.Files.FileColumns.DATA).append(" LIKE ? AND ");
-                b.append(MediaStore.Files.FileColumns.DATA).append(" NOT LIKE ? ");
+                b.append(PATH_COLUMN_NAME).append(" LIKE ? AND ");
+                b.append(PATH_COLUMN_NAME).append(" NOT LIKE ? ");
             }
         }
 
         if (templateAvailable) {
             for (int i = 0; i < template.length - 1; i++) {
-                b.append(MediaStore.Files.FileColumns.DATA).append(" LIKE ? OR ");
+                b.append(PATH_COLUMN_NAME).append(" LIKE ? OR ");
             }
-            b.append(MediaStore.Files.FileColumns.DATA).append(" LIKE ? )");
+            b.append(PATH_COLUMN_NAME).append(" LIKE ? )");
         }
 
         String selection = b.toString();
         return selection;
     }
 
-    private String[] createSelectionArgsByPath(String path, boolean recursive) {
+    private String[] createSelectionArgsByParentPath(String parentPath, boolean recursive) {
         String[] templateArgs = selectionArgs();
         boolean templateAvailable = templateArgs != null && templateArgs.length > 0;
         int templateLength = templateAvailable ? templateArgs.length : 0;
@@ -84,13 +83,13 @@ public abstract class AbsCursorFactory implements ICursorFactory {
         int additionalArgCount = recursive ? 1 : 2;
         String[] selectionArgs = new String[templateLength + additionalArgCount];
 
-        selectionArgs[0] = path + "%";
+        selectionArgs[0] = parentPath + "%";
         if (!recursive) {
-            selectionArgs[1] = createDisableRecursiveConditionArg(path);
+            selectionArgs[1] = createDisableRecursiveConditionArg(parentPath);
         }
         if (templateAvailable) {
             for (int i = 0; i < templateLength; i++) {
-                selectionArgs[i + additionalArgCount] = createParentPathConditionArg(path) + templateArgs[i];
+                selectionArgs[i + additionalArgCount] = createParentPathConditionArg(parentPath) + templateArgs[i];
             }
         }
         return selectionArgs;
