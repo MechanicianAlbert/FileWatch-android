@@ -1,4 +1,4 @@
-package com.albertech.demo.home;
+package com.albertech.demo.container.home;
 
 import android.Manifest;
 import android.content.Context;

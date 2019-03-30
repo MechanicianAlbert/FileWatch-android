@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public abstract class BaseRecyclerAdapter<Bean> extends RecyclerView.Adapter<BaseHolder<BaseRecyclerAdapter<Bean>, Bean>>
-        implements OnItemClickListener {
+        implements OnItemClickListener<Bean> {
 
     private final List<Bean> DATA = new ArrayList<>();
 
@@ -45,12 +47,12 @@ public abstract class BaseRecyclerAdapter<Bean> extends RecyclerView.Adapter<Bas
     }
 
     @Override
-    public boolean onItemClick(int position) {
+    public boolean onItemClick(int position, Bean bean) {
         return false;
     }
 
     @Override
-    public boolean onItemLongClick(int position) {
+    public boolean onItemLongClick(int position, Bean bean) {
         return false;
     }
 

@@ -8,6 +8,7 @@ import android.widget.EditText;
 
 import com.albertech.demo.R;
 import com.albertech.demo.base.fragment.TitleFragment;
+import com.albertech.demo.container.ContainerActivity;
 import com.albertech.demo.util.Res;
 import com.albertech.demo.crud.query.QueryHelper;
 import com.albertech.demo.crud.query.QueryCallback;
@@ -21,7 +22,10 @@ public class CategoryFragment extends TitleFragment {
 
     private final CategoryAdapter ADAPTER = new CategoryAdapter() {
         @Override
-        public boolean onItemClick(int position) {
+        public boolean onItemClick(int position, CategoryBean categoryBean) {
+            if (Res.string(R.string.str_category_image).equals(categoryBean.NAME)) {
+                ContainerActivity.start(getContext());
+            }
             return false;
         }
     };

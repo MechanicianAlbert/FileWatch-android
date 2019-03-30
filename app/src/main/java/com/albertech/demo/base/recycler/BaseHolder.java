@@ -7,8 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
 
+
+
 public class BaseHolder<Adapter extends BaseRecyclerAdapter<Bean>, Bean> extends RecyclerView.ViewHolder
-        implements View.OnClickListener, View.OnLongClickListener, OnItemClickListener {
+        implements View.OnClickListener, View.OnLongClickListener, OnItemClickListener<Bean> {
 
     private final SparseArray<View> VIEWS = new SparseArray<>();
 
@@ -18,7 +20,10 @@ public class BaseHolder<Adapter extends BaseRecyclerAdapter<Bean>, Bean> extends
 
     public BaseHolder(Adapter adapter, @NonNull View itemView) {
         super(itemView);
+        mAdapter = adapter;
         mItemView = itemView;
+        mItemView.setOnClickListener(this);
+        mItemView.setOnLongClickListener(this);
     }
 
 
@@ -53,29 +58,32 @@ public class BaseHolder<Adapter extends BaseRecyclerAdapter<Bean>, Bean> extends
     }
 
     @Override
-    public boolean onItemClick(int position) {
+    public boolean onItemClick(int position, Bean bean) {
         return false;
     }
 
     @Override
-    public boolean onItemLongClick(int position) {
+    public boolean onItemLongClick(int position, Bean bean) {
         return false;
     }
 
     @Override
     public final void onClick(View view) {
         int position = getAdapterPosition();
-        if (onItemClick(position)) {
-            mAdapter.onItemClick(position);
+        Bean bean = getItem(position);
+        if (!onItemClick(position, bean)) {
+            mAdapter.onItemClick(position, bean);
         }
     }
 
     @Override
     public final boolean onLongClick(View view) {
         int position = getAdapterPosition();
-        if (onItemLongClick(position)) {
-            mAdapter.onItemLongClick(position);
+        Bean bean = getItem(position);
+        if (!onItemLongClick(position, bean)) {
+            mAdapter.onItemLongClick(position, bean);
         }
         return false;
     }
+
 }

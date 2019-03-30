@@ -9,7 +9,7 @@ import android.util.Log;
 import android.widget.RadioGroup;
 
 
-import com.albertech.demo.home.HomeActivity;
+import com.albertech.demo.container.home.HomeActivity;
 import com.albertech.filewatch.api.FileHelper;
 import com.albertech.filewatch.core.query.IFileQuery;
 import com.albertech.filewatch.api.IFileWatchSubscriber;

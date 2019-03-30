@@ -1,4 +1,4 @@
-package com.albertech.demo.home;
+package com.albertech.demo.container.home;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;

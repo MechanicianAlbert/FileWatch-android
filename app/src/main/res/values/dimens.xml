@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="btn_search_size">30dp</dimen>
+
+    <dimen name="iv_image_grid_height">150dp</dimen>
 </resources>

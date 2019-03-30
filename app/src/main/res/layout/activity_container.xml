@@ -6,5 +6,9 @@
     android:orientation="vertical"
     tools:context="com.albertech.demo.container.ContainerActivity">
 
-
+    <fragment
+        android:id="@+id/fragment_image"
+        android:name="com.albertech.demo.func.image.ImageFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>
