@@ -25,9 +25,9 @@ public class HierarchyFragment extends TitleFragment {
         @Override
         public boolean onItemClick(int position, HierarchyBean hierarchyBean) {
             if (hierarchyBean.isDirectory()) {
-                String path = hierarchyBean.path;
-                changePath(path);
-                mHierarchyStack.push(path);
+                mHierarchyStack.push(mCurrentPath);
+                mCurrentPath = hierarchyBean.path;
+                changePath(mCurrentPath);
             }
             return false;
         }
@@ -40,6 +40,7 @@ public class HierarchyFragment extends TitleFragment {
     private View mBtnSearch;
     private RecyclerView mRvHierarchy;
 
+    private String mCurrentPath;
 
 
     public static HierarchyFragment newInstance() {
@@ -73,13 +74,16 @@ public class HierarchyFragment extends TitleFragment {
         changePath(SD_CARD_PATH);
     }
 
-    public void backToParent() {
+    public boolean backToParent() {
         if (!mHierarchyStack.isEmpty()) {
-            String parent = mHierarchyStack.pop();
-            changePath(parent);
+            mCurrentPath = mHierarchyStack.pop();
+            changePath(mCurrentPath);
             if (mHierarchyStack.isEmpty()) {
                 mHierarchyStack.push(SD_CARD_PATH);
             }
+            return true;
+        } else {
+            return false;
         }
     }
 

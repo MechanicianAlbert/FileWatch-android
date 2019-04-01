@@ -8,6 +8,7 @@ import com.albertech.demo.R;
 import com.albertech.demo.base.recycler.BaseHolder;
 import com.albertech.demo.base.recycler.BaseRecyclerAdapter;
 import com.albertech.demo.crud.query.hierarchy.HierarchyBean;
+import com.albertech.demo.util.SizeUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -24,7 +25,7 @@ public class HierarchyHolder extends BaseHolder<BaseRecyclerAdapter<HierarchyBea
     @Override
     protected void onBind(int position, HierarchyBean hierarchyBean) {
         setText(R.id.tv_item_hierarchy_name, hierarchyBean.name);
-        setText(R.id.tv_item_hierarchy_size, hierarchyBean.size + " B");
+        setText(R.id.tv_item_hierarchy_size, SizeUtil.format(hierarchyBean.size));
         setText(R.id.tv_item_hierarchy_date, FORMAT.format(hierarchyBean.date));
     }
 }

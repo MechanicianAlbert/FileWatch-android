@@ -9,6 +9,7 @@ import android.widget.EditText;
 import com.albertech.demo.R;
 import com.albertech.demo.base.fragment.TitleFragment;
 import com.albertech.demo.container.ContainerActivity;
+import com.albertech.demo.crud.query.hierarchy.HierarchyBean;
 import com.albertech.demo.util.Res;
 import com.albertech.demo.crud.query.QueryHelper;
 import com.albertech.demo.crud.query.QueryCallback;
@@ -61,19 +62,18 @@ public class CategoryFragment extends TitleFragment {
 
     @Override
     protected void initListener() {
-        mBtnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String path = QueryHelper.SD_CARD + File.separator + "AAA";
-                path = "";
-                QueryHelper.getInstance().rImage(getContext(), path, new QueryCallback<ImageBean>() {
-                    @Override
-                    public void onResult(String path, List<ImageBean> list) {
-
-                    }
-                });
-            }
-        });
+//        mBtnSearch.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String path = QueryHelper.SD_CARD + File.separator + "AAA";
+//                QueryHelper.getInstance().dFile(getContext(), path, new QueryCallback<HierarchyBean>() {
+//                    @Override
+//                    public void onResult(String path, List<HierarchyBean> list) {
+//
+//                    }
+//                });
+//            }
+//        });
     }
 
     @Override

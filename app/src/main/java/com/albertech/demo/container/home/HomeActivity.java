@@ -72,7 +72,9 @@ public class HomeActivity extends BaseActivity {
         if (mBackPressedAsNormal) {
             super.onBackPressed();
         } else {
-            mHf.backToParent();
+            if (!mHf.backToParent()) {
+                super.onBackPressed();
+            }
         }
     }
 }
