@@ -1,15 +1,13 @@
 package com.albertech.demo.crud.query.video;
 
+
 import android.database.Cursor;
-import android.util.Log;
+import android.provider.MediaStore;
 
-import com.albertech.demo.util.ForEachUtil;
-import com.albertech.filewatch.api.IFileQueryMisson;
-
-import java.util.List;
+import com.albertech.demo.crud.query.AbsQueryMission;
 
 
-public class VideoQueryMission implements IFileQueryMisson<VideoBean> {
+public class VideoQueryMission extends AbsQueryMission<VideoBean> {
 
     @Override
     public final int type() {
@@ -17,35 +15,24 @@ public class VideoQueryMission implements IFileQueryMisson<VideoBean> {
     }
 
     @Override
-    public final String[] projection() {
-        return new String[]{COLUMN_NAME_PATH};
+    public final String[] addProjection() {
+        return new String[]{
+//                COLUMN_NAME_PATH,
+                MediaStore.Video.Media.DURATION
+        };
     }
 
     @Override
-    public String parentPath() {
-        return DEFAULT_PARENT_PATH;
+    public VideoBean parse(Cursor cursor) {
+        VideoBean b = super.parse(cursor);
+        b.duration = cursor.getLong(cursor.getColumnIndex(MediaStore.Video.Media.DURATION));
+
+        return b;
     }
 
     @Override
-    public boolean recursive() {
-        return true;
-    }
-
-    @Override
-    public final VideoBean parse(Cursor cursor) {
-        VideoBean bean = new VideoBean();
-        bean.path = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_PATH));
-        return bean;
-    }
-
-    @Override
-    public void onQueryResult(String path, List<VideoBean> list) {
-        ForEachUtil.forEach(list, new ForEachUtil.ItemHandler<VideoBean>() {
-            @Override
-            public void handle(VideoBean bean) {
-                Log.e("AAA", "Path: " + bean.path);
-            }
-        });
+    protected VideoBean createFileBean() {
+        return new VideoBean();
     }
 
 }

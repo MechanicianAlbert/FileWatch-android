@@ -66,7 +66,7 @@ public abstract class AbsQueryMission<Bean extends BaseFileBean> implements IFil
 
     @Override
     public String parentPath() {
-        return null;
+        return DEFAULT_PARENT_PATH;
     }
 
     @Override
@@ -91,7 +91,10 @@ public abstract class AbsQueryMission<Bean extends BaseFileBean> implements IFil
         } else {
             bean.suffix = "";
         }
-        int type = cursor.getInt(cursor.getColumnIndex(MediaStore.Files.FileColumns.MEDIA_TYPE));
+        int type = UNKNOWN;
+        if (!(cursor.getColumnIndex(MediaStore.Files.FileColumns.MEDIA_TYPE) < 0)) {
+            type = cursor.getInt(cursor.getColumnIndex(MediaStore.Files.FileColumns.MEDIA_TYPE));
+        }
         if (bean.isDirectory) {
             bean.type = DIRECTORY;
             bean.icon = R.drawable.ic_launcher;
@@ -141,9 +144,9 @@ public abstract class AbsQueryMission<Bean extends BaseFileBean> implements IFil
         Collections.sort(list, comparator);
 
 
-        ForEachUtil.forEach(list, new ForEachUtil.ItemHandler<HierarchyBean>() {
+        ForEachUtil.forEach(list, new ForEachUtil.ItemHandler<BaseFileBean>() {
             @Override
-            public void handle(HierarchyBean bean) {
+            public void handle(BaseFileBean bean) {
                 String msg = "File details:\n"
                         + "Path: " + bean.path + "\n"
                         + "Name: " + bean.name + "\n"

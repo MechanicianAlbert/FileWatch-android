@@ -22,7 +22,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_item_video_length"
+                android:id="@+id/tv_item_video_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

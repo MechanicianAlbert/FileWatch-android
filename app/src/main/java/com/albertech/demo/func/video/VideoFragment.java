@@ -54,7 +54,6 @@ public class VideoFragment extends TitleFragment {
     @Override
     protected void initData() {
         mRvVideo.setAdapter(ADAPTER);
-//        subscribeFileWatch();
         update();
     }
 

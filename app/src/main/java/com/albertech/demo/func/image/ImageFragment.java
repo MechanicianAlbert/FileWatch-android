@@ -55,7 +55,6 @@ public class ImageFragment extends TitleFragment {
     @Override
     protected void initData() {
         mRvImage.setAdapter(ADAPTER);
-        subscribeFileWatch();
         update();
     }
 

@@ -9,14 +9,9 @@ import android.widget.EditText;
 import com.albertech.demo.R;
 import com.albertech.demo.base.fragment.TitleFragment;
 import com.albertech.demo.container.ContainerActivity;
-import com.albertech.demo.crud.query.hierarchy.HierarchyBean;
 import com.albertech.demo.util.Res;
-import com.albertech.demo.crud.query.QueryHelper;
-import com.albertech.demo.crud.query.QueryCallback;
-import com.albertech.demo.crud.query.image.ImageBean;
+import com.albertech.filewatch.api.IFileConstant;
 
-import java.io.File;
-import java.util.List;
 
 
 public class CategoryFragment extends TitleFragment {
@@ -25,7 +20,11 @@ public class CategoryFragment extends TitleFragment {
         @Override
         public boolean onItemClick(int position, CategoryBean categoryBean) {
             if (Res.string(R.string.str_category_image).equals(categoryBean.NAME)) {
-                ContainerActivity.start(getContext());
+                ContainerActivity.start(getContext(), IFileConstant.IMAGE);
+            } else if (Res.string(R.string.str_category_audio).equals(categoryBean.NAME)) {
+                ContainerActivity.start(getContext(), IFileConstant.VIDEO);
+            } else if (Res.string(R.string.str_category_video).equals(categoryBean.NAME)) {
+                ContainerActivity.start(getContext(), IFileConstant.VIDEO);
             }
             return false;
         }
@@ -62,18 +61,7 @@ public class CategoryFragment extends TitleFragment {
 
     @Override
     protected void initListener() {
-//        mBtnSearch.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String path = QueryHelper.SD_CARD + File.separator + "AAA";
-//                QueryHelper.getInstance().dFile(getContext(), path, new QueryCallback<HierarchyBean>() {
-//                    @Override
-//                    public void onResult(String path, List<HierarchyBean> list) {
-//
-//                    }
-//                });
-//            }
-//        });
+
     }
 
     @Override

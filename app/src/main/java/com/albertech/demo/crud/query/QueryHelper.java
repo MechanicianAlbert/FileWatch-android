@@ -47,7 +47,12 @@ public class QueryHelper {
                 }
 
                 @Override
-                public void onQueryResult(String path, List<ImageBean> list) {
+                public boolean recursive() {
+                    return true;
+                }
+
+                @Override
+                public void onQueryResult(String path, List list) {
                     super.onQueryResult(path, list);
                     callback.onResult(path, list);
                 }
@@ -65,7 +70,12 @@ public class QueryHelper {
                 }
 
                 @Override
-                public void onQueryResult(String path, List<VideoBean> list) {
+                public boolean recursive() {
+                    return true;
+                }
+
+                @Override
+                public void onQueryResult(String path, List list) {
                     super.onQueryResult(path, list);
                     callback.onResult(path, list);
                 }
@@ -106,7 +116,7 @@ public class QueryHelper {
                 }
 
                 @Override
-                public void onQueryResult(String path, List<ImageBean> list) {
+                public void onQueryResult(String path, List list) {
                     super.onQueryResult(path, list);
                     callback.onResult(path, list);
                 }
