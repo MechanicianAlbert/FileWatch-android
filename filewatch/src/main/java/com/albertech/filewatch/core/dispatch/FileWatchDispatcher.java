@@ -7,8 +7,6 @@ import android.os.FileObserver;
 import android.text.TextUtils;
 
 import com.albertech.filewatch.api.IFileWatchSubscriber;
-import com.albertech.filewatch.core.query.FileQueryer;
-import com.albertech.filewatch.core.query.IFileQuery;
 import com.albertech.filewatch.core.scan.FileScanner;
 import com.albertech.filewatch.core.scan.IFileScan;
 import com.albertech.filewatch.core.scan.IFileScanListener;
@@ -34,7 +32,6 @@ public class FileWatchDispatcher extends Binder implements IFileWatchDispatch,
     private Context mContext;
     private IFileWatch mWatcher;
     private IFileScan mScanner;
-    private IFileQuery mQureyer;
 
 
     void init(Context context) {
@@ -51,7 +48,6 @@ public class FileWatchDispatcher extends Binder implements IFileWatchDispatch,
         mWatcher.startWatching();
         mScanner = new FileScanner(mContext, this);
         mScanner.init();
-        mQureyer = new FileQueryer();
     }
 
     void release() {

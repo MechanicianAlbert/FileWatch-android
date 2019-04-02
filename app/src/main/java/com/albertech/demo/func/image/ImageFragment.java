@@ -75,10 +75,6 @@ public class ImageFragment extends TitleFragment {
                 update();
             }
 
-            @Override
-            public void onQueryResult(String parentPath, List<String> list) {
-
-            }
         }, IFileConstant.IMAGE, null);
     }
 

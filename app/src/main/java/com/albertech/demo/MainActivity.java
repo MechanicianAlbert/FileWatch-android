@@ -1,12 +1,18 @@
 package com.albertech.demo;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 
 import com.albertech.demo.container.home.HomeActivity;
@@ -14,6 +20,9 @@ import com.albertech.filewatch.api.FileHelper;
 import com.albertech.filewatch.core.query.IFileQuery;
 import com.albertech.filewatch.api.IFileWatchSubscriber;
 import com.albertech.filewatch.api.IFileWatchUnsubscribe;
+import com.albertech.filewatch.core.scan.FileScanner;
+import com.albertech.filewatch.core.scan.IFileScan;
+import com.albertech.filewatch.core.scan.IFileScanListener;
 
 import java.io.File;
 import java.util.List;
@@ -47,14 +56,6 @@ public class MainActivity extends AppCompatActivity {
             Log.e(TAG, "Scan finish: " + path);
         }
 
-        @Override
-        public void onQueryResult(String path, List<String> list) {
-            Log.e(TAG, "Query finish:");
-            Log.e(TAG, "Parent path: " + path + "\n");
-            for (int i = 0; i < list.size(); i++) {
-                Log.e(TAG, "\tFile: " + list.get(i) + "\n");
-            }
-        }
     };
 
     private int mFileType;
@@ -64,8 +65,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        HomeActivity.start(getApplicationContext());
-        finish();
+
+//        HomeActivity.start(getApplicationContext());
+//        finish();
 
         setContentView(R.layout.activity_main);
 
@@ -73,27 +75,19 @@ public class MainActivity extends AppCompatActivity {
 
         initView();
         initFileHelper();
+
+        initUSB();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mUnsubscribe.unsubscribe();
+        if (mUnsubscribe != null) {
+            mUnsubscribe.unsubscribe();
+        }
     }
 
     private void initView() {
-//        View.OnClickListener l = new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (v.getId() == R.id.btn1) {
-//                    show(mFileType, mPath);
-//                } else if (v.getId() == R.id.btn2) {
-//                    refresh(mPath);
-//                }
-//            }
-//        };
-//        findViewById(R.id.btn1).setOnClickListener(l);
-//        findViewById(R.id.btn2).setOnClickListener(l);
 
         RadioGroup.OnCheckedChangeListener cl = new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -128,9 +122,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initFileHelper() {
-        mUnsubscribe = FileHelper.subscribeFileWatch(getApplicationContext(), mSubscriber, SDCARD_PATH);
+//        mUnsubscribe = FileHelper.subscribeFileWatch(getApplicationContext(), mSubscriber, SDCARD_PATH);
     }
 
-    
+
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                if (intent.getAction().equals(Intent.ACTION_MEDIA_MOUNTED)) {
+                    Toast.makeText(getApplicationContext(), "Media Mounted", Toast.LENGTH_SHORT).show();
+                    String path = intent.getData().getPath();
+                    Log.e("AAA", path);
+                } else if (intent.getAction().equals(Intent.ACTION_MEDIA_UNMOUNTED)) {
+
+                }
+
+            }
+
+        }
+    };
+
+    private void initUSB() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_MEDIA_MOUNTED);
+        intentFilter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
+        intentFilter.addDataScheme(ContentResolver.SCHEME_FILE);
+        registerReceiver(mReceiver, intentFilter);
+    }
+
 
 }

@@ -74,10 +74,6 @@ public class VideoFragment extends TitleFragment {
                 update();
             }
 
-            @Override
-            public void onQueryResult(String parentPath, List<String> list) {
-
-            }
         }, IFileConstant.IMAGE, null);
     }
 
