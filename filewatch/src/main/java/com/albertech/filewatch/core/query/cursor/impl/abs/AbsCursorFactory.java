@@ -83,7 +83,7 @@ public abstract class AbsCursorFactory implements ICursorFactory {
         int additionalArgCount = recursive ? 1 : 2;
         String[] selectionArgs = new String[templateLength + additionalArgCount];
 
-        selectionArgs[0] = parentPath + "%";
+        selectionArgs[0] = createParentPathConditionArg(parentPath);
         if (!recursive) {
             selectionArgs[1] = createDisableRecursiveConditionArg(parentPath);
         }
@@ -96,7 +96,7 @@ public abstract class AbsCursorFactory implements ICursorFactory {
     }
 
     private String createParentPathConditionArg(String path) {
-        return path + "%";
+        return path + "/%";
     }
 
     private String createDisableRecursiveConditionArg(String path) {

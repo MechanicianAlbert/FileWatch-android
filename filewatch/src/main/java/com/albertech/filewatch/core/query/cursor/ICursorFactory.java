@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.provider.MediaStore;
 
 
-public interface ICursorFactory {
+public interface ICursorFactory extends IFileParams {
 
     String PATH_COLUMN_NAME = MediaStore.Files.FileColumns.DATA;
 

@@ -15,7 +15,7 @@ public interface ICategoryContract {
 
         CategoryModel() {
             CATEGORIES.add(new CategoryBean(Res.string(R.string.str_category_image), R.drawable.ic_type_image));
-            CATEGORIES.add(new CategoryBean(Res.string(R.string.str_category_audio), R.drawable.ic_type_music));
+            CATEGORIES.add(new CategoryBean(Res.string(R.string.str_category_audio), R.drawable.ic_type_audio));
             CATEGORIES.add(new CategoryBean(Res.string(R.string.str_category_video), R.drawable.ic_type_video));
             CATEGORIES.add(new CategoryBean(Res.string(R.string.str_category_doc), R.drawable.ic_type_doc));
             CATEGORIES.add(new CategoryBean(Res.string(R.string.str_category_apk), R.drawable.ic_type_apk));

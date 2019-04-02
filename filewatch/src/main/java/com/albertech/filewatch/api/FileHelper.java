@@ -74,6 +74,9 @@ public class FileHelper {
     public static String fileTypeName(int type) {
         String name = "未知";
         switch (type) {
+            case IFileQuery.DIRECTORY:
+                name = "目录";
+                break;
             case IFileQuery.IMAGE:
                 name = "图片";
                 break;
@@ -94,9 +97,6 @@ public class FileHelper {
                 break;
             case IFileQuery.FILE:
                 name = "文件";
-                break;
-            case IFileQuery.DIRECTORY:
-                name = "目录";
                 break;
         }
         return name;

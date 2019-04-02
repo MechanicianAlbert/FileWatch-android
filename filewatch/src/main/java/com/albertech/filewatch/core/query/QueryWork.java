@@ -3,6 +3,7 @@ package com.albertech.filewatch.core.query;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.albertech.filewatch.api.IFileQueryMisson;
 import com.albertech.filewatch.core.query.cursor.ICursorFactory;
 
 import java.io.Closeable;

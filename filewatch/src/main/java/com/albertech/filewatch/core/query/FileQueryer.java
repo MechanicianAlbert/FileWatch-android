@@ -3,6 +3,7 @@ package com.albertech.filewatch.core.query;
 import android.content.Context;
 import android.util.SparseArray;
 
+import com.albertech.filewatch.api.IFileQueryMisson;
 import com.albertech.filewatch.core.query.cursor.ICursorFactory;
 import com.albertech.filewatch.core.query.cursor.impl.direct.DApkCursorFactory;
 import com.albertech.filewatch.core.query.cursor.impl.direct.DAudioCursorFactory;

@@ -1,16 +1,14 @@
-package com.albertech.filewatch.core.query;
+package com.albertech.filewatch.api;
 
 import android.database.Cursor;
 import android.os.Environment;
 import android.provider.MediaStore;
 
+import com.albertech.filewatch.api.IFileConstant;
+
 import java.util.List;
 
-public interface IFileQueryMisson<Bean> extends IFileType {
-
-    String PATH_COLUMN_NAME = MediaStore.Files.FileColumns.DATA;
-
-    String DEFAULT_PARENT_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
+public interface IFileQueryMisson<Bean> extends IFileConstant {
 
 
     int type();

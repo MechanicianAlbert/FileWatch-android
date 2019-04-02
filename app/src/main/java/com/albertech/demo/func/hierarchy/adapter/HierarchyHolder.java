@@ -27,5 +27,6 @@ public class HierarchyHolder extends BaseHolder<BaseRecyclerAdapter<HierarchyBea
         setText(R.id.tv_item_hierarchy_name, hierarchyBean.name);
         setText(R.id.tv_item_hierarchy_size, SizeUtil.format(hierarchyBean.size));
         setText(R.id.tv_item_hierarchy_date, FORMAT.format(hierarchyBean.date));
+        setImage(R.id.iv_item_hierarchy_icon, hierarchyBean.icon);
     }
 }

@@ -14,6 +14,7 @@ import com.albertech.demo.crud.query.image.ImageBean;
 import com.albertech.demo.func.image.adapter.ImageAdapter;
 import com.albertech.demo.util.Res;
 import com.albertech.filewatch.api.FileHelper;
+import com.albertech.filewatch.api.IFileConstant;
 import com.albertech.filewatch.api.IFileWatchSubscriber;
 import com.albertech.filewatch.api.IFileWatchUnsubscribe;
 import com.albertech.filewatch.core.query.IFileType;
@@ -79,7 +80,7 @@ public class ImageFragment extends TitleFragment {
             public void onQueryResult(String parentPath, List<String> list) {
 
             }
-        }, IFileType.IMAGE, null);
+        }, IFileConstant.IMAGE, null);
     }
 
     private void unsubscribeFileWatch() {

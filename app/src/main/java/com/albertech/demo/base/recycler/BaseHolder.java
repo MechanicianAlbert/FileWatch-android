@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -48,6 +49,13 @@ public class BaseHolder<Adapter extends BaseRecyclerAdapter<Bean>, Bean> extends
         TextView tv = $(id);
         if (tv != null) {
             tv.setText(text);
+        }
+    }
+
+    protected final void setImage(int id, int drawableRes) {
+        ImageView iv = $(id);
+        if (iv != null) {
+            iv.setImageResource(drawableRes);
         }
     }
 

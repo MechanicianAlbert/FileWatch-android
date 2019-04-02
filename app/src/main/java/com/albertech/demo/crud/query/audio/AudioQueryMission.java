@@ -3,9 +3,8 @@ package com.albertech.demo.crud.query.audio;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.albertech.demo.crud.query.image.ImageBean;
 import com.albertech.demo.util.ForEachUtil;
-import com.albertech.filewatch.core.query.IFileQueryMisson;
+import com.albertech.filewatch.api.IFileQueryMisson;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class AudioQueryMission implements IFileQueryMisson<AudioBean> {
 
     @Override
     public final String[] projection() {
-        return new String[]{PATH_COLUMN_NAME};
+        return new String[]{COLUMN_NAME_PATH};
     }
 
     @Override
@@ -35,7 +34,7 @@ public class AudioQueryMission implements IFileQueryMisson<AudioBean> {
     @Override
     public final AudioBean parse(Cursor cursor) {
         AudioBean bean = new AudioBean();
-        bean.path = cursor.getString(cursor.getColumnIndex(PATH_COLUMN_NAME));
+        bean.path = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_PATH));
         return bean;
     }
 
