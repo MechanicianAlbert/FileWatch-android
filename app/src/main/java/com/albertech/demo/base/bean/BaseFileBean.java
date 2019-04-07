@@ -23,4 +23,8 @@ public class BaseFileBean implements IFileType {
     public final boolean isDirectory() {
         return isDirectory;
     }
+
+    public final boolean isHidden() {
+        return isHidden;
+    }
 }

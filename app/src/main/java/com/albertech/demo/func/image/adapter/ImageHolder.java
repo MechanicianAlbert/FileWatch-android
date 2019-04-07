@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import com.albertech.demo.R;
 import com.albertech.demo.base.recycler.BaseHolder;
 import com.albertech.demo.base.recycler.BaseRecyclerAdapter;
-import com.albertech.demo.crud.query.image.ImageBean;
+import com.albertech.demo.func.image.ImageBean;
 import com.bumptech.glide.Glide;
 
 import java.io.File;

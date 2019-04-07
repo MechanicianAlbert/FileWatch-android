@@ -2,12 +2,11 @@ package com.albertech.demo.func.hierarchy.adapter;
 
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.TextView;
 
 import com.albertech.demo.R;
 import com.albertech.demo.base.recycler.BaseHolder;
 import com.albertech.demo.base.recycler.BaseRecyclerAdapter;
-import com.albertech.demo.crud.query.hierarchy.HierarchyBean;
+import com.albertech.demo.func.hierarchy.HierarchyBean;
 import com.albertech.demo.util.SizeUtil;
 
 import java.text.SimpleDateFormat;

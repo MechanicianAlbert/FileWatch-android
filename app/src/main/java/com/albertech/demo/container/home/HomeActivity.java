@@ -3,15 +3,19 @@ package com.albertech.demo.container.home;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.view.ViewGroup;
 
 import com.albertech.demo.R;
 import com.albertech.demo.base.activity.BaseActivity;
 import com.albertech.demo.func.category.CategoryFragment;
-import com.albertech.demo.func.hierarchy.HierarchyFragment;
+import com.albertech.demo.func.hierarchy.mvp.impl.HierarchyFragment;
+
+
 
 public class HomeActivity extends BaseActivity {
 
@@ -49,32 +53,33 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void initListener() {
         mTlMain.setupWithViewPager(mVpMain, true);
-        mVpMain.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-        });
     }
 
     @Override
     protected void initData() {
         FragmentManager fm = getSupportFragmentManager();
-        HomePagerAdapter adapter = new HomePagerAdapter(fm);
+        HomePagerAdapter adapter = new HomePagerAdapter(fm) {
+            @Override
+            public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+                super.setPrimaryItem(container, position, object);
+                if (object instanceof HierarchyFragment) {
+                    mHf = (HierarchyFragment) object;
+                    mBackPressedAsNormal = false;
+                } else {
+                    mBackPressedAsNormal = true;
+                }
+            }
+        };
+
         adapter.addFragment(CategoryFragment.newInstance());
-        mHf = HierarchyFragment.newInstance();
-        adapter.addFragment(mHf);
+        adapter.addFragment(HierarchyFragment.newInstance());
         mVpMain.setAdapter(adapter);
     }
 
     @Override
     public void onBackPressed() {
-        if (mBackPressedAsNormal) {
+        if (mBackPressedAsNormal || !mHf.backToParent()) {
             super.onBackPressed();
-        } else {
-            if (!mHf.backToParent()) {
-                super.onBackPressed();
-            }
         }
     }
 }

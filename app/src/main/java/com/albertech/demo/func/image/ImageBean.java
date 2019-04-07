@@ -1,4 +1,4 @@
-package com.albertech.demo.crud.query.image;
+package com.albertech.demo.func.image;
 
 import com.albertech.demo.base.bean.BaseFileBean;
 

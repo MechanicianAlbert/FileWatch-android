@@ -4,13 +4,12 @@ import android.content.Context;
 import android.os.Environment;
 import android.text.TextUtils;
 
-import com.albertech.demo.crud.query.hierarchy.HierarchyBean;
-import com.albertech.demo.crud.query.hierarchy.HierarchyQueryMission;
-import com.albertech.demo.crud.query.image.ImageBean;
-import com.albertech.demo.crud.query.image.ImageQueryMission;
+import com.albertech.demo.func.image.ImageBean;
+import com.albertech.demo.func.image.mvp.impl.ImageQueryMission;
 import com.albertech.demo.crud.query.video.VideoBean;
 import com.albertech.demo.crud.query.video.VideoQueryMission;
 import com.albertech.filewatch.api.FileHelper;
+import com.albertech.filewatch.api.IFileQueryMisson;
 import com.albertech.filewatch.core.query.IFileQuery;
 
 import java.util.List;
@@ -35,6 +34,13 @@ public class QueryHelper {
 
 
     private IFileQuery mQueryer = FileHelper.createDefaultFileQuery();
+
+
+    public void query(Context context, IFileQueryMisson misson) {
+        if (mQueryer != null) {
+            mQueryer.queryFileByTypeAndParentPath(context, misson);
+        }
+    }
 
 
     public void rImage(Context context, final String parentPath, final QueryCallback<ImageBean> callback) {
@@ -72,24 +78,6 @@ public class QueryHelper {
                 @Override
                 public boolean recursive() {
                     return true;
-                }
-
-                @Override
-                public void onQueryResult(String path, List list) {
-                    super.onQueryResult(path, list);
-                    callback.onResult(path, list);
-                }
-            });
-        }
-    }
-
-    public void dFile(Context context, final String parentPath, final QueryCallback<HierarchyBean> callback) {
-        if (mQueryer != null) {
-            mQueryer.queryFileByTypeAndParentPath(context, new HierarchyQueryMission() {
-
-                @Override
-                public String parentPath() {
-                    return parentPath;
                 }
 
                 @Override

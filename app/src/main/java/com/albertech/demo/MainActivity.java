@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.albertech.demo.container.home.HomeActivity;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -31,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        HomeActivity.start(getApplicationContext());
-//        finish();
+        HomeActivity.start(getApplicationContext());
+        finish();
 
         setContentView(R.layout.activity_main);
 
