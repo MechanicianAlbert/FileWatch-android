@@ -22,7 +22,7 @@ public class CategoryFragment extends TitleFragment {
             if (Res.string(R.string.str_category_image).equals(categoryBean.NAME)) {
                 ContainerActivity.start(getContext(), IFileConstant.IMAGE);
             } else if (Res.string(R.string.str_category_audio).equals(categoryBean.NAME)) {
-                ContainerActivity.start(getContext(), IFileConstant.VIDEO);
+                ContainerActivity.start(getContext(), IFileConstant.AUDIO);
             } else if (Res.string(R.string.str_category_video).equals(categoryBean.NAME)) {
                 ContainerActivity.start(getContext(), IFileConstant.VIDEO);
             }

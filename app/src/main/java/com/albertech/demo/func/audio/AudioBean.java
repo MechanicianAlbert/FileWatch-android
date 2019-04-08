@@ -1,4 +1,4 @@
-package com.albertech.demo.crud.query.audio;
+package com.albertech.demo.func.audio;
 
 import com.albertech.demo.base.bean.BaseFileBean;
 

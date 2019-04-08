@@ -1,11 +1,11 @@
-package com.albertech.demo.func.image.mvp.impl;
+package com.albertech.demo.func.audio.mvp.impl;
 
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.albertech.demo.func.image.ImageBean;
-import com.albertech.demo.func.image.mvp.IImageContract;
+import com.albertech.demo.func.audio.AudioBean;
+import com.albertech.demo.func.audio.mvp.IAudioContract;
 import com.albertech.demo.util.SortUtil;
 
 import java.lang.ref.WeakReference;
@@ -13,13 +13,13 @@ import java.util.List;
 
 
 
-public class ImagePreseneter extends Handler implements IImageContract.IImagePresenter {
+public class AudioPresenter extends Handler implements IAudioContract.IAudioPresenter {
 
 
     private final Runnable NOTIFIER = new Runnable() {
         @Override
         public void run() {
-            final IImageContract.IImageView view;
+            final IAudioContract.IAudioView view;
             if (mViewReference != null
                     && (view = mViewReference.get()) != null) {
                 view.onResult("", mList);
@@ -30,29 +30,28 @@ public class ImagePreseneter extends Handler implements IImageContract.IImagePre
 
     private Context mContext;
 
-    private WeakReference<IImageContract.IImageView> mViewReference;
-    private IImageContract.IImageModel mModel;
+    private WeakReference<IAudioContract.IAudioView> mViewReference;
+    private IAudioContract.IAudioModel mModel;
 
-    private List<ImageBean> mList;
+    private List<AudioBean> mList;
 
-    private int mSortType = SORT_BY_DATE;
+    private int mSortType = SORT_BY_ALPHABET;
 
 
-    public ImagePreseneter() {
+    public AudioPresenter() {
         super(Looper.getMainLooper());
     }
 
 
     @Override
-    public void init(Context context, IImageContract.IImageView view) {
+    public void init(Context context, IAudioContract.IAudioView view) {
         if (context == null) {
             throw new NullPointerException("Context cannot be null");
         }
         mContext = context;
-
         mViewReference = new WeakReference<>(view);
 
-        mModel = new ImageQueryMission();
+        mModel = new AudioQueryMission();
         mModel.init(this);
     }
 
@@ -99,12 +98,12 @@ public class ImagePreseneter extends Handler implements IImageContract.IImagePre
     }
 
     @Override
-    public void onResult(String path, List<ImageBean> list) {
+    public void onResult(String path, List<AudioBean> list) {
         handleResult(path, list);
     }
 
 
-    private void handleResult(final String path, final List<ImageBean> list) {
+    private void handleResult(final String path, final List<AudioBean> list) {
         mList = list;
         sort();
         notifyResult();
