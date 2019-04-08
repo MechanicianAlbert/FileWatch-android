@@ -36,7 +36,7 @@ public interface IImageContract {
 
         void release();
 
-        void show();
+        void load();
 
         void sortBy(int type);
 

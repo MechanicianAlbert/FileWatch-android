@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/fragment_video"
-        android:name="com.albertech.demo.func.video.VideoFragment"
+        android:name="com.albertech.demo.func.video.mvp.impl.VideoFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

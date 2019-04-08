@@ -36,11 +36,11 @@ public class HierarchyPresenter extends Handler implements IHierarchyContract.IH
     private WeakReference<IHierarchyContract.IHierarchyView> mViewReference;
     private IHierarchyContract.IHierarchyModel mModel;
 
-    private boolean mNeedShowHidden;
-    private int mSortType = SORT_BY_ALPHABET;
-
     private List<HierarchyBean> mAllFileList;
     private List<HierarchyBean> mUnHiddenFileList;
+
+    private boolean mNeedShowHidden;
+    private int mSortType = SORT_BY_ALPHABET;
 
 
 
@@ -90,7 +90,7 @@ public class HierarchyPresenter extends Handler implements IHierarchyContract.IH
     }
 
     @Override
-    public void toPath(String path) {
+    public void loadPath(String path) {
         BACK_STACK.push(path);
         if (mModel != null) {
             mModel.query(mContext, path);
@@ -115,7 +115,7 @@ public class HierarchyPresenter extends Handler implements IHierarchyContract.IH
 
     @Override
     public void refresh() {
-        toPath(BACK_STACK.peek());
+        loadPath(BACK_STACK.peek());
     }
 
     @Override
@@ -123,7 +123,7 @@ public class HierarchyPresenter extends Handler implements IHierarchyContract.IH
         if (BACK_STACK.size() > 1) {
             BACK_STACK.pop();
             String parentPath = BACK_STACK.pop();
-            toPath(parentPath);
+            loadPath(parentPath);
             return true;
         } else {
             return false;

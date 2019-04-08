@@ -1,11 +1,10 @@
-package com.albertech.demo.func.image.mvp.impl;
+package com.albertech.demo.func.video.mvp.impl;
 
 import android.content.Context;
 import android.os.Handler;
-import android.os.Looper;
 
-import com.albertech.demo.func.image.ImageBean;
-import com.albertech.demo.func.image.mvp.IImageContract;
+import com.albertech.demo.func.video.VideoBean;
+import com.albertech.demo.func.video.mvp.IVideoContract;
 import com.albertech.demo.util.SortUtil;
 
 import java.lang.ref.WeakReference;
@@ -13,13 +12,12 @@ import java.util.List;
 
 
 
-public class ImagePreseneter extends Handler implements IImageContract.IImagePresenter {
-
+public class VideoPresenter extends Handler implements IVideoContract.IVideoPresenter {
 
     private final Runnable NOTIFIER = new Runnable() {
         @Override
         public void run() {
-            final IImageContract.IImageView view;
+            final IVideoContract.IVideoView view;
             if (mViewReference != null
                     && (view = mViewReference.get()) != null) {
                 view.onResult("", mList);
@@ -30,29 +28,23 @@ public class ImagePreseneter extends Handler implements IImageContract.IImagePre
 
     private Context mContext;
 
-    private WeakReference<IImageContract.IImageView> mViewReference;
-    private IImageContract.IImageModel mModel;
+    private WeakReference<IVideoContract.IVideoView> mViewReference;
+    private IVideoContract.IVideoModel mModel;
 
-    private List<ImageBean> mList;
+    private List<VideoBean> mList;
 
     private int mSortType = SORT_BY_DATE;
 
 
-    public ImagePreseneter() {
-        super(Looper.getMainLooper());
-    }
-
-
     @Override
-    public void init(Context context, IImageContract.IImageView view) {
+    public void init(Context context, IVideoContract.IVideoView view) {
         if (context == null) {
             throw new NullPointerException("Context cannot be null");
         }
         mContext = context;
-
         mViewReference = new WeakReference<>(view);
 
-        mModel = new ImageQueryMission();
+        mModel = new VideoQueryMission();
         mModel.init(this);
     }
 
@@ -95,16 +87,16 @@ public class ImagePreseneter extends Handler implements IImageContract.IImagePre
 
     @Override
     public void refresh() {
-
+        load();
     }
 
     @Override
-    public void onResult(String path, List<ImageBean> list) {
+    public void onResult(String path, List<VideoBean> list) {
         handleResult(path, list);
     }
 
 
-    private void handleResult(final String path, final List<ImageBean> list) {
+    private void handleResult(final String path, final List<VideoBean> list) {
         mList = list;
         sort();
         notifyResult();

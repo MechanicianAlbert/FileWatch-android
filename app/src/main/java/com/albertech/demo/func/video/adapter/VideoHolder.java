@@ -6,7 +6,7 @@ import android.view.View;
 import com.albertech.demo.R;
 import com.albertech.demo.base.recycler.BaseHolder;
 import com.albertech.demo.base.recycler.BaseRecyclerAdapter;
-import com.albertech.demo.crud.query.video.VideoBean;
+import com.albertech.demo.func.video.VideoBean;
 import com.albertech.demo.util.DurationUtil;
 import com.albertech.demo.util.SizeUtil;
 

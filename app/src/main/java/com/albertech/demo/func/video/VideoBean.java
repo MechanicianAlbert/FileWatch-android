@@ -1,4 +1,4 @@
-package com.albertech.demo.crud.query.video;
+package com.albertech.demo.func.video;
 
 import com.albertech.demo.base.bean.BaseFileBean;
 

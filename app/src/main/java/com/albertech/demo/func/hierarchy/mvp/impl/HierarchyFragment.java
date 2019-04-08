@@ -22,7 +22,7 @@ public class HierarchyFragment extends TitleFragment implements IHierarchyContra
         @Override
         public boolean onItemClick(int position, HierarchyBean bean) {
             if (bean.isDirectory()) {
-                mPresenter.toPath(bean.path);
+                mPresenter.loadPath(bean.path);
             }
             return false;
         }
@@ -66,7 +66,7 @@ public class HierarchyFragment extends TitleFragment implements IHierarchyContra
 
         mPresenter = new HierarchyPresenter();
         mPresenter.init(getContext(), this);
-        mPresenter.toPath(IHierarchyContract.DEFAULT_PARENT_PATH);
+        mPresenter.loadPath(IHierarchyContract.DEFAULT_PARENT_PATH);
     }
 
     @Override

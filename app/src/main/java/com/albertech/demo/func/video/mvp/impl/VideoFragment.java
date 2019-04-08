@@ -1,4 +1,4 @@
-package com.albertech.demo.func.video;
+package com.albertech.demo.func.video.mvp.impl;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,19 +9,19 @@ import com.albertech.demo.R;
 import com.albertech.demo.base.fragment.TitleFragment;
 import com.albertech.demo.crud.query.QueryCallback;
 import com.albertech.demo.crud.query.QueryHelper;
-import com.albertech.demo.crud.query.video.VideoBean;
+import com.albertech.demo.func.video.VideoBean;
 import com.albertech.demo.func.video.adapter.VideoAdapter;
+import com.albertech.demo.func.video.mvp.IVideoContract;
 import com.albertech.demo.util.Res;
 import com.albertech.filewatch.api.FileHelper;
 import com.albertech.filewatch.api.IFileConstant;
 import com.albertech.filewatch.api.IFileWatchSubscriber;
 import com.albertech.filewatch.api.IFileWatchUnsubscribe;
-import com.albertech.filewatch.core.query.IFileType;
 
 import java.util.List;
 
 
-public class VideoFragment extends TitleFragment {
+public class VideoFragment extends TitleFragment implements IVideoContract.IVideoView {
 
     private final VideoAdapter ADAPTER = new VideoAdapter() {
         @Override
@@ -32,7 +32,8 @@ public class VideoFragment extends TitleFragment {
 
 
     private RecyclerView mRvVideo;
-    private IFileWatchUnsubscribe mUnsunscribe;
+
+    private IVideoContract.IVideoPresenter mPresenter;
 
 
     @Override
@@ -54,46 +55,24 @@ public class VideoFragment extends TitleFragment {
     @Override
     protected void initData() {
         mRvVideo.setAdapter(ADAPTER);
-        update();
+
+        mPresenter = new VideoPresenter();
+        mPresenter.init(getContext(), this);
+        mPresenter.load();
     }
 
     @Override
     protected void release() {
-        unsubscribeFileWatch();
-    }
-
-    private void subscribeFileWatch() {
-        mUnsunscribe = FileHelper.subscribeFileWatch(getContext(), new IFileWatchSubscriber() {
-            @Override
-            public void onEvent(int event, String parentPath, String childPath) {
-
-            }
-
-            @Override
-            public void onScanResult(String parentPath) {
-                update();
-            }
-
-        }, IFileConstant.IMAGE, null);
-    }
-
-    private void unsubscribeFileWatch() {
-        if (mUnsunscribe != null) {
-            mUnsunscribe.unsubscribe();
+        if (mPresenter != null) {
+            mPresenter.release();
+            mPresenter = null;
         }
     }
 
-    private void update() {
-        QueryHelper.getInstance().rVideo(getContext(), null, new QueryCallback<VideoBean>() {
-            @Override
-            public void onResult(String path, final List<VideoBean> list) {
-                mRvVideo.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        ADAPTER.updateData(list);
-                    }
-                });
-            }
-        });
+
+    @Override
+    public void onResult(String path, List<VideoBean> list) {
+        ADAPTER.updateData(list);
     }
+
 }

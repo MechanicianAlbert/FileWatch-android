@@ -53,7 +53,7 @@ public class ImageFragment extends TitleFragment implements IImageContract.IImag
 
         mPresenter = new ImagePreseneter();
         mPresenter.init(getContext(), this);
-        mPresenter.show();
+        mPresenter.load();
     }
 
     @Override

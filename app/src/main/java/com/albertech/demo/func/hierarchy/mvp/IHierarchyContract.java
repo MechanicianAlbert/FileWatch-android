@@ -35,7 +35,7 @@ public interface IHierarchyContract extends IFileConstant {
 
         void release();
 
-        void toPath(String path);
+        void loadPath(String path);
 
         void showHidden(boolean show);
 

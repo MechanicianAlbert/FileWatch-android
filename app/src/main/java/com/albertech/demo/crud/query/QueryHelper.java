@@ -6,8 +6,8 @@ import android.text.TextUtils;
 
 import com.albertech.demo.func.image.ImageBean;
 import com.albertech.demo.func.image.mvp.impl.ImageQueryMission;
-import com.albertech.demo.crud.query.video.VideoBean;
-import com.albertech.demo.crud.query.video.VideoQueryMission;
+import com.albertech.demo.func.video.VideoBean;
+import com.albertech.demo.func.video.mvp.impl.VideoQueryMission;
 import com.albertech.filewatch.api.FileHelper;
 import com.albertech.filewatch.api.IFileQueryMisson;
 import com.albertech.filewatch.core.query.IFileQuery;
