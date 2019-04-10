@@ -11,10 +11,10 @@ import com.albertech.demo.base.recycler.BaseRecyclerAdapter;
 import com.albertech.demo.func.category.CategoryBean;
 
 
-public class CategoryHolder extends BaseHolder<BaseRecyclerAdapter<CategoryBean>, CategoryBean> {
+public class CategoryHolder extends BaseHolder<BaseRecyclerAdapter<CategoryHolder, CategoryBean>, CategoryBean> {
 
 
-    public CategoryHolder(BaseRecyclerAdapter<CategoryBean> adapter, @NonNull View itemView) {
+    public CategoryHolder(BaseRecyclerAdapter<CategoryHolder, CategoryBean> adapter, @NonNull View itemView) {
         super(adapter, itemView);
     }
 

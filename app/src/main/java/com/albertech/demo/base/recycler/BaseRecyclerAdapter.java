@@ -11,7 +11,7 @@ import java.util.List;
 
 
 
-public abstract class BaseRecyclerAdapter<Bean> extends RecyclerView.Adapter<BaseHolder<BaseRecyclerAdapter<Bean>, Bean>>
+public abstract class BaseRecyclerAdapter<Holder extends BaseHolder<? extends BaseRecyclerAdapter, Bean>, Bean> extends RecyclerView.Adapter<Holder>
         implements OnItemClickListener<Bean> {
 
     private final List<Bean> DATA = new ArrayList<>();
@@ -35,14 +35,14 @@ public abstract class BaseRecyclerAdapter<Bean> extends RecyclerView.Adapter<Bas
 
     @NonNull
     @Override
-    public final BaseHolder<BaseRecyclerAdapter<Bean>, Bean> onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+    public final Holder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View itemView = inflater.inflate(viewType, viewGroup, false);
         return getHolderByViewType(itemView, viewType);
     }
 
     @Override
-    public final void onBindViewHolder(@NonNull BaseHolder<BaseRecyclerAdapter<Bean>, Bean> viewHolder, int position) {
+    public final void onBindViewHolder(@NonNull Holder viewHolder, int position) {
         viewHolder.onBind(position, DATA.get(position));
     }
 
@@ -57,5 +57,5 @@ public abstract class BaseRecyclerAdapter<Bean> extends RecyclerView.Adapter<Bas
     }
 
 
-    protected abstract BaseHolder<BaseRecyclerAdapter<Bean>, Bean> getHolderByViewType(View itemView, int viewType);
+    protected abstract Holder getHolderByViewType(View itemView, int viewType);
 }

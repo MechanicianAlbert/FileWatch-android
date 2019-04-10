@@ -3,13 +3,12 @@ package com.albertech.demo.func.image.adapter;
 import android.view.View;
 
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.BaseHolder;
-import com.albertech.demo.base.recycler.BaseRecyclerAdapter;
+import com.albertech.demo.base.recycler.SelectableRecyclerAdapter;
 import com.albertech.demo.func.image.ImageBean;
 
 
 
-public class ImageAdapter extends BaseRecyclerAdapter<ImageBean> {
+public class ImageAdapter extends SelectableRecyclerAdapter<ImageHolder, ImageBean> {
 
     @Override
     public int getItemViewType(int position) {
@@ -17,7 +16,7 @@ public class ImageAdapter extends BaseRecyclerAdapter<ImageBean> {
     }
 
     @Override
-    protected BaseHolder<BaseRecyclerAdapter<ImageBean>, ImageBean> getHolderByViewType(View itemView, int viewType) {
+    protected ImageHolder getHolderByViewType(View itemView, int viewType) {
         return new ImageHolder(this, itemView);
     }
 }

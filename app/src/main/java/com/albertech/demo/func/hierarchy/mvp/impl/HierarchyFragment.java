@@ -20,11 +20,10 @@ public class HierarchyFragment extends TitleFragment implements IHierarchyContra
 
     private final HierarchyAdapter ADAPTER = new HierarchyAdapter() {
         @Override
-        public boolean onItemClick(int position, HierarchyBean bean) {
+        public void onItemClickNotSelecting(int position, HierarchyBean bean) {
             if (bean.isDirectory()) {
                 mPresenter.loadPath(bean.path);
             }
-            return false;
         }
     };
 

@@ -3,13 +3,12 @@ package com.albertech.demo.func.category.adapter;
 import android.view.View;
 
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.BaseHolder;
 import com.albertech.demo.base.recycler.BaseRecyclerAdapter;
 import com.albertech.demo.func.category.CategoryBean;
 import com.albertech.demo.func.category.ICategoryContract;
 
 
-public class CategoryAdapter extends BaseRecyclerAdapter<CategoryBean> {
+public class CategoryAdapter extends BaseRecyclerAdapter<CategoryHolder, CategoryBean> {
 
     public CategoryAdapter() {
         updateData(ICategoryContract.CategoryModel.getCategories());
@@ -22,7 +21,7 @@ public class CategoryAdapter extends BaseRecyclerAdapter<CategoryBean> {
     }
 
     @Override
-    protected BaseHolder<BaseRecyclerAdapter<CategoryBean>, CategoryBean> getHolderByViewType(View itemView, int viewType) {
+    protected CategoryHolder getHolderByViewType(View itemView, int viewType) {
         return new CategoryHolder(this, itemView);
     }
 }

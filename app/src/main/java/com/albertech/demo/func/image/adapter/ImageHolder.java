@@ -6,18 +6,18 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.BaseHolder;
-import com.albertech.demo.base.recycler.BaseRecyclerAdapter;
+import com.albertech.demo.base.recycler.SelectableHolder;
+import com.albertech.demo.base.recycler.SelectableRecyclerAdapter;
 import com.albertech.demo.func.image.ImageBean;
 import com.bumptech.glide.Glide;
 
 import java.io.File;
 
 
-public class ImageHolder extends BaseHolder<BaseRecyclerAdapter<ImageBean>, ImageBean> {
+public class ImageHolder extends SelectableHolder<SelectableRecyclerAdapter<ImageHolder, ImageBean>, ImageBean> {
 
 
-    public ImageHolder(BaseRecyclerAdapter<ImageBean> adapter, @NonNull View itemView) {
+    public ImageHolder(SelectableRecyclerAdapter<ImageHolder, ImageBean> adapter, @NonNull View itemView) {
         super(adapter, itemView);
     }
 

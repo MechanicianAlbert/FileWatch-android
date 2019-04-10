@@ -2,23 +2,21 @@ package com.albertech.demo.func.hierarchy.adapter;
 
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.CheckBox;
 
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.BaseHolder;
-import com.albertech.demo.base.recycler.BaseRecyclerAdapter;
+import com.albertech.demo.base.recycler.SelectableHolder;
+import com.albertech.demo.base.recycler.SelectableRecyclerAdapter;
 import com.albertech.demo.func.hierarchy.HierarchyBean;
 import com.albertech.demo.util.DateUtil;
 import com.albertech.demo.util.Res;
 import com.albertech.demo.util.SizeUtil;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+
+public class HierarchyHolder extends SelectableHolder<SelectableRecyclerAdapter<HierarchyHolder, HierarchyBean>, HierarchyBean> {
 
 
-public class HierarchyHolder extends BaseHolder<BaseRecyclerAdapter<HierarchyBean>, HierarchyBean> {
-
-
-    public HierarchyHolder(BaseRecyclerAdapter<HierarchyBean> adapter, @NonNull View itemView) {
+    public HierarchyHolder(SelectableRecyclerAdapter<HierarchyHolder, HierarchyBean> adapter, @NonNull View itemView) {
         super(adapter, itemView);
     }
 
@@ -31,5 +29,9 @@ public class HierarchyHolder extends BaseHolder<BaseRecyclerAdapter<HierarchyBea
                         SizeUtil.format(bean.size),
                         DateUtil.format(bean.date)));
         setImage(R.id.iv_item_file_icon, bean.icon);
+
+        CheckBox cb = $(R.id.cb_item_file_selection);
+        cb.setVisibility(isSelecting() ? View.VISIBLE : View.INVISIBLE);
+        cb.setChecked(isSelected(position));
     }
 }

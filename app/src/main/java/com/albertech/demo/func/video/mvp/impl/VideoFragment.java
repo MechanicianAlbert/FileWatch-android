@@ -7,16 +7,10 @@ import android.view.View;
 
 import com.albertech.demo.R;
 import com.albertech.demo.base.fragment.TitleFragment;
-import com.albertech.demo.crud.query.QueryCallback;
-import com.albertech.demo.crud.query.QueryHelper;
 import com.albertech.demo.func.video.VideoBean;
 import com.albertech.demo.func.video.adapter.VideoAdapter;
 import com.albertech.demo.func.video.mvp.IVideoContract;
 import com.albertech.demo.util.Res;
-import com.albertech.filewatch.api.FileHelper;
-import com.albertech.filewatch.api.IFileConstant;
-import com.albertech.filewatch.api.IFileWatchSubscriber;
-import com.albertech.filewatch.api.IFileWatchUnsubscribe;
 
 import java.util.List;
 
@@ -25,8 +19,8 @@ public class VideoFragment extends TitleFragment implements IVideoContract.IVide
 
     private final VideoAdapter ADAPTER = new VideoAdapter() {
         @Override
-        public boolean onItemClick(int position, VideoBean videoBean) {
-            return false;
+        public void onItemClickNotSelecting(int position, VideoBean imageBean) {
+
         }
     };
 

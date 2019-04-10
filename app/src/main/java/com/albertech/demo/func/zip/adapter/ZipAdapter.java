@@ -3,11 +3,10 @@ package com.albertech.demo.func.zip.adapter;
 import android.view.View;
 
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.BaseHolder;
-import com.albertech.demo.base.recycler.BaseRecyclerAdapter;
+import com.albertech.demo.base.recycler.SelectableRecyclerAdapter;
 import com.albertech.demo.func.zip.ZipBean;
 
-public class ZipAdapter extends BaseRecyclerAdapter<ZipBean> {
+public class ZipAdapter extends SelectableRecyclerAdapter<ZipHolder, ZipBean> {
 
     @Override
     public int getItemViewType(int position) {
@@ -15,7 +14,7 @@ public class ZipAdapter extends BaseRecyclerAdapter<ZipBean> {
     }
 
     @Override
-    protected BaseHolder<BaseRecyclerAdapter<ZipBean>, ZipBean> getHolderByViewType(View itemView, int viewType) {
+    protected ZipHolder getHolderByViewType(View itemView, int viewType) {
         return new ZipHolder(this, itemView);
     }
 

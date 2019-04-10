@@ -20,8 +20,8 @@ public class ImageFragment extends TitleFragment implements IImageContract.IImag
 
     private final ImageAdapter ADAPTER = new ImageAdapter() {
         @Override
-        public boolean onItemClick(int position, ImageBean imageBean) {
-            return false;
+        public void onItemClickNotSelecting(int position, ImageBean imageBean) {
+
         }
     };
 

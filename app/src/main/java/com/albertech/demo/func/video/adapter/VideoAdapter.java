@@ -3,12 +3,11 @@ package com.albertech.demo.func.video.adapter;
 import android.view.View;
 
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.BaseHolder;
-import com.albertech.demo.base.recycler.BaseRecyclerAdapter;
+import com.albertech.demo.base.recycler.SelectableRecyclerAdapter;
 import com.albertech.demo.func.video.VideoBean;
 
 
-public class VideoAdapter extends BaseRecyclerAdapter<VideoBean> {
+public class VideoAdapter extends SelectableRecyclerAdapter<VideoHolder, VideoBean> {
 
     @Override
     public int getItemViewType(int position) {
@@ -16,7 +15,7 @@ public class VideoAdapter extends BaseRecyclerAdapter<VideoBean> {
     }
 
     @Override
-    protected BaseHolder<BaseRecyclerAdapter<VideoBean>, VideoBean> getHolderByViewType(View itemView, int viewType) {
+    protected VideoHolder getHolderByViewType(View itemView, int viewType) {
         return new VideoHolder(this, itemView);
     }
 }

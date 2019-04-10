@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
@@ -16,9 +17,10 @@
             android:layout_height="@dimen/iv_hierarchy_size" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:layout_weight="1"
             android:gravity="top|left"
             android:orientation="vertical">
 
@@ -36,6 +38,13 @@
                 android:layout_marginTop="5dp"
                 android:textColor="@color/colorGrayMain" />
         </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/cb_item_file_selection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:clickable="false" />
     </LinearLayout>
 
     <View

@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-public class BaseHolder<Adapter extends BaseRecyclerAdapter<Bean>, Bean> extends RecyclerView.ViewHolder
+public class BaseHolder<Adapter extends BaseRecyclerAdapter<? extends BaseHolder, Bean>, Bean> extends RecyclerView.ViewHolder
         implements View.OnClickListener, View.OnLongClickListener, OnItemClickListener<Bean> {
 
     private final SparseArray<View> VIEWS = new SparseArray<>();
@@ -43,6 +43,10 @@ public class BaseHolder<Adapter extends BaseRecyclerAdapter<Bean>, Bean> extends
 
     protected final View getItemView() {
         return mItemView;
+    }
+
+    protected final Adapter getAdapter() {
+        return mAdapter;
     }
 
     protected final void setText(int id, String text) {

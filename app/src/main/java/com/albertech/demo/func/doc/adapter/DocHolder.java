@@ -2,19 +2,20 @@ package com.albertech.demo.func.doc.adapter;
 
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.CheckBox;
 
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.BaseHolder;
-import com.albertech.demo.base.recycler.BaseRecyclerAdapter;
+import com.albertech.demo.base.recycler.SelectableHolder;
+import com.albertech.demo.base.recycler.SelectableRecyclerAdapter;
 import com.albertech.demo.func.doc.DocBean;
 import com.albertech.demo.util.DateUtil;
 import com.albertech.demo.util.Res;
 import com.albertech.demo.util.SizeUtil;
 
 
-public class DocHolder extends BaseHolder<BaseRecyclerAdapter<DocBean>, DocBean> {
+public class DocHolder extends SelectableHolder<SelectableRecyclerAdapter<DocHolder, DocBean>, DocBean> {
 
-    public DocHolder(BaseRecyclerAdapter<DocBean> adapter, @NonNull View itemView) {
+    public DocHolder(SelectableRecyclerAdapter<DocHolder, DocBean> adapter, @NonNull View itemView) {
         super(adapter, itemView);
     }
 
@@ -28,5 +29,9 @@ public class DocHolder extends BaseHolder<BaseRecyclerAdapter<DocBean>, DocBean>
                         SizeUtil.format(bean.size),
                         DateUtil.format(bean.date)));
         setImage(R.id.iv_item_file_icon, bean.icon);
+
+        CheckBox cb = $(R.id.cb_item_file_selection);
+        cb.setVisibility(isSelecting() ? View.VISIBLE : View.INVISIBLE);
+        cb.setChecked(isSelected(position));
     }
 }

@@ -4,16 +4,16 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.BaseHolder;
-import com.albertech.demo.base.recycler.BaseRecyclerAdapter;
+import com.albertech.demo.base.recycler.SelectableHolder;
+import com.albertech.demo.base.recycler.SelectableRecyclerAdapter;
 import com.albertech.demo.func.video.VideoBean;
 import com.albertech.demo.util.DurationUtil;
 import com.albertech.demo.util.SizeUtil;
 
 
-public class VideoHolder extends BaseHolder<BaseRecyclerAdapter<VideoBean>, VideoBean> {
+public class VideoHolder extends SelectableHolder<SelectableRecyclerAdapter<VideoHolder, VideoBean>, VideoBean> {
 
-    public VideoHolder(BaseRecyclerAdapter<VideoBean> adapter, @NonNull View itemView) {
+    public VideoHolder(SelectableRecyclerAdapter<VideoHolder, VideoBean> adapter, @NonNull View itemView) {
         super(adapter, itemView);
     }
 
