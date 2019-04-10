@@ -1,4 +1,4 @@
-package com.albertech.demo.func.audio.adapter;
+package com.albertech.demo.func.doc.adapter;
 
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -6,20 +6,21 @@ import android.view.View;
 import com.albertech.demo.R;
 import com.albertech.demo.base.recycler.BaseHolder;
 import com.albertech.demo.base.recycler.BaseRecyclerAdapter;
-import com.albertech.demo.func.audio.AudioBean;
+import com.albertech.demo.func.doc.DocBean;
 import com.albertech.demo.util.DateUtil;
 import com.albertech.demo.util.Res;
 import com.albertech.demo.util.SizeUtil;
 
 
-public class AudioHolder extends BaseHolder<BaseRecyclerAdapter<AudioBean>, AudioBean> {
+public class DocHolder extends BaseHolder<BaseRecyclerAdapter<DocBean>, DocBean> {
 
-    public AudioHolder(AudioAdapter adapter, @NonNull View itemView) {
+    public DocHolder(BaseRecyclerAdapter<DocBean> adapter, @NonNull View itemView) {
         super(adapter, itemView);
     }
 
+
     @Override
-    protected void onBind(int position, AudioBean bean) {
+    protected void onBind(int position, DocBean bean) {
         setText(R.id.tv_item_file_name, bean.name);
         setText(R.id.tv_item_file_info,
                 String.format(

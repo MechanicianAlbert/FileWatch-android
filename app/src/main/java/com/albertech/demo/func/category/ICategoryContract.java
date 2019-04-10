@@ -11,9 +11,9 @@ public interface ICategoryContract {
 
     class CategoryModel {
 
-        final List<CategoryBean> CATEGORIES = new ArrayList<>();
+        private static final List<CategoryBean> CATEGORIES = new ArrayList<>();
 
-        CategoryModel() {
+        static {
             CATEGORIES.add(new CategoryBean(Res.string(R.string.str_category_image), R.drawable.ic_type_image));
             CATEGORIES.add(new CategoryBean(Res.string(R.string.str_category_audio), R.drawable.ic_type_audio));
             CATEGORIES.add(new CategoryBean(Res.string(R.string.str_category_video), R.drawable.ic_type_video));
@@ -21,6 +21,10 @@ public interface ICategoryContract {
             CATEGORIES.add(new CategoryBean(Res.string(R.string.str_category_apk), R.drawable.ic_type_apk));
             CATEGORIES.add(new CategoryBean(Res.string(R.string.str_category_zip), R.drawable.ic_type_zip));
             CATEGORIES.add(new CategoryBean(Res.string(R.string.str_category_download), R.drawable.ic_type_download));
+        }
+
+        public static List<CategoryBean> getCategories() {
+            return new ArrayList<>(CATEGORIES);
         }
     }
 }

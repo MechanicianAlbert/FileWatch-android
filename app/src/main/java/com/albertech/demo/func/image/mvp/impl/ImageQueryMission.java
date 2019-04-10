@@ -2,7 +2,9 @@ package com.albertech.demo.func.image.mvp.impl;
 
 
 import android.content.Context;
+import android.database.Cursor;
 
+import com.albertech.demo.R;
 import com.albertech.demo.crud.query.AbsQueryMission;
 import com.albertech.demo.crud.query.QueryHelper;
 import com.albertech.demo.func.image.ImageBean;
@@ -29,6 +31,14 @@ public class ImageQueryMission extends AbsQueryMission<ImageBean> implements IIm
     @Override
     public final String[] projection() {
         return new String[]{COLUMN_NAME_PATH};
+    }
+
+    @Override
+    public ImageBean parse(Cursor cursor) {
+        ImageBean bean = super.parse(cursor);
+        bean.type = IMAGE;
+        bean.icon = R.drawable.ic_type_image;
+        return bean;
     }
 
     @Override

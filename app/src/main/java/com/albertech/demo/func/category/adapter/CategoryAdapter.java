@@ -1,17 +1,18 @@
-package com.albertech.demo.func.category;
+package com.albertech.demo.func.category.adapter;
 
 import android.view.View;
 
 import com.albertech.demo.R;
 import com.albertech.demo.base.recycler.BaseHolder;
 import com.albertech.demo.base.recycler.BaseRecyclerAdapter;
-
+import com.albertech.demo.func.category.CategoryBean;
+import com.albertech.demo.func.category.ICategoryContract;
 
 
 public class CategoryAdapter extends BaseRecyclerAdapter<CategoryBean> {
 
-    CategoryAdapter() {
-        updateData(new ICategoryContract.CategoryModel().CATEGORIES);
+    public CategoryAdapter() {
+        updateData(ICategoryContract.CategoryModel.getCategories());
     }
 
 

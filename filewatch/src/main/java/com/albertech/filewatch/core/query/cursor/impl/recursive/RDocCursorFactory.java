@@ -23,12 +23,7 @@ public class RDocCursorFactory extends RecursiveCursurFactory {
                 ".xlsx",
                 ".ppt",
                 ".pptx",
-                ".pps",
-                ".pages",
-                ".txt",
-                ".log",
-                ".xml",
-                ".html"
+                ".txt"
         };
     }
 

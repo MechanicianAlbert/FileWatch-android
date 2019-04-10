@@ -23,12 +23,7 @@ public class DDocCursorFactory extends DirectCursorFactory {
                 ".xlsx",
                 ".ppt",
                 ".pptx",
-                ".pps",
-                ".pages",
-                ".txt",
-                ".log",
-                ".xml",
-                ".html"
+                ".txt"
         };
     }
 

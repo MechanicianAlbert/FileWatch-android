@@ -2,8 +2,8 @@ package com.albertech.demo.func.category;
 
 public class CategoryBean {
 
-    final String NAME;
-    final int ICON;
+    public final String NAME;
+    public final int ICON;
 
     CategoryBean(String name, int icon) {
         NAME = name;

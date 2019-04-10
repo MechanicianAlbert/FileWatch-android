@@ -2,7 +2,9 @@ package com.albertech.demo.func.audio.mvp.impl;
 
 
 import android.content.Context;
+import android.database.Cursor;
 
+import com.albertech.demo.R;
 import com.albertech.demo.crud.query.AbsQueryMission;
 import com.albertech.demo.crud.query.QueryHelper;
 import com.albertech.demo.func.audio.AudioBean;
@@ -22,13 +24,21 @@ public class AudioQueryMission extends AbsQueryMission<AudioBean> implements IAu
     }
 
     @Override
+    public final String[] projection() {
+        return new String[]{COLUMN_NAME_PATH};
+    }
+
+    @Override
     public boolean recursive() {
         return true;
     }
 
     @Override
-    public final String[] projection() {
-        return new String[]{COLUMN_NAME_PATH};
+    public AudioBean parse(Cursor cursor) {
+        AudioBean bean = super.parse(cursor);
+        bean.type = AUDIO;
+        bean.icon = R.drawable.ic_type_audio;
+        return bean;
     }
 
     @Override

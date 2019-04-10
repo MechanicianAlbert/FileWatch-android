@@ -11,4 +11,6 @@
     <string name="str_category_apk">安装包</string>
     <string name="str_category_zip">压缩包</string>
     <string name="str_category_download">下载</string>
+
+    <string name="str_file_info">%1$s | %2$s</string>
 </resources>

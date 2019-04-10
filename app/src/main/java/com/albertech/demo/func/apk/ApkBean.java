@@ -1,4 +1,4 @@
-package com.albertech.demo.crud.query.apk;
+package com.albertech.demo.func.apk;
 
 import com.albertech.demo.base.bean.BaseFileBean;
 

@@ -12,7 +12,7 @@ public class HierarchyAdapter extends BaseRecyclerAdapter<HierarchyBean> {
 
     @Override
     public int getItemViewType(int position) {
-        return R.layout.item_hierarcy;
+        return R.layout.item_file;
     }
 
     @Override

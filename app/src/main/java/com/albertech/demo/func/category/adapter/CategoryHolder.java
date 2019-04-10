@@ -1,4 +1,4 @@
-package com.albertech.demo.func.category;
+package com.albertech.demo.func.category.adapter;
 
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.albertech.demo.R;
 import com.albertech.demo.base.recycler.BaseHolder;
 import com.albertech.demo.base.recycler.BaseRecyclerAdapter;
-
+import com.albertech.demo.func.category.CategoryBean;
 
 
 public class CategoryHolder extends BaseHolder<BaseRecyclerAdapter<CategoryBean>, CategoryBean> {

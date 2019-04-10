@@ -13,7 +13,7 @@ public class AudioAdapter extends BaseRecyclerAdapter<AudioBean> {
 
     @Override
     public int getItemViewType(int position) {
-        return R.layout.item_audio;
+        return R.layout.item_file;
     }
 
     @Override

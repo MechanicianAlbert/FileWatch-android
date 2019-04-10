@@ -1,4 +1,4 @@
-package com.albertech.demo.crud.query.zip;
+package com.albertech.demo.func.zip;
 
 import com.albertech.demo.base.bean.BaseFileBean;
 

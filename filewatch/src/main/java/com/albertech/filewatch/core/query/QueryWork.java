@@ -36,7 +36,8 @@ public class QueryWork<Bean> implements Runnable {
         if (mCursorFactory != null && mMission != null) {
             Cursor cursor = mCursorFactory.createCursor(mContext, mMission.projection(), mParentPath);
             while (cursor != null && cursor.moveToNext()) {
-                list.add(mMission.parse(cursor));
+                Bean bean = mMission.parse(cursor);
+                list.add(bean);
             }
             close(cursor);
             mMission.onQueryResult(mParentPath, list);
