@@ -3,7 +3,6 @@ package com.albertech.demo.func.hierarchy.mvp.impl;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.EditText;
 
 import com.albertech.demo.R;
 import com.albertech.demo.base.fragment.TitleFragment;
@@ -28,7 +27,6 @@ public class HierarchyFragment extends TitleFragment implements IHierarchyContra
     };
 
 
-    private EditText mEtSearch;
     private View mBtnSearch;
     private RecyclerView mRvHierarchy;
 
@@ -53,8 +51,7 @@ public class HierarchyFragment extends TitleFragment implements IHierarchyContra
 
     @Override
     protected void initView(View root) {
-        mEtSearch = root.findViewById(R.id.et_hierarchy_search);
-        mBtnSearch = root.findViewById(R.id.btn_hierarchy_search);
+        mBtnSearch = root.findViewById(R.id.btn_search);
         mRvHierarchy = root.findViewById(R.id.rv_hierarchy);
         mRvHierarchy.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
     }

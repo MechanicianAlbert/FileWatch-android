@@ -45,11 +45,7 @@ public abstract class SelectableRecyclerAdapter<Holder extends SelectableHolder<
     }
 
 
-    protected boolean isSelecting() {
-        return mIsSelecting;
-    }
-
-    protected boolean isSelected(int position) {
+    protected boolean isItemSelected(int position) {
         return SELECTED_POSITIONS.contains(position);
     }
 
@@ -57,6 +53,10 @@ public abstract class SelectableRecyclerAdapter<Holder extends SelectableHolder<
 
     }
 
+
+    public boolean isSelecting() {
+        return mIsSelecting;
+    }
 
     public void selectAll() {
         if (mIsSelecting) {
@@ -92,7 +92,7 @@ public abstract class SelectableRecyclerAdapter<Holder extends SelectableHolder<
     @Override
     public final boolean onItemClick(int position, Bean bean) {
         if (mIsSelecting) {
-            updateSelection(position, !isSelected(position));
+            updateSelection(position, !isItemSelected(position));
         } else {
             onItemClickNotSelecting(position, bean);
         }

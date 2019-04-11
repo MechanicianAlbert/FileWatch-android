@@ -5,23 +5,32 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/btn_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin"
+        android:background="@drawable/shape_bg_search"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/et_hierarchy_search"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
         <ImageView
-            android:id="@+id/btn_hierarchy_search"
             android:layout_width="@dimen/btn_search_size"
             android:layout_height="@dimen/btn_search_size"
             android:background="@drawable/ic_operate_search" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/standard_margin"
+            android:layout_weight="1"
+            android:text="@string/str_action_search"
+            android:textColor="@color/colorGrayMain" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/colorGrayLight" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_hierarchy"

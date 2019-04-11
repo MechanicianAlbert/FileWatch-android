@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/iv_item_file_icon"
-            android:layout_width="@dimen/iv_hierarchy_size"
-            android:layout_height="@dimen/iv_hierarchy_size" />
+            android:layout_width="@dimen/standard_list_item_icon_size"
+            android:layout_height="@dimen/standard_list_item_icon_size" />
 
         <LinearLayout
             android:layout_width="0dp"

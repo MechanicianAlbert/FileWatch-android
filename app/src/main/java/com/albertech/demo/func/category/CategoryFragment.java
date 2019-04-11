@@ -4,7 +4,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.EditText;
 
 import com.albertech.demo.R;
 import com.albertech.demo.base.fragment.TitleFragment;
@@ -38,7 +37,6 @@ public class CategoryFragment extends TitleFragment {
     };
 
 
-    private EditText mEtSearch;
     private View mBtnSearch;
     private RecyclerView mRvCategory;
 
@@ -60,8 +58,7 @@ public class CategoryFragment extends TitleFragment {
 
     @Override
     protected void initView(View root) {
-        mEtSearch = root.findViewById(R.id.et_category_search);
-        mBtnSearch = root.findViewById(R.id.btn_category_search);
+        mBtnSearch = root.findViewById(R.id.btn_search);
         mRvCategory = root.findViewById(R.id.rv_category);
         mRvCategory.setLayoutManager(new GridLayoutManager(getContext(), 3, LinearLayoutManager.VERTICAL, false));
     }

@@ -35,6 +35,10 @@ public class Res {
         return context().getResources().getString(stringRes);
     }
 
+    public static String string(@StringRes int stringRes, Object... formatArgs) {
+        return context().getResources().getString(stringRes, formatArgs);
+    }
+
     public static int color(@ColorRes int colorRes) {
         return context().getResources().getColor(colorRes);
     }

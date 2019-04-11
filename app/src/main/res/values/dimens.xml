@@ -2,10 +2,14 @@
 <resources>
     <dimen name="btn_search_size">30dp</dimen>
 
-    <dimen name="iv_hierarchy_size">50dp</dimen>
-    <dimen name="tv_hierarchy_divider_margin">10dp</dimen>
+    <dimen name="standard_btn_size">30dp</dimen>
+
+    <dimen name="standard_list_item_icon_size">50dp</dimen>
+
+    <dimen name="standard_margin">10dp</dimen>
 
     <dimen name="iv_image_height">140dp</dimen>
 
     <dimen name="iv_video_preview_height">100dp</dimen>
+
 </resources>

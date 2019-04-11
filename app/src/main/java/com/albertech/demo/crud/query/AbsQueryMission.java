@@ -54,18 +54,18 @@ public abstract class AbsQueryMission<Bean extends BaseFileBean> implements IFil
     }
 
     @Override
-    public void onQueryResult(String path, List list) {
-        ForEachUtil.forEach(list, new ForEachUtil.ItemHandler<BaseFileBean>() {
+    public void onQueryResult(String path, List<Bean> list) {
+        ForEachUtil.forEach(list, new ForEachUtil.ItemHandler<Bean>() {
             @Override
-            public void handle(BaseFileBean bean) {
-                String msg = "File details:\n"
-                        + "Path: " + bean.path + "\n"
-                        + "Name: " + bean.name + "\n"
-                        + "Size: " + SizeUtil.format(bean.size) + "\n"
-                        + "Date: " + FORMAT.format(bean.date) + "\n"
-                        + "Parent: " + bean.parent + "\n"
-                        + "Suffix: " + bean.suffix + "\n"
-                        + "Type: " + FileHelper.fileTypeName(bean.type) + "\n";
+            public void handle(Bean bean) {
+                String msg = "File details:"
+                        + "\nPath: " + bean.path
+                        + "\nName: " + bean.name
+                        + "\nSize: " + SizeUtil.format(bean.size)
+                        + "\nDate: " + FORMAT.format(bean.date)
+                        + "\nParent: " + bean.parent
+                        + "\nSuffix: " + bean.suffix
+                        + "\nType: " + FileHelper.fileTypeName(bean.type);
                 Log.i("AAA", msg);
             }
         });

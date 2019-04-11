@@ -16,7 +16,7 @@ public class SelectableHolder<Adapter extends SelectableRecyclerAdapter<? extend
     }
 
     protected boolean isSelected(int position) {
-        return getAdapter().isSelected(position);
+        return getAdapter().isItemSelected(position);
     }
 
 }
