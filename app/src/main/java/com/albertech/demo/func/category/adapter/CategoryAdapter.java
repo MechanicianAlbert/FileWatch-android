@@ -3,7 +3,7 @@ package com.albertech.demo.func.category.adapter;
 import android.view.View;
 
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.BaseRecyclerAdapter;
+import com.albertech.demo.base.recycler.normal.BaseRecyclerAdapter;
 import com.albertech.demo.func.category.CategoryBean;
 import com.albertech.demo.func.category.ICategoryContract;
 

@@ -3,7 +3,7 @@ package com.albertech.demo.func.hierarchy.adapter;
 import android.view.View;
 
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.SelectableRecyclerAdapter;
+import com.albertech.demo.base.recycler.selectable.SelectableRecyclerAdapter;
 import com.albertech.demo.func.hierarchy.HierarchyBean;
 
 

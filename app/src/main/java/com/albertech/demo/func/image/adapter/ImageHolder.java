@@ -6,8 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.SelectableHolder;
-import com.albertech.demo.base.recycler.SelectableRecyclerAdapter;
+import com.albertech.demo.base.recycler.selectable.SelectableHolder;
+import com.albertech.demo.base.recycler.selectable.SelectableRecyclerAdapter;
 import com.albertech.demo.func.image.ImageBean;
 import com.bumptech.glide.Glide;
 

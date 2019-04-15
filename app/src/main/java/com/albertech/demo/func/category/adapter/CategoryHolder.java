@@ -6,8 +6,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.BaseHolder;
-import com.albertech.demo.base.recycler.BaseRecyclerAdapter;
+import com.albertech.demo.base.recycler.normal.BaseHolder;
+import com.albertech.demo.base.recycler.normal.BaseRecyclerAdapter;
 import com.albertech.demo.func.category.CategoryBean;
 
 

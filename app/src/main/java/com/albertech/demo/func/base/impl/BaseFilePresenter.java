@@ -1,24 +1,28 @@
-package com.albertech.demo.func.base.query.impl;
+package com.albertech.demo.func.base.impl;
 
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
 import com.albertech.demo.base.bean.BaseFileBean;
+import com.albertech.demo.func.base.IFileContract;
 import com.albertech.demo.func.base.query.IBaseQueryContract;
+import com.albertech.demo.func.base.select.ISelectContract;
 import com.albertech.demo.util.SortUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 
 
-public abstract class BaseQueryPresenter<Bean extends BaseFileBean> extends Handler implements IBaseQueryContract.IBaseQueryPresenter<Bean> {
+public abstract class BaseFilePresenter<Bean extends BaseFileBean>
+        extends Handler
+        implements IFileContract.IFilePresenter<Bean> {
 
 
     private final Runnable NOTIFIER = new Runnable() {
         @Override
         public void run() {
-            final IBaseQueryContract.IBaseQueryView view;
+            final IFileContract.IFileView<Bean> view;
             if (mViewReference != null
                     && (view = mViewReference.get()) != null) {
                 view.onResult("", mList);
@@ -29,21 +33,21 @@ public abstract class BaseQueryPresenter<Bean extends BaseFileBean> extends Hand
 
     private Context mContext;
 
-    private WeakReference<IBaseQueryContract.IBaseQueryView> mViewReference;
-    private IBaseQueryContract.IBaseQueryModel<Bean> mModel;
+    private WeakReference<IFileContract.IFileView<Bean>> mViewReference;
+    private IFileContract.IFileModel<Bean> mModel;
 
     private List<Bean> mList;
 
     private int mSortType = SORT_BY_ALPHABET;
 
 
-    public BaseQueryPresenter() {
+    public BaseFilePresenter() {
         super(Looper.getMainLooper());
     }
 
 
     @Override
-    public void init(Context context, IBaseQueryContract.IBaseQueryView view) {
+    public void init(Context context, IFileContract.IFileView<Bean> view) {
         if (context == null) {
             throw new NullPointerException("Context cannot be null");
         }
@@ -117,5 +121,5 @@ public abstract class BaseQueryPresenter<Bean extends BaseFileBean> extends Hand
     }
 
 
-    protected abstract IBaseQueryContract.IBaseQueryModel<Bean> createModel();
+    protected abstract IFileContract.IFileModel<Bean> createModel();
 }

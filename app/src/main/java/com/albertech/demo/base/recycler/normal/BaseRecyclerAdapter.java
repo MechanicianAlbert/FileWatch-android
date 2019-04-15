@@ -1,4 +1,4 @@
-package com.albertech.demo.base.recycler;
+package com.albertech.demo.base.recycler.normal;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +23,7 @@ public abstract class BaseRecyclerAdapter<Holder extends BaseHolder<? extends Ba
         notifyDataSetChanged();
     }
 
-    Bean getItem(int position) {
+    protected Bean getItem(int position) {
         return DATA.get(position);
     }
 

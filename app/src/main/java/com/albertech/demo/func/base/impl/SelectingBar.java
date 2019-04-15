@@ -1,4 +1,4 @@
-package com.albertech.demo.func.base.select;
+package com.albertech.demo.func.base.impl;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.albertech.demo.R;
+import com.albertech.demo.func.base.select.ISelectContract;
 import com.albertech.demo.util.Res;
 
 
@@ -83,8 +84,8 @@ public class SelectingBar extends FrameLayout implements ISelectContract.ISelect
 
 
     @Override
-    public void bindPresenter(ISelectContract.ISelectPresenter presenter) {
-        mPresenter = presenter;
+    public void onSelectingStatusChange(boolean isSelecting) {
+
     }
 
     @Override

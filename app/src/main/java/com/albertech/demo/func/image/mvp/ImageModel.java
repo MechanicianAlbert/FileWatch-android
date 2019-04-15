@@ -4,11 +4,11 @@ package com.albertech.demo.func.image.mvp;
 import android.database.Cursor;
 
 import com.albertech.demo.R;
-import com.albertech.demo.func.base.query.impl.BaseQueryModel;
+import com.albertech.demo.func.base.impl.BaseFileModel;
 import com.albertech.demo.func.image.ImageBean;
 
 
-public class ImageModel extends BaseQueryModel<ImageBean> {
+public class ImageModel extends BaseFileModel<ImageBean> {
 
 
     @Override

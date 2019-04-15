@@ -1,4 +1,4 @@
-package com.albertech.demo.base.recycler;
+package com.albertech.demo.base.recycler.normal;
 
 public interface OnItemClickListener<Bean> {
 

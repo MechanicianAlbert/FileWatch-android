@@ -2,10 +2,10 @@ package com.albertech.demo.func.apk.mvp;
 
 
 import com.albertech.demo.func.apk.ApkBean;
-import com.albertech.demo.func.base.query.impl.BaseQueryModel;
+import com.albertech.demo.func.base.impl.BaseFileModel;
 
 
-public class ApkModel extends BaseQueryModel<ApkBean> {
+public class ApkModel extends BaseFileModel<ApkBean> {
 
 
     @Override

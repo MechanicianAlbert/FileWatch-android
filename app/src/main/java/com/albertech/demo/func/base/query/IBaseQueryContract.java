@@ -12,7 +12,7 @@ public interface IBaseQueryContract<Bean extends BaseFileBean> {
 
     interface IBaseQueryModel<Bean> {
 
-        void init(IBaseQueryPresenter<Bean> presenter);
+
 
         void release();
 
@@ -27,10 +27,6 @@ public interface IBaseQueryContract<Bean extends BaseFileBean> {
 
 
     interface IBaseQueryPresenter<Bean> extends SortUtil.SortType {
-
-        void init(Context context, IBaseQueryView view);
-
-        void release();
 
         void load();
 

@@ -2,14 +2,14 @@ package com.albertech.demo.func.apk.mvp;
 
 
 import com.albertech.demo.func.apk.ApkBean;
-import com.albertech.demo.func.base.query.IBaseQueryContract;
-import com.albertech.demo.func.base.query.impl.BaseQueryPresenter;
+import com.albertech.demo.func.base.IFileContract;
+import com.albertech.demo.func.base.impl.BaseFilePresenter;
 
 
-public class ApkPresenter extends BaseQueryPresenter<ApkBean> {
+public class ApkPresenter extends BaseFilePresenter<ApkBean> {
 
     @Override
-    protected IBaseQueryContract.IBaseQueryModel<ApkBean> createModel() {
+    protected IFileContract.IFileModel<ApkBean> createModel() {
         return new ApkModel();
     }
 

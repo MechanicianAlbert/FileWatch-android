@@ -23,6 +23,5 @@
     <CheckBox
         android:id="@+id/btn_all_or_clear"
         android:layout_width="@dimen/standard_btn_size"
-        android:layout_height="@dimen/standard_btn_size"
-        android:background="@drawable/ic_launcher" />
+        android:layout_height="@dimen/standard_btn_size" />
 </LinearLayout>

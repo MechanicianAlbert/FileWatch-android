@@ -4,11 +4,11 @@ package com.albertech.demo.func.video.mvp;
 import android.database.Cursor;
 import android.provider.MediaStore;
 
-import com.albertech.demo.func.base.query.impl.BaseQueryModel;
+import com.albertech.demo.func.base.impl.BaseFileModel;
 import com.albertech.demo.func.video.VideoBean;
 
 
-public class VideoModel extends BaseQueryModel<VideoBean> {
+public class VideoModel extends BaseFileModel<VideoBean> {
 
 
     @Override

@@ -1,11 +1,11 @@
 package com.albertech.demo.func.doc.mvp;
 
 
-import com.albertech.demo.func.base.query.impl.BaseQueryModel;
+import com.albertech.demo.func.base.impl.BaseFileModel;
 import com.albertech.demo.func.doc.DocBean;
 
 
-public class DocModel extends BaseQueryModel<DocBean> {
+public class DocModel extends BaseFileModel<DocBean> {
 
 
     @Override

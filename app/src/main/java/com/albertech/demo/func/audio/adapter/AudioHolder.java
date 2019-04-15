@@ -5,8 +5,8 @@ import android.view.View;
 import android.widget.CheckBox;
 
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.SelectableHolder;
-import com.albertech.demo.base.recycler.SelectableRecyclerAdapter;
+import com.albertech.demo.base.recycler.selectable.SelectableHolder;
+import com.albertech.demo.base.recycler.selectable.SelectableRecyclerAdapter;
 import com.albertech.demo.func.audio.AudioBean;
 import com.albertech.demo.util.DateUtil;
 import com.albertech.demo.util.Res;

@@ -5,23 +5,23 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.albertech.demo.func.base.query.IBaseQueryContract;
-import com.albertech.demo.func.base.query.impl.BaseQueryViewFragment;
+import com.albertech.demo.func.base.IFileContract;
+import com.albertech.demo.func.base.impl.BaseFileViewFragment;
 import com.albertech.demo.func.image.ImageBean;
 import com.albertech.demo.func.image.adapter.ImageAdapter;
 
 
-public class ImageViewFragment extends BaseQueryViewFragment<ImageAdapter, ImageBean> {
+public class ImageViewFragment extends BaseFileViewFragment<ImageAdapter, ImageBean> {
 
 
     @Override
-    protected IBaseQueryContract.IBaseQueryPresenter<ImageBean> createPresenter() {
+    protected IFileContract.IFilePresenter<ImageBean> createPresenter() {
         return new ImagePreseneter();
     }
 
     @Override
     protected ImageAdapter createAdapter() {
-        return new ImageAdapter() {
+        return new ImageAdapter(this) {
             @Override
             public void onItemClickNotSelecting(int position, ImageBean imageBean) {
 

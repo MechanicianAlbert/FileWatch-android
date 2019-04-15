@@ -1,7 +1,9 @@
-package com.albertech.demo.base.recycler;
+package com.albertech.demo.base.recycler.selectable;
 
 import android.support.annotation.NonNull;
 import android.view.View;
+
+import com.albertech.demo.base.recycler.normal.BaseHolder;
 
 public class SelectableHolder<Adapter extends SelectableRecyclerAdapter<? extends SelectableHolder, Bean>, Bean> extends BaseHolder<Adapter, Bean> {
 

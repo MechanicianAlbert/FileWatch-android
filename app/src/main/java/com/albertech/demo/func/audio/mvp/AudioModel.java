@@ -5,11 +5,11 @@ import android.database.Cursor;
 
 import com.albertech.demo.R;
 import com.albertech.demo.func.audio.AudioBean;
-import com.albertech.demo.func.base.query.impl.BaseQueryModel;
+import com.albertech.demo.func.base.impl.BaseFileModel;
 
 
 
-public class AudioModel extends BaseQueryModel<AudioBean> {
+public class AudioModel extends BaseFileModel<AudioBean> {
 
 
     @Override

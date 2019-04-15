@@ -3,10 +3,18 @@ package com.albertech.demo.func.doc.adapter;
 import android.view.View;
 
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.SelectableRecyclerAdapter;
+import com.albertech.demo.base.recycler.selectable.SelectableRecyclerAdapter;
+import com.albertech.demo.func.base.impl.BaseSelectionAdapter;
+import com.albertech.demo.func.base.select.ISelectContract;
 import com.albertech.demo.func.doc.DocBean;
 
-public class DocAdapter extends SelectableRecyclerAdapter<DocHolder, DocBean> {
+public class DocAdapter extends BaseSelectionAdapter<DocHolder, DocBean> {
+
+
+    public DocAdapter(ISelectContract.ISelectView view) {
+        super(view);
+    }
+
 
     @Override
     public int getItemViewType(int position) {

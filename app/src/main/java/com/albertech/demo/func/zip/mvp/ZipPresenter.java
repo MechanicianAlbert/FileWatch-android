@@ -1,16 +1,16 @@
 package com.albertech.demo.func.zip.mvp;
 
 
-import com.albertech.demo.func.base.query.IBaseQueryContract;
-import com.albertech.demo.func.base.query.impl.BaseQueryPresenter;
+import com.albertech.demo.func.base.IFileContract;
+import com.albertech.demo.func.base.impl.BaseFilePresenter;
 import com.albertech.demo.func.zip.ZipBean;
 
 
-public class ZipPresenter extends BaseQueryPresenter<ZipBean> {
+public class ZipPresenter extends BaseFilePresenter<ZipBean> {
 
 
     @Override
-    protected IBaseQueryContract.IBaseQueryModel<ZipBean> createModel() {
+    protected IFileContract.IFileModel<ZipBean> createModel() {
         return new ZipModel();
     }
 

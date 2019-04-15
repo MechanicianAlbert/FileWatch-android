@@ -1,20 +1,28 @@
 package com.albertech.demo.func.base.select;
 
+import com.albertech.demo.base.recycler.selectable.ISelectableAdapter;
+import com.albertech.demo.base.recycler.selectable.ISelectionListener;
+
+import java.util.List;
+
 public interface ISelectContract {
 
-    interface ISelectView {
+    interface ISelectModel<Bean> extends ISelectableAdapter<Bean> {
 
-        void bindPresenter(ISelectPresenter presenter);
-
-        void onSelectionCountChange(int count, boolean hasSelectedAll);
     }
 
+
+    interface ISelectView extends ISelectionListener {
+
+    }
+
+
     interface ISelectPresenter {
+
+        void stopSelecting();
 
         void selectAll();
 
         void clearSelection();
-
-        void stopSelecting();
     }
 }

@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.SelectableHolder;
-import com.albertech.demo.base.recycler.SelectableRecyclerAdapter;
+import com.albertech.demo.base.recycler.selectable.SelectableHolder;
+import com.albertech.demo.base.recycler.selectable.SelectableRecyclerAdapter;
 import com.albertech.demo.func.video.VideoBean;
 import com.albertech.demo.util.DurationUtil;
 import com.albertech.demo.util.SizeUtil;

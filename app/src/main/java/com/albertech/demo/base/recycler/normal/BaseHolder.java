@@ -1,4 +1,4 @@
-package com.albertech.demo.base.recycler;
+package com.albertech.demo.base.recycler.normal;
 
 import android.content.Context;
 import android.support.annotation.IdRes;

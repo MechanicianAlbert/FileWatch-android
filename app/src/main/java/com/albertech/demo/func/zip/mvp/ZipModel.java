@@ -1,11 +1,11 @@
 package com.albertech.demo.func.zip.mvp;
 
 
-import com.albertech.demo.func.base.query.impl.BaseQueryModel;
+import com.albertech.demo.func.base.impl.BaseFileModel;
 import com.albertech.demo.func.zip.ZipBean;
 
 
-public class ZipModel extends BaseQueryModel<ZipBean> {
+public class ZipModel extends BaseFileModel<ZipBean> {
 
 
     @Override
