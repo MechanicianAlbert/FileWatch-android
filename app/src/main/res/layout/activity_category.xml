@@ -4,11 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.albertech.demo.container.ContainerActivity">
+    tools:context="com.albertech.demo.container.category.CategoryActivity">
 
-    <fragment
-        android:id="@+id/fragment_image"
-        android:name="com.albertech.demo.func.apk.mvp.ApkViewFragment"
+    <FrameLayout
+        android:id="@+id/fl_category_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

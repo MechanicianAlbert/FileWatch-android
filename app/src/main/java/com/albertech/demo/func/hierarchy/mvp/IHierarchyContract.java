@@ -2,7 +2,6 @@ package com.albertech.demo.func.hierarchy.mvp;
 
 import android.content.Context;
 
-import com.albertech.demo.crud.query.QueryCallback;
 import com.albertech.demo.func.hierarchy.HierarchyBean;
 import com.albertech.demo.util.SortUtil;
 import com.albertech.filewatch.api.IFileConstant;
@@ -29,13 +28,15 @@ public interface IHierarchyContract extends IFileConstant {
     }
 
 
-    interface IHierarchyPresenter extends QueryCallback<HierarchyBean>, SortUtil.SortType {
+    interface IHierarchyPresenter extends SortUtil.SortType {
 
         void init(Context context, IHierarchyView view);
 
         void release();
 
         void loadPath(String path);
+
+        void onResult(String path, List<HierarchyBean> list);
 
         void showHidden(boolean show);
 
