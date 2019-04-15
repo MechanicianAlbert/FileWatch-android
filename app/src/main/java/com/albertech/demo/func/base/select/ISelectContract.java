@@ -1,6 +1,6 @@
 package com.albertech.demo.func.base.select;
 
-public class ISelectContract {
+public interface ISelectContract {
 
     interface ISelectView {
 

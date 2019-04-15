@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="btn_search_size">30dp</dimen>
+    <dimen name="btn_search_size">20dp</dimen>
 
     <dimen name="standard_btn_size">30dp</dimen>
 
     <dimen name="standard_list_item_icon_size">50dp</dimen>
 
-    <dimen name="standard_margin">10dp</dimen>
+    <dimen name="standard_outer_margin">10dp</dimen>
+
+    <dimen name="standard_inner_margin">5dp</dimen>
 
     <dimen name="iv_image_height">140dp</dimen>
 

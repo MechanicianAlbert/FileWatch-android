@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/fragment_image"
-        android:name="com.albertech.demo.func.audio.mvp.impl.AudioFragment"
+        android:name="com.albertech.demo.func.audio.mvp.AudioViewFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

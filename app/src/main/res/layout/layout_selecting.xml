@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="@dimen/standard_margin">
+    android:padding="@dimen/standard_outer_margin">
 
     <ImageView
         android:id="@+id/btn_stop_selecting"

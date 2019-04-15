@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/fragment_image"
-        android:name="com.albertech.demo.func.doc.mvp.impl.DocFragment"
+        android:name="com.albertech.demo.func.doc.mvp.DocViewFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>
