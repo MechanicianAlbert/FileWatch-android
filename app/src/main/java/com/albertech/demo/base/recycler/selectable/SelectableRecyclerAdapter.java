@@ -15,17 +15,9 @@ public abstract class SelectableRecyclerAdapter<Holder extends SelectableHolder<
         implements ISelectableAdapter<Bean>, ISelectionListener {
 
     private final Set<Integer> SELECTED_POSITIONS = new HashSet<>();
-    private final List<Integer> ALL_POSITIONS = new ArrayList<>();
 
 
     private boolean mIsSelecting;
-
-
-    public SelectableRecyclerAdapter() {
-        for (int i = 0; i < getItemCount(); i++) {
-            ALL_POSITIONS.add(i);
-        }
-    }
 
 
     @Override
@@ -51,7 +43,9 @@ public abstract class SelectableRecyclerAdapter<Holder extends SelectableHolder<
     @Override
     public void selectAll() {
         if (mIsSelecting) {
-            SELECTED_POSITIONS.addAll(ALL_POSITIONS);
+            for (int i = 0; i < getItemCount(); i++) {
+                SELECTED_POSITIONS.add(i);
+            }
             notifyDataSetChanged();
 
             onSelectionCountChange(getSelectionCount(), true);
@@ -79,7 +73,7 @@ public abstract class SelectableRecyclerAdapter<Holder extends SelectableHolder<
             notifyDataSetChanged();
 
             int count= SELECTED_POSITIONS.size();
-            onSelectionCountChange(count, count < getItemCount());
+            onSelectionCountChange(count, count == getItemCount());
         }
     }
 

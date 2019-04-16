@@ -14,15 +14,11 @@ public interface ISelectContract {
 
     interface ISelectView extends ISelectionListener {
 
+        void bindModel(ISelectModel model);
     }
 
 
     interface ISelectPresenter {
 
-        void stopSelecting();
-
-        void selectAll();
-
-        void clearSelection();
     }
 }

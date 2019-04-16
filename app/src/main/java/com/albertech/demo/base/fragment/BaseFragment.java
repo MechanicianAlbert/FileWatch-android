@@ -26,6 +26,12 @@ public abstract class BaseFragment extends Fragment {
         release();
     }
 
+
+    public boolean backToParent() {
+        return false;
+    }
+
+
     protected void initView(View root) {
 
     }

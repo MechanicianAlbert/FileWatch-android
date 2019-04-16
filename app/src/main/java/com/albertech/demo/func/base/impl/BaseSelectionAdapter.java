@@ -8,7 +8,7 @@ import com.albertech.demo.func.base.select.ISelectContract;
 
 public abstract class BaseSelectionAdapter<Holder extends SelectableHolder<? extends SelectableRecyclerAdapter, Bean>, Bean>
         extends SelectableRecyclerAdapter<Holder, Bean>
-        implements ISelectContract.ISelectModel<Bean>, ISelectContract.ISelectPresenter {
+        implements ISelectContract.ISelectModel<Bean> {
 
     private ISelectContract.ISelectView mView;
 

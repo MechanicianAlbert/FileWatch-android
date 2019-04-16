@@ -5,14 +5,21 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.albertech.demo.R;
 import com.albertech.demo.func.base.IFileContract;
 import com.albertech.demo.func.base.impl.BaseFileViewFragment;
 import com.albertech.demo.func.video.VideoBean;
 import com.albertech.demo.func.video.adapter.VideoAdapter;
+import com.albertech.demo.util.Res;
 
 
 public class VideoViewFragment extends BaseFileViewFragment<VideoAdapter, VideoBean> {
 
+
+    @Override
+    public String getTitle() {
+        return Res.string(R.string.str_category_video);
+    }
 
     @Override
     protected IFileContract.IFilePresenter<VideoBean> createPresenter() {

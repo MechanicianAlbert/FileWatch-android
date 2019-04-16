@@ -30,8 +30,9 @@ public class HierarchyHolder extends SelectableHolder<SelectableRecyclerAdapter<
                         DateUtil.format(bean.date)));
         setImage(R.id.iv_item_file_icon, bean.icon);
 
-        CheckBox cb = $(R.id.cb_item_file_selection);
-        cb.setVisibility(isSelecting() ? View.VISIBLE : View.INVISIBLE);
-        cb.setChecked(isSelected(position));
+        final boolean isSelecting = isSelecting();
+        View v = $(R.id.cb_item_file_selection);
+        v.setVisibility(isSelecting ? View.VISIBLE : View.INVISIBLE);
+        v.setSelected(isSelected(position));
     }
 }

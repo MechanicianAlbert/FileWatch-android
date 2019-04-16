@@ -63,6 +63,13 @@ public class BaseHolder<Adapter extends BaseRecyclerAdapter<? extends BaseHolder
         }
     }
 
+    protected final void setSelected(int id, boolean selected) {
+        View v = $(id);
+        if (v != null) {
+            v.setSelected(selected);
+        }
+    }
+
     protected final Bean getItem(int position) {
         return mAdapter.getItem(position);
     }

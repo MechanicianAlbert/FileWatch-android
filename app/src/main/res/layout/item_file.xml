@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/standard_outer_margin"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -39,12 +39,14 @@
                 android:textColor="@color/colorGrayMain" />
         </LinearLayout>
 
-        <CheckBox
+        <View
             android:id="@+id/cb_item_file_selection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:clickable="false" />
+            android:layout_width="@dimen/small_btn_size"
+            android:layout_height="@dimen/small_btn_size"
+            android:layout_marginRight="@dimen/standard_inner_margin"
+            android:background="@drawable/selector_selection"
+            android:clickable="false"
+            android:visibility="invisible" />
     </LinearLayout>
 
     <View

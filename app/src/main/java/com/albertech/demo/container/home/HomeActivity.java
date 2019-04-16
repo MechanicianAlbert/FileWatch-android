@@ -12,21 +12,25 @@ import android.view.ViewGroup;
 
 import com.albertech.demo.R;
 import com.albertech.demo.base.activity.BaseActivity;
+import com.albertech.demo.base.fragment.TitleFragment;
+import com.albertech.demo.func.base.impl.TabSelectingBar;
+import com.albertech.demo.func.base.select.ISelectContract;
 import com.albertech.demo.func.category.CategoryFragment;
+import com.albertech.demo.func.hierarchy.HierarchyBean;
 import com.albertech.demo.func.hierarchy.mvp.impl.HierarchyFragment;
 
 
 
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity implements ISelectContract.ISelectView {
 
     private final String[] PERMISSIONS = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
 
+    private TabSelectingBar mTb;
     private ViewPager mVpMain;
     private TabLayout mTlMain;
 
-    private boolean mBackPressedAsNormal;
-    private HierarchyFragment mHf;
+    private TitleFragment mShowingFragment;
 
 
     public static void start(Context context) {
@@ -46,13 +50,15 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        mTb = findViewById(R.id.tb_home);
         mVpMain = findViewById(R.id.vp_main);
         mTlMain = findViewById(R.id.tl_main);
     }
 
     @Override
     protected void initListener() {
-        mTlMain.setupWithViewPager(mVpMain, true);
+        mTb.bindViewPager(mVpMain);
+//        mTlMain.setupWithViewPager(mVpMain, true);
     }
 
     @Override
@@ -62,11 +68,11 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
                 super.setPrimaryItem(container, position, object);
-                if (object instanceof HierarchyFragment) {
-                    mHf = (HierarchyFragment) object;
-                    mBackPressedAsNormal = false;
-                } else {
-                    mBackPressedAsNormal = true;
+                if (mShowingFragment == null && object instanceof HierarchyFragment) {
+                    mShowingFragment = (HierarchyFragment) object;
+                    if (mTb != null) {
+                        mTb.bindModel(((HierarchyFragment) mShowingFragment).getSelectionModel());
+                    }
                 }
             }
         };
@@ -78,8 +84,27 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (mBackPressedAsNormal || !mHf.backToParent()) {
+        if (!mShowingFragment.backToParent()) {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void bindModel(ISelectContract.ISelectModel model) {
+        // nothing to do
+    }
+
+    @Override
+    public void onSelectingStatusChange(boolean isSelecting) {
+        if (mTb != null) {
+            mTb.onSelectingStatusChange(isSelecting);
+        }
+    }
+
+    @Override
+    public void onSelectionCountChange(int count, boolean hasSelectedAll) {
+        if (mTb != null) {
+            mTb.onSelectionCountChange(count, hasSelectedAll);
         }
     }
 }

@@ -23,5 +23,8 @@
     <string name="str_menu_new_folder">新建文件夹</string>
     <string name="str_menu_show_hidden">显示隐藏文件</string>
 
+    <string name="str_menu_select_all">全部选择</string>
+    <string name="str_menu_clear_selection">清空选择</string>
+
     <string name="str_selection_count">已选择 %1$s 项</string>
 </resources>

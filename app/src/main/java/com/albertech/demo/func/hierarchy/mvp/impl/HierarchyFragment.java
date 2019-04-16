@@ -1,11 +1,14 @@
 package com.albertech.demo.func.hierarchy.mvp.impl;
 
+import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.albertech.demo.R;
 import com.albertech.demo.base.fragment.TitleFragment;
+import com.albertech.demo.container.home.HomeActivity;
+import com.albertech.demo.func.base.select.ISelectContract;
 import com.albertech.demo.func.hierarchy.HierarchyBean;
 import com.albertech.demo.func.hierarchy.adapter.HierarchyAdapter;
 import com.albertech.demo.func.hierarchy.mvp.IHierarchyContract;
@@ -15,9 +18,9 @@ import java.util.List;
 
 
 
-public class HierarchyFragment extends TitleFragment implements IHierarchyContract.IHierarchyView {
+public class HierarchyFragment extends TitleFragment implements IHierarchyContract.IHierarchyView, ISelectContract.ISelectView {
 
-    private final HierarchyAdapter ADAPTER = new HierarchyAdapter() {
+    private final HierarchyAdapter ADAPTER = new HierarchyAdapter(this) {
         @Override
         public void onItemClickNotSelecting(int position, HierarchyBean bean) {
             if (bean.isDirectory()) {
@@ -75,13 +78,45 @@ public class HierarchyFragment extends TitleFragment implements IHierarchyContra
     }
 
     @Override
+    public boolean backToParent() {
+        final  boolean isSelecting = ADAPTER.isSelecting();
+        if (isSelecting) {
+            ADAPTER.stopSelecting();
+            return true;
+        } else {
+            return mPresenter.backToParent();
+        }
+    }
+
+
+    @Override
     public void onResult(String path, List<HierarchyBean> list) {
         ADAPTER.updateData(list);
     }
 
+    @Override
+    public void bindModel(ISelectContract.ISelectModel model) {
 
-    public boolean backToParent() {
-        return mPresenter.backToParent();
     }
 
+    @Override
+    public void onSelectingStatusChange(boolean isSelecting) {
+        Activity activity = getActivity();
+        if (activity instanceof HomeActivity) {
+            ((HomeActivity) activity).onSelectingStatusChange(isSelecting);
+        }
+    }
+
+    @Override
+    public void onSelectionCountChange(int count, boolean hasSelectedAll) {
+        Activity activity = getActivity();
+        if (activity instanceof HomeActivity) {
+            ((HomeActivity) activity).onSelectionCountChange(count, hasSelectedAll);
+        }
+    }
+
+
+    public ISelectContract.ISelectModel getSelectionModel() {
+        return ADAPTER;
+    }
 }

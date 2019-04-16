@@ -8,7 +8,6 @@ import com.albertech.demo.R;
 import com.albertech.demo.base.fragment.TitleFragment;
 import com.albertech.demo.base.recycler.selectable.SelectableHolder;
 import com.albertech.demo.func.base.IFileContract;
-import com.albertech.demo.func.base.query.IBaseQueryContract;
 import com.albertech.demo.func.base.select.ISelectContract;
 import com.albertech.demo.util.Res;
 
@@ -22,6 +21,7 @@ public abstract class BaseFileViewFragment<Adapter extends BaseSelectionAdapter<
     private final Adapter ADAPTER = createAdapter();
 
 
+    private FileSelectingBar mTb;
     private RecyclerView mRv;
 
     private IFileContract.IFilePresenter<Bean> mPresenter;
@@ -30,23 +30,23 @@ public abstract class BaseFileViewFragment<Adapter extends BaseSelectionAdapter<
 
 
     @Override
-    public String getTitle() {
-        return Res.string(R.string.str_title_hierarchy);
-    }
-
-    @Override
     protected int layoutRese() {
         return R.layout.fragment_file;
     }
 
     @Override
     protected void initView(View root) {
+        mTb = root.findViewById(R.id.tb_file);
+
         mRv = root.findViewById(R.id.rv_doc);
         mRv.setLayoutManager(getLayoutManager());
     }
 
     @Override
     protected void initData() {
+        mTb.setTitle(getTitle());
+        mTb.bindModel(ADAPTER);
+
         mRv.setAdapter(ADAPTER);
 
         mPresenter = createPresenter();
@@ -63,11 +63,17 @@ public abstract class BaseFileViewFragment<Adapter extends BaseSelectionAdapter<
     @Override
     public void onSelectingStatusChange(boolean isSelecting) {
         mIsSelecting = isSelecting;
+        mTb.onSelectingStatusChange(isSelecting);
     }
 
     @Override
     public void onSelectionCountChange(int count, boolean hasSelectedAll) {
+        mTb.onSelectionCountChange(count, hasSelectedAll);
+    }
 
+    @Override
+    public void bindModel(ISelectContract.ISelectModel model) {
+        // nothing to do
     }
 
 

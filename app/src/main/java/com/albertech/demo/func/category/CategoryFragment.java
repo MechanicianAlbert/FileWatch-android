@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.albertech.demo.R;
 import com.albertech.demo.base.fragment.TitleFragment;
-import com.albertech.demo.container.category.CategoryActivity;
+import com.albertech.demo.container.file.FileActivity;
 import com.albertech.demo.func.category.adapter.CategoryAdapter;
 import com.albertech.demo.util.Res;
 import com.albertech.filewatch.api.IFileConstant;
@@ -20,17 +20,17 @@ public class CategoryFragment extends TitleFragment {
         public boolean onItemClick(int position, CategoryBean categoryBean) {
             String name = categoryBean.NAME;
             if (Res.string(R.string.str_category_image).equals(name)) {
-                CategoryActivity.start(getContext(), IFileConstant.IMAGE);
+                FileActivity.start(getContext(), IFileConstant.IMAGE);
             } else if (Res.string(R.string.str_category_audio).equals(name)) {
-                CategoryActivity.start(getContext(), IFileConstant.AUDIO);
+                FileActivity.start(getContext(), IFileConstant.AUDIO);
             } else if (Res.string(R.string.str_category_video).equals(name)) {
-                CategoryActivity.start(getContext(), IFileConstant.VIDEO);
+                FileActivity.start(getContext(), IFileConstant.VIDEO);
             } else if (Res.string(R.string.str_category_doc).equals(categoryBean.NAME)) {
-                CategoryActivity.start(getContext(), IFileConstant.DOC);
+                FileActivity.start(getContext(), IFileConstant.DOC);
             } else if (Res.string(R.string.str_category_apk).equals(categoryBean.NAME)) {
-                CategoryActivity.start(getContext(), IFileConstant.APK);
+                FileActivity.start(getContext(), IFileConstant.APK);
             } else if (Res.string(R.string.str_category_zip).equals(categoryBean.NAME)) {
-                CategoryActivity.start(getContext(), IFileConstant.ZIP);
+                FileActivity.start(getContext(), IFileConstant.ZIP);
             }
             return false;
         }

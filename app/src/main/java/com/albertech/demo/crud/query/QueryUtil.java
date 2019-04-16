@@ -9,8 +9,6 @@ import com.albertech.filewatch.api.IFileConstant;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Comparator;
-
 
 
 public class QueryUtil implements IFileConstant {
@@ -46,7 +44,7 @@ public class QueryUtil implements IFileConstant {
         }
         if (bean.isDirectory) {
             bean.type = DIRECTORY;
-            bean.icon = R.drawable.ic_type_directory;
+            bean.icon = R.drawable.ic_type_folder;
         } else if (type == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
             bean.type = IMAGE;
             bean.icon = R.drawable.ic_type_image;
