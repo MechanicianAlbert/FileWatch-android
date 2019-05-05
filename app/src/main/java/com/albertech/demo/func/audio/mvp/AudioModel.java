@@ -19,7 +19,7 @@ public class AudioModel extends BaseFileModel<AudioBean> {
 
     @Override
     public final String[] projection() {
-        return new String[]{COLUMN_NAME_PATH};
+        return new String[]{PATH_COLUMN_NAME};
     }
 
     @Override

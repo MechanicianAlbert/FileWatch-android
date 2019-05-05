@@ -64,7 +64,7 @@ public class HierarchyFragment extends BaseFragment implements IHierarchyContrac
 
         mPresenter = new HierarchyPresenter();
         mPresenter.init(getContext(), this);
-        mPresenter.loadPath(IHierarchyContract.DEFAULT_PARENT_PATH);
+        mPresenter.loadPath(IHierarchyContract.SD_CARD_PATH);
     }
 
     @Override

@@ -19,7 +19,7 @@ public abstract class AbsQueryMission<Bean extends BaseFileBean> implements IFil
     private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.CHINA);
 
     private static final String[] BASE_PROJECTION = new String[]{
-            COLUMN_NAME_PATH,
+            PATH_COLUMN_NAME,
             COLUMN_NAME_MEDIA_TYPE
     };
 
@@ -40,7 +40,7 @@ public abstract class AbsQueryMission<Bean extends BaseFileBean> implements IFil
 
     @Override
     public String parentPath() {
-        return DEFAULT_PARENT_PATH;
+        return SD_CARD_PATH;
     }
 
     @Override

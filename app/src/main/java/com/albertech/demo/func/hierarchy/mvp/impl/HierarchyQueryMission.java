@@ -25,7 +25,7 @@ public class HierarchyQueryMission extends AbsQueryMission<HierarchyBean> implem
 
     @Override
     public String parentPath() {
-        return !TextUtils.isEmpty(mPath) ? mPath : DEFAULT_PARENT_PATH ;
+        return !TextUtils.isEmpty(mPath) ? mPath : SD_CARD_PATH ;
     }
 
     @Override
