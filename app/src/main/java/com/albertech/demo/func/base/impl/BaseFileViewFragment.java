@@ -4,18 +4,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.albertech.common.base.fragment.BaseFragment;
+import com.albertech.common.base.recycler.select.SelectHolder;
 import com.albertech.demo.R;
-import com.albertech.demo.base.fragment.TitleFragment;
-import com.albertech.demo.base.recycler.selectable.SelectableHolder;
 import com.albertech.demo.func.base.IFileContract;
 import com.albertech.demo.func.base.select.ISelectContract;
-import com.albertech.demo.util.Res;
 
 import java.util.List;
 
 
-public abstract class BaseFileViewFragment<Adapter extends BaseSelectionAdapter<? extends SelectableHolder, Bean>, Bean>
-        extends TitleFragment
+public abstract class BaseFileViewFragment<Adapter extends BaseSelectionAdapter<? extends SelectHolder, Bean>, Bean>
+        extends BaseFragment
         implements IFileContract.IFileView<Bean> {
 
     private final Adapter ADAPTER = createAdapter();
@@ -30,7 +29,7 @@ public abstract class BaseFileViewFragment<Adapter extends BaseSelectionAdapter<
 
 
     @Override
-    protected int layoutRese() {
+    protected int layoutRes() {
         return R.layout.fragment_file;
     }
 

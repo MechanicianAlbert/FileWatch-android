@@ -5,19 +5,19 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.albertech.common.base.recycler.select.SelectHolder;
+import com.albertech.common.base.recycler.select.SelectRecyclerAdapter;
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.selectable.SelectableHolder;
-import com.albertech.demo.base.recycler.selectable.SelectableRecyclerAdapter;
 import com.albertech.demo.func.image.ImageBean;
 import com.bumptech.glide.Glide;
 
 import java.io.File;
 
 
-public class ImageHolder extends SelectableHolder<SelectableRecyclerAdapter<ImageHolder, ImageBean>, ImageBean> {
+public class ImageHolder extends SelectHolder<SelectRecyclerAdapter<ImageHolder, ImageBean>, ImageBean> {
 
 
-    public ImageHolder(SelectableRecyclerAdapter<ImageHolder, ImageBean> adapter, @NonNull View itemView) {
+    public ImageHolder(SelectRecyclerAdapter<ImageHolder, ImageBean> adapter, @NonNull View itemView) {
         super(adapter, itemView);
     }
 
@@ -28,4 +28,5 @@ public class ImageHolder extends SelectableHolder<SelectableRecyclerAdapter<Imag
                 .load(Uri.fromFile(new File(imageBean.path)))
                 .into(iv);
     }
+
 }

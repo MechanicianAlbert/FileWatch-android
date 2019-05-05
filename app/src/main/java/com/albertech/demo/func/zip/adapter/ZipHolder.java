@@ -2,20 +2,19 @@ package com.albertech.demo.func.zip.adapter;
 
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.CheckBox;
 
+import com.albertech.common.base.recycler.select.SelectHolder;
+import com.albertech.common.base.recycler.select.SelectRecyclerAdapter;
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.selectable.SelectableHolder;
-import com.albertech.demo.base.recycler.selectable.SelectableRecyclerAdapter;
 import com.albertech.demo.func.zip.ZipBean;
 import com.albertech.demo.util.DateUtil;
 import com.albertech.demo.util.Res;
 import com.albertech.demo.util.SizeUtil;
 
 
-public class ZipHolder extends SelectableHolder<SelectableRecyclerAdapter<ZipHolder, ZipBean>, ZipBean> {
+public class ZipHolder extends SelectHolder<SelectRecyclerAdapter<ZipHolder, ZipBean>, ZipBean> {
 
-    public ZipHolder(SelectableRecyclerAdapter<ZipHolder, ZipBean> adapter, @NonNull View itemView) {
+    public ZipHolder(SelectRecyclerAdapter<ZipHolder, ZipBean> adapter, @NonNull View itemView) {
         super(adapter, itemView);
     }
 
@@ -35,4 +34,5 @@ public class ZipHolder extends SelectableHolder<SelectableRecyclerAdapter<ZipHol
         v.setVisibility(isSelecting ? View.VISIBLE : View.INVISIBLE);
         v.setSelected(isSelected(position));
     }
+
 }

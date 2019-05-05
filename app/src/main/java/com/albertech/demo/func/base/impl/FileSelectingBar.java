@@ -1,6 +1,5 @@
 package com.albertech.demo.func.base.impl;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.Toolbar;
@@ -171,4 +170,5 @@ public class FileSelectingBar extends Toolbar implements ISelectContract.ISelect
         super.onDetachedFromWindow();
         mModel = null;
     }
+
 }

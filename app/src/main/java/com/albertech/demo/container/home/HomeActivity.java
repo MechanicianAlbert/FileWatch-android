@@ -10,15 +10,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.ViewGroup;
 
+import com.albertech.common.base.activity.BaseActivity;
+import com.albertech.common.base.fragment.BaseFragment;
 import com.albertech.demo.R;
-import com.albertech.demo.base.activity.BaseActivity;
-import com.albertech.demo.base.fragment.TitleFragment;
 import com.albertech.demo.func.base.impl.TabSelectingBar;
 import com.albertech.demo.func.base.select.ISelectContract;
 import com.albertech.demo.func.category.CategoryFragment;
-import com.albertech.demo.func.hierarchy.HierarchyBean;
 import com.albertech.demo.func.hierarchy.mvp.impl.HierarchyFragment;
-
 
 
 public class HomeActivity extends BaseActivity implements ISelectContract.ISelectView {
@@ -30,7 +28,7 @@ public class HomeActivity extends BaseActivity implements ISelectContract.ISelec
     private ViewPager mVpMain;
     private TabLayout mTlMain;
 
-    private TitleFragment mShowingFragment;
+    private BaseFragment mShowingFragment;
 
 
     public static void start(Context context) {
@@ -39,7 +37,7 @@ public class HomeActivity extends BaseActivity implements ISelectContract.ISelec
 
 
     @Override
-    protected int layoutRese() {
+    protected int layoutRes() {
         return R.layout.activity_home;
     }
 
@@ -84,7 +82,7 @@ public class HomeActivity extends BaseActivity implements ISelectContract.ISelec
 
     @Override
     public void onBackPressed() {
-        if (!mShowingFragment.backToParent()) {
+        if (!mShowingFragment.interceptBackPressed()) {
             super.onBackPressed();
         }
     }
@@ -107,4 +105,5 @@ public class HomeActivity extends BaseActivity implements ISelectContract.ISelec
             mTb.onSelectionCountChange(count, hasSelectedAll);
         }
     }
+
 }

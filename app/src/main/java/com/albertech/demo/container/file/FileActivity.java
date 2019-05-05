@@ -7,15 +7,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import com.albertech.common.base.fragment.BaseFragment;
 import com.albertech.demo.R;
-import com.albertech.demo.base.fragment.TitleFragment;
 import com.albertech.filewatch.api.IFileConstant;
 
 
 public class FileActivity extends AppCompatActivity implements IFileConstant {
 
     private static final String TYPE = "type";
-    private TitleFragment mFragment;
+    private BaseFragment mFragment;
     private Toolbar mTb;
 
 
@@ -36,7 +36,7 @@ public class FileActivity extends AppCompatActivity implements IFileConstant {
 
     @Override
     public void onBackPressed() {
-        if (!mFragment.backToParent()) {
+        if (!mFragment.interceptBackPressed()) {
             super.onBackPressed();
         }
     }

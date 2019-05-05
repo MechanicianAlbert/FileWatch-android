@@ -2,20 +2,19 @@ package com.albertech.demo.func.doc.adapter;
 
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.CheckBox;
 
+import com.albertech.common.base.recycler.select.SelectHolder;
+import com.albertech.common.base.recycler.select.SelectRecyclerAdapter;
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.selectable.SelectableHolder;
-import com.albertech.demo.base.recycler.selectable.SelectableRecyclerAdapter;
 import com.albertech.demo.func.doc.DocBean;
 import com.albertech.demo.util.DateUtil;
 import com.albertech.demo.util.Res;
 import com.albertech.demo.util.SizeUtil;
 
 
-public class DocHolder extends SelectableHolder<SelectableRecyclerAdapter<DocHolder, DocBean>, DocBean> {
+public class DocHolder extends SelectHolder<SelectRecyclerAdapter<DocHolder, DocBean>, DocBean> {
 
-    public DocHolder(SelectableRecyclerAdapter<DocHolder, DocBean> adapter, @NonNull View itemView) {
+    public DocHolder(SelectRecyclerAdapter<DocHolder, DocBean> adapter, @NonNull View itemView) {
         super(adapter, itemView);
     }
 
@@ -35,4 +34,5 @@ public class DocHolder extends SelectableHolder<SelectableRecyclerAdapter<DocHol
         v.setVisibility(isSelecting ? View.VISIBLE : View.INVISIBLE);
         v.setSelected(isSelected(position));
     }
+
 }

@@ -1,18 +1,17 @@
 package com.albertech.demo.func.base.select;
 
-import com.albertech.demo.base.recycler.selectable.ISelectableAdapter;
-import com.albertech.demo.base.recycler.selectable.ISelectionListener;
+import com.albertech.common.base.recycler.select.ISelect;
+import com.albertech.common.base.recycler.select.ISelectListener;
 
-import java.util.List;
 
 public interface ISelectContract {
 
-    interface ISelectModel<Bean> extends ISelectableAdapter<Bean> {
+    interface ISelectModel<Bean> extends ISelect<Bean> {
 
     }
 
 
-    interface ISelectView extends ISelectionListener {
+    interface ISelectView extends ISelectListener {
 
         void bindModel(ISelectModel model);
     }
@@ -21,4 +20,5 @@ public interface ISelectContract {
     interface ISelectPresenter {
 
     }
+
 }

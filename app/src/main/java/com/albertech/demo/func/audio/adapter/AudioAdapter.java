@@ -3,7 +3,6 @@ package com.albertech.demo.func.audio.adapter;
 import android.view.View;
 
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.selectable.SelectableRecyclerAdapter;
 import com.albertech.demo.func.audio.AudioBean;
 import com.albertech.demo.func.base.impl.BaseSelectionAdapter;
 import com.albertech.demo.func.base.select.ISelectContract;
@@ -26,4 +25,5 @@ public class AudioAdapter extends BaseSelectionAdapter<AudioHolder, AudioBean> {
     protected AudioHolder getHolderByViewType(View itemView, int viewType) {
         return new AudioHolder(this, itemView);
     }
+
 }

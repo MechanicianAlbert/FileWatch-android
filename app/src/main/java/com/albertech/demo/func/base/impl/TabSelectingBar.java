@@ -1,6 +1,5 @@
 package com.albertech.demo.func.base.impl;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.support.design.widget.TabLayout;
@@ -197,4 +196,5 @@ public class TabSelectingBar extends Toolbar implements ISelectContract.ISelectV
         super.onDetachedFromWindow();
         mModel = null;
     }
+
 }

@@ -5,9 +5,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.albertech.common.base.recycler.normal.BaseRecyclerAdapter;
+import com.albertech.common.base.recycler.normal.BaseHolder;
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.normal.BaseHolder;
-import com.albertech.demo.base.recycler.normal.BaseRecyclerAdapter;
 import com.albertech.demo.func.category.CategoryBean;
 
 
@@ -26,4 +26,5 @@ public class CategoryHolder extends BaseHolder<BaseRecyclerAdapter<CategoryHolde
         iv.setImageResource(categoryBean.ICON);
         tv.setText(categoryBean.NAME);
     }
+
 }

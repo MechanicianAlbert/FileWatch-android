@@ -5,8 +5,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.albertech.common.base.fragment.BaseFragment;
 import com.albertech.demo.R;
-import com.albertech.demo.base.fragment.TitleFragment;
 import com.albertech.demo.container.home.HomeActivity;
 import com.albertech.demo.func.base.select.ISelectContract;
 import com.albertech.demo.func.hierarchy.HierarchyBean;
@@ -17,8 +17,7 @@ import com.albertech.demo.util.Res;
 import java.util.List;
 
 
-
-public class HierarchyFragment extends TitleFragment implements IHierarchyContract.IHierarchyView, ISelectContract.ISelectView {
+public class HierarchyFragment extends BaseFragment implements IHierarchyContract.IHierarchyView, ISelectContract.ISelectView {
 
     private final HierarchyAdapter ADAPTER = new HierarchyAdapter(this) {
         @Override
@@ -48,7 +47,7 @@ public class HierarchyFragment extends TitleFragment implements IHierarchyContra
     }
 
     @Override
-    protected int layoutRese() {
+    protected int layoutRes() {
         return R.layout.fragment_hierarchy;
     }
 
@@ -78,7 +77,7 @@ public class HierarchyFragment extends TitleFragment implements IHierarchyContra
     }
 
     @Override
-    public boolean backToParent() {
+    public boolean interceptBackPressed() {
         final  boolean isSelecting = ADAPTER.isSelecting();
         if (isSelecting) {
             ADAPTER.stopSelecting();
@@ -119,4 +118,5 @@ public class HierarchyFragment extends TitleFragment implements IHierarchyContra
     public ISelectContract.ISelectModel getSelectionModel() {
         return ADAPTER;
     }
+
 }

@@ -3,17 +3,17 @@ package com.albertech.demo.func.video.adapter;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.albertech.common.base.recycler.select.SelectHolder;
+import com.albertech.common.base.recycler.select.SelectRecyclerAdapter;
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.selectable.SelectableHolder;
-import com.albertech.demo.base.recycler.selectable.SelectableRecyclerAdapter;
 import com.albertech.demo.func.video.VideoBean;
 import com.albertech.demo.util.DurationUtil;
 import com.albertech.demo.util.SizeUtil;
 
 
-public class VideoHolder extends SelectableHolder<SelectableRecyclerAdapter<VideoHolder, VideoBean>, VideoBean> {
+public class VideoHolder extends SelectHolder<SelectRecyclerAdapter<VideoHolder, VideoBean>, VideoBean> {
 
-    public VideoHolder(SelectableRecyclerAdapter<VideoHolder, VideoBean> adapter, @NonNull View itemView) {
+    public VideoHolder(SelectRecyclerAdapter<VideoHolder, VideoBean> adapter, @NonNull View itemView) {
         super(adapter, itemView);
     }
 
@@ -23,4 +23,5 @@ public class VideoHolder extends SelectableHolder<SelectableRecyclerAdapter<Vide
         setText(R.id.tv_item_video_size, SizeUtil.format(videoBean.size));
         setText(R.id.tv_item_video_duration, DurationUtil.format(videoBean.duration));
     }
+
 }

@@ -2,20 +2,19 @@ package com.albertech.demo.func.audio.adapter;
 
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.CheckBox;
 
+import com.albertech.common.base.recycler.select.SelectHolder;
+import com.albertech.common.base.recycler.select.SelectRecyclerAdapter;
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.selectable.SelectableHolder;
-import com.albertech.demo.base.recycler.selectable.SelectableRecyclerAdapter;
 import com.albertech.demo.func.audio.AudioBean;
 import com.albertech.demo.util.DateUtil;
 import com.albertech.demo.util.Res;
 import com.albertech.demo.util.SizeUtil;
 
 
-public class AudioHolder extends SelectableHolder<SelectableRecyclerAdapter<AudioHolder, AudioBean>, AudioBean> {
+public class AudioHolder extends SelectHolder<SelectRecyclerAdapter<AudioHolder, AudioBean>, AudioBean> {
 
-    public AudioHolder(SelectableRecyclerAdapter<AudioHolder, AudioBean> adapter, @NonNull View itemView) {
+    public AudioHolder(SelectRecyclerAdapter<AudioHolder, AudioBean> adapter, @NonNull View itemView) {
         super(adapter, itemView);
     }
 
@@ -34,4 +33,5 @@ public class AudioHolder extends SelectableHolder<SelectableRecyclerAdapter<Audi
         v.setVisibility(isSelecting ? View.VISIBLE : View.INVISIBLE);
         v.setSelected(isSelected(position));
     }
+
 }

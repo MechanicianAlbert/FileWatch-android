@@ -2,21 +2,20 @@ package com.albertech.demo.func.hierarchy.adapter;
 
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.CheckBox;
 
+import com.albertech.common.base.recycler.select.SelectHolder;
+import com.albertech.common.base.recycler.select.SelectRecyclerAdapter;
 import com.albertech.demo.R;
-import com.albertech.demo.base.recycler.selectable.SelectableHolder;
-import com.albertech.demo.base.recycler.selectable.SelectableRecyclerAdapter;
 import com.albertech.demo.func.hierarchy.HierarchyBean;
 import com.albertech.demo.util.DateUtil;
 import com.albertech.demo.util.Res;
 import com.albertech.demo.util.SizeUtil;
 
 
-public class HierarchyHolder extends SelectableHolder<SelectableRecyclerAdapter<HierarchyHolder, HierarchyBean>, HierarchyBean> {
+public class HierarchyHolder extends SelectHolder<SelectRecyclerAdapter<HierarchyHolder, HierarchyBean>, HierarchyBean> {
 
 
-    public HierarchyHolder(SelectableRecyclerAdapter<HierarchyHolder, HierarchyBean> adapter, @NonNull View itemView) {
+    public HierarchyHolder(SelectRecyclerAdapter<HierarchyHolder, HierarchyBean> adapter, @NonNull View itemView) {
         super(adapter, itemView);
     }
 
@@ -35,4 +34,5 @@ public class HierarchyHolder extends SelectableHolder<SelectableRecyclerAdapter<
         v.setVisibility(isSelecting ? View.VISIBLE : View.INVISIBLE);
         v.setSelected(isSelected(position));
     }
+
 }

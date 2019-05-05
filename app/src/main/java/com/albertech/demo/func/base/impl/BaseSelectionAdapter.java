@@ -1,13 +1,12 @@
 package com.albertech.demo.func.base.impl;
 
-
-import com.albertech.demo.base.recycler.selectable.SelectableHolder;
-import com.albertech.demo.base.recycler.selectable.SelectableRecyclerAdapter;
+import com.albertech.common.base.recycler.select.SelectHolder;
+import com.albertech.common.base.recycler.select.SelectRecyclerAdapter;
 import com.albertech.demo.func.base.select.ISelectContract;
 
 
-public abstract class BaseSelectionAdapter<Holder extends SelectableHolder<? extends SelectableRecyclerAdapter, Bean>, Bean>
-        extends SelectableRecyclerAdapter<Holder, Bean>
+public abstract class BaseSelectionAdapter<Holder extends SelectHolder<? extends SelectRecyclerAdapter, Bean>, Bean>
+        extends SelectRecyclerAdapter<Holder, Bean>
         implements ISelectContract.ISelectModel<Bean> {
 
     private ISelectContract.ISelectView mView;
@@ -30,4 +29,5 @@ public abstract class BaseSelectionAdapter<Holder extends SelectableHolder<? ext
             mView.onSelectionCountChange(count, hasSelectedAll);
         }
     }
+
 }

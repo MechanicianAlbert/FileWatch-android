@@ -5,15 +5,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.albertech.common.base.fragment.BaseFragment;
 import com.albertech.demo.R;
-import com.albertech.demo.base.fragment.TitleFragment;
 import com.albertech.demo.container.file.FileActivity;
 import com.albertech.demo.func.category.adapter.CategoryAdapter;
 import com.albertech.demo.util.Res;
 import com.albertech.filewatch.api.IFileConstant;
 
 
-public class CategoryFragment extends TitleFragment {
+public class CategoryFragment extends BaseFragment {
 
     private final CategoryAdapter ADAPTER = new CategoryAdapter() {
         @Override
@@ -52,7 +52,7 @@ public class CategoryFragment extends TitleFragment {
     }
 
     @Override
-    protected int layoutRese() {
+    protected int layoutRes() {
         return R.layout.fragment_category;
     }
 

@@ -1,7 +1,6 @@
 package com.albertech.demo.container.file;
 
-
-import com.albertech.demo.base.fragment.TitleFragment;
+import com.albertech.common.base.fragment.BaseFragment;
 import com.albertech.demo.func.apk.mvp.ApkViewFragment;
 import com.albertech.demo.func.audio.mvp.AudioViewFragment;
 import com.albertech.demo.func.doc.mvp.DocViewFragment;
@@ -14,7 +13,7 @@ import com.albertech.filewatch.api.IFileConstant;
 class FileFragmentFactory implements IFileConstant {
 
 
-    static TitleFragment getCategoryFragmentInstance(int type) {
+    static BaseFragment getCategoryFragmentInstance(int type) {
         switch (type) {
             case IMAGE:
                 return new ImageViewFragment();
