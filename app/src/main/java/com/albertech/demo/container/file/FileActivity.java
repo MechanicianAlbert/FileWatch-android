@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.albertech.common.base.fragment.BaseFragment;
 import com.albertech.demo.R;
-import com.albertech.filewatch.api.IFileConstant;
+import com.albertech.filehelper.api.IFileConstant;
 
 
 public class FileActivity extends AppCompatActivity implements IFileConstant {

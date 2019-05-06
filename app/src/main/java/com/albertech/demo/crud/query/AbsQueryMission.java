@@ -6,8 +6,8 @@ import android.util.Log;
 import com.albertech.demo.base.bean.BaseFileBean;
 import com.albertech.demo.util.ForEachUtil;
 import com.albertech.demo.util.SizeUtil;
-import com.albertech.filewatch.api.FileHelper;
-import com.albertech.filewatch.api.IFileQueryMisson;
+import com.albertech.filehelper.api.FileHelper;
+import com.albertech.filehelper.api.IFileQueryMisson;
 
 import java.text.SimpleDateFormat;
 import java.util.List;

@@ -2,6 +2,8 @@ package com.albertech.demo.util;
 
 import android.app.Application;
 
+import com.albertech.filehelper.api.FileHelper;
+
 
 public class GlobalApplication extends Application {
 
@@ -14,5 +16,7 @@ public class GlobalApplication extends Application {
 
     private void init() {
         Res.setApplication(this);
+        FileHelper.init(this);
     }
+
 }

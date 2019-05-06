@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.albertech.filewatch" >
+    package="com.albertech.filehelper" >
 
     <application>
-        <service android:name=".core.dispatch.FileWatchService" />
+        <service android:name="com.albertech.filehelper.core.dispatch.FileWatchService" />
     </application>
 </manifest>

@@ -1,0 +1,21 @@
+apply plugin: 'maven'
+
+ext {
+    REPO_URL = 'file:///D:/Code/Maven/maven-repo/repository'
+
+    POM_GROUP_ID = 'com.albertech.filehelper'
+    POM_ARTIFACT_ID = 'filehelper'
+    POM_VERSION = android.defaultConfig.versionName
+
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        repository (url: REPO_URL)
+        pom.project {
+            groupId POM_GROUP_ID
+            artifactId POM_ARTIFACT_ID
+            version POM_VERSION
+        }
+    }
+}

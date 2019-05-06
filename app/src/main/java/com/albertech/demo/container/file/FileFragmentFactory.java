@@ -7,7 +7,7 @@ import com.albertech.demo.func.doc.mvp.DocViewFragment;
 import com.albertech.demo.func.image.mvp.ImageViewFragment;
 import com.albertech.demo.func.video.mvp.VideoViewFragment;
 import com.albertech.demo.func.zip.mvp.ZipViewFragment;
-import com.albertech.filewatch.api.IFileConstant;
+import com.albertech.filehelper.api.IFileConstant;
 
 
 class FileFragmentFactory implements IFileConstant {

@@ -2,9 +2,9 @@ package com.albertech.demo.crud.query;
 
 import android.content.Context;
 
-import com.albertech.filewatch.api.FileHelper;
-import com.albertech.filewatch.api.IFileQueryMisson;
-import com.albertech.filewatch.core.query.IFileQuery;
+import com.albertech.filehelper.api.FileHelper;
+import com.albertech.filehelper.api.IFileQueryMisson;
+import com.albertech.filehelper.core.query.IFileQuery;
 
 
 public class QueryHelper {

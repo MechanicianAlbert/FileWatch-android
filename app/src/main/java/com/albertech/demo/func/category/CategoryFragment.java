@@ -10,7 +10,7 @@ import com.albertech.demo.R;
 import com.albertech.demo.container.file.FileActivity;
 import com.albertech.demo.func.category.adapter.CategoryAdapter;
 import com.albertech.demo.util.Res;
-import com.albertech.filewatch.api.IFileConstant;
+import com.albertech.filehelper.api.IFileConstant;
 
 
 public class CategoryFragment extends BaseFragment {

@@ -1,6 +1,6 @@
 package com.albertech.demo.base.bean;
 
-import com.albertech.filewatch.core.query.IFileType;
+import com.albertech.filehelper.core.query.IFileType;
 
 import java.io.File;
 

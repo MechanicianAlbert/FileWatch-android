@@ -5,7 +5,7 @@ import android.provider.MediaStore;
 
 import com.albertech.demo.R;
 import com.albertech.demo.base.bean.BaseFileBean;
-import com.albertech.filewatch.api.IFileConstant;
+import com.albertech.filehelper.api.IFileConstant;
 
 import java.io.File;
 import java.util.Arrays;
