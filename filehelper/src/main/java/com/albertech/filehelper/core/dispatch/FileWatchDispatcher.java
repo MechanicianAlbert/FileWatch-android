@@ -10,6 +10,8 @@ import com.albertech.filehelper.core.IConstant;
 import com.albertech.filehelper.core.scan.FileScanner;
 import com.albertech.filehelper.core.scan.IFileScan;
 import com.albertech.filehelper.core.scan.IFileScanListener;
+import com.albertech.filehelper.core.usb.IUSBListener;
+import com.albertech.filehelper.core.usb.USBManager;
 import com.albertech.filehelper.core.watch.FileWatcher;
 import com.albertech.filehelper.core.watch.IFileWatch;
 import com.albertech.filehelper.core.watch.IFileWatchListener;
@@ -25,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class FileWatchDispatcher extends Binder implements IFileWatchDispatch,
         IFileWatchListener,
         IFileScanListener,
-        IConstant {
+        IConstant, IUSBListener {
 
     // 日志标签
     private static final String TAG = FileWatchDispatcher.class.getSimpleName();
@@ -51,14 +53,20 @@ public class FileWatchDispatcher extends Binder implements IFileWatchDispatch,
     /**
      * 递归观察者
      */
-    private IFileWatch mWatcher;
+    private IFileWatch mFileWatcher;
     /**
      * 文件扫描器
      */
     private IFileScan mScanner;
 
     /**
+     * USB设备管理器
+     */
+    private USBManager mManager;
+
+    /**
      * 初始化, 包内可见, 主服务调用
+     *
      * @param context
      */
     void init(Context context) {
@@ -67,17 +75,22 @@ public class FileWatchDispatcher extends Binder implements IFileWatchDispatch,
         }
         mContext = context;
         // 创建递归观察者
-        mWatcher = new FileWatcher.Builder()
+        mFileWatcher = new FileWatcher.Builder()
                 .path(SD_CARD_PATH)
                 .eventMask(WATCH_EVENT_MASK)
                 .listener(this)
                 .build();
         // 开启观察
-        mWatcher.startWatching();
+        mFileWatcher.startWatching();
         // 创建扫描器
         mScanner = new FileScanner(mContext, this);
         // 初始化扫描器
         mScanner.init();
+
+        // 创建USB管理器
+        mManager = new USBManager(mContext, this);
+        // 初始化USB管理器
+        mManager.init();
     }
 
     /**
@@ -88,14 +101,20 @@ public class FileWatchDispatcher extends Binder implements IFileWatchDispatch,
         SUBSCRIBED_TYPE.clear();
 
         // 释放递归观察者
-        if (mWatcher != null) {
-            mWatcher.stopWatching();
-            mWatcher = null;
+        if (mFileWatcher != null) {
+            mFileWatcher.stopWatching();
+            mFileWatcher = null;
         }
         // 释放扫描器
         if (mScanner != null) {
             mScanner.release();
             mScanner = null;
+        }
+
+        // 释放USB管理器
+        if (mManager != null) {
+            mManager.release();
+            mManager = null;
         }
     }
 
@@ -122,21 +141,46 @@ public class FileWatchDispatcher extends Binder implements IFileWatchDispatch,
         // 分发文件操作事件
         dispatchFileEvents(event, parentPath, childPath);
         // 若事件为默认监听事件(新建文件或删除文件), 则文件有增删, 需要通知系统重新扫描, 更新文件数据库
-        if ((event & WATCH_EVENT_MASK) > 0 && mScanner != null) {
+        if ((event & WATCH_EVENT_MASK) > 0
+                && mScanner != null
+                && !TextUtils.isEmpty(childPath)) {
+            // TODO: 2019/5/15 文件系统扫描, 路径需要指定MimeType, 否则无法更新内容, 需要调整方案
+            // API-19以后, 文件系统扫描仅支持文件, 不支持目录扫描, 需要传输子路径, 对具体文件扫描
+//            mScanner.scan(childPath);
             mScanner.scan(parentPath);
         }
     }
 
     @Override
     public void onScanResult(String path) {
-        dispatchScanResult(path);
+        if (path.startsWith(SD_CARD_PATH)) {
+            // SD卡或其路径
+            dispatchScanResult(path);
+        } else {
+            // U盘路径
+            // TODO: 2019/5/15 通知上层U盘扫描完成
+        }
+    }
+
+    @Override
+    public void onUsbDeviceMount(String path) {
+        if (mScanner != null) {
+            mScanner.scan(path);
+        }
+        // TODO: 2019/5/15 通知上层U盘挂载事件
+    }
+
+    @Override
+    public void onUsbDeviceUnmount(String path) {
+        // TODO: 2019/5/15 通知上层U盘接触挂载事件
     }
 
     /**
      * 分发文件操作事件
-     * @param event 文件操作事件
+     *
+     * @param event      文件操作事件
      * @param parentPath 父路径
-     * @param childPath 事件路径
+     * @param childPath  事件路径
      */
     private void dispatchFileEvents(int event, String parentPath, String childPath) {
         // 遍历订阅者
@@ -154,6 +198,7 @@ public class FileWatchDispatcher extends Binder implements IFileWatchDispatch,
 
     /**
      * 分发扫描结果
+     *
      * @param path 路径
      */
     private void dispatchScanResult(String path) {
