@@ -8,9 +8,12 @@ import android.content.IntentFilter;
 import android.hardware.usb.UsbManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.File;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * U盘管理类
@@ -49,7 +52,7 @@ public class USBManager implements IUSB {
                     && (data = intent.getData()) != null
                     && (path = data.getPath()) != null
                     && (path = data.getPath()) != null
-                    && isValidUsbPath(path)) {
+                    && !TextUtils.isEmpty(path)) {
 
                 handleUsbEvents(action, path);
             } else if (intent == null) {
@@ -60,7 +63,7 @@ public class USBManager implements IUSB {
                 Log.e(TAG, "data is null");
             } else if (path == null) {
                 Log.e(TAG, "path is null");
-            } else if (!isValidUsbPath(path)) {
+            } else if (TextUtils.isEmpty(path)) {
                 Log.e(TAG, "path is invalid");
             }
         }
@@ -130,16 +133,16 @@ public class USBManager implements IUSB {
      * @param path
      */
     private void handleUsbEvents(@NonNull String action, @NonNull String path) {
-        Log.e(TAG, "Handle usb event, action: " + action + ", path: " + path);
+        Log.d(TAG, "Handle usb event, action: " + action + ", path: " + path);
         switch (action) {
             case Intent.ACTION_MEDIA_MOUNTED:
-                Log.e(TAG, "USB device mounted, path: " + path);
+                Log.d(TAG, "USB device mounted, path: " + path);
                 if (mListener != null) {
                     mListener.onUsbDeviceMount(path);
                 }
                 break;
             case Intent.ACTION_MEDIA_UNMOUNTED:
-                Log.e(TAG, "USB device unmounted, path: " + path);
+                Log.d(TAG, "USB device unmounted, path: " + path);
                 if (mListener != null) {
                     mListener.onUsbDeviceUnmount(path);
                 }
@@ -147,20 +150,6 @@ public class USBManager implements IUSB {
         }
     }
 
-    /**
-     * 判断U盘路径是否合法
-     * @param path
-     * @return
-     */
-    private boolean isValidUsbPath(String path) {
-        // valid usb path judgement, temporarily always true
-//        return true;
-        File f;
-        return path != null
-                && path.trim().length() != 0
-                && (f = new File(path)).exists()
-                && f.canExecute();
-    }
 
     @Override
     public void init() {

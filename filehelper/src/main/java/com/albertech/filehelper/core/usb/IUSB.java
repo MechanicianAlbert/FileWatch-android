@@ -15,5 +15,4 @@ public interface IUSB {
      */
     void release();
 
-
 }

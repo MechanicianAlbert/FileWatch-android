@@ -11,14 +11,14 @@ public interface IFileScan {
     void init();
 
     /**
+     * 释放
+     */
+    void release();
+
+    /**
      * 扫描
      * @param path 路径
      */
     void scan(String path);
-
-    /**
-     * 释放
-     */
-    void release();
 
 }

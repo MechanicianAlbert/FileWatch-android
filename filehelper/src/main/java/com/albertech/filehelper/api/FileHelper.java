@@ -8,6 +8,9 @@ import com.albertech.filehelper.core.dispatch.FileWatchService;
 import com.albertech.filehelper.core.query.FileQueryer;
 import com.albertech.filehelper.core.query.IFileQuery;
 import com.albertech.filehelper.core.dispatch.FileWatchServiceConnection;
+import com.albertech.filehelper.core.usb.UsbStatus;
+
+import java.util.Set;
 
 
 public class FileHelper implements IFileConstant {
@@ -56,9 +59,48 @@ public class FileHelper implements IFileConstant {
         return new FileWatchServiceConnection(context, subscriber, type, path);
     }
 
+    /**
+     * 构建文件查询器
+     * @return 文件查询器
+     */
     public static IFileQuery createDefaultFileQuery() {
         return new FileQueryer();
     }
+
+    /**
+     * 判断U盘是否挂载
+     * @param path U盘路径
+     * @return U盘是否挂载
+     */
+    public static boolean hasMounted(String path) {
+        return UsbStatus.hasMounted(path);
+    }
+
+    /**
+     * 判断U盘是否扫描完成
+     * @param path U盘路径
+     * @return U盘是否扫描完成
+     */
+    public static boolean hasScanned(String path) {
+        return UsbStatus.hasScanned(path);
+    }
+
+    /**
+     * 获得所有已挂载的U盘路径集合
+     * @return 所有已挂载的U盘路径集合
+     */
+    public static Set<String> getMountedUsbDevices() {
+        return UsbStatus.getMountedUsbDevices();
+    }
+
+    /**
+     * 获得所有已扫描的U盘路径集合
+     * @return 所有已扫描的U盘路径集合
+     */
+    public static Set<String> getScannedUsbDevices() {
+        return UsbStatus.getScannedUsbDevices();
+    }
+
 
     /**
      * 获取文件操作事件名称, 用于日志

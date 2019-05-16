@@ -4,12 +4,15 @@ import android.content.Context;
 import android.os.Binder;
 import android.os.FileObserver;
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.albertech.filehelper.api.FileHelper;
 import com.albertech.filehelper.api.IFileWatchSubscriber;
 import com.albertech.filehelper.core.IConstant;
 import com.albertech.filehelper.core.scan.FileScanner;
 import com.albertech.filehelper.core.scan.IFileScan;
 import com.albertech.filehelper.core.scan.IFileScanListener;
+import com.albertech.filehelper.core.usb.UsbStatus;
 import com.albertech.filehelper.core.usb.IUSBListener;
 import com.albertech.filehelper.core.usb.USBManager;
 import com.albertech.filehelper.core.watch.FileWatcher;
@@ -46,7 +49,11 @@ public class FileWatchDispatcher extends Binder implements IFileWatchDispatch,
     /**
      * 默认事件掩码
      */
-    private final int WATCH_EVENT_MASK = FileObserver.CREATE | FileObserver.DELETE;
+    private final int WATCH_EVENT_MASK =
+            FileObserver.CREATE
+            | FileObserver.DELETE
+            | FileObserver.MOVED_TO
+            | FileObserver.MOVED_FROM;
 
 
     private Context mContext;
@@ -140,39 +147,73 @@ public class FileWatchDispatcher extends Binder implements IFileWatchDispatch,
     public void onEvent(int event, String parentPath, String childPath) {
         // 分发文件操作事件
         dispatchFileEvents(event, parentPath, childPath);
-        // 若事件为默认监听事件(新建文件或删除文件), 则文件有增删, 需要通知系统重新扫描, 更新文件数据库
-        if ((event & WATCH_EVENT_MASK) > 0
+        // 若事件为默认监听事件(新建/删除/移动), 则文件目录树有变化, 需要通知系统重新扫描, 更新文件数据库
+        int e = event & WATCH_EVENT_MASK;
+        if (e > 0
                 && mScanner != null
                 && !TextUtils.isEmpty(childPath)) {
-            // TODO: 2019/5/15 文件系统扫描, 路径需要指定MimeType, 否则无法更新内容, 需要调整方案
-            // API-19以后, 文件系统扫描仅支持文件, 不支持目录扫描, 需要传输子路径, 对具体文件扫描
-//            mScanner.scan(childPath);
-            mScanner.scan(parentPath);
+            Log.d(TAG, "File event: " + FileHelper.fileOperationName(e)
+                    + "\nParentPath: " + parentPath
+                    + "\nChildPath: " + childPath
+            );
+            mScanner.scan(childPath);
         }
     }
 
     @Override
     public void onScanResult(String path) {
         if (path.startsWith(SD_CARD_PATH)) {
-            // SD卡或其路径
+            // SD卡或其子路径
+            Log.d(TAG, "SDCard subdirectory scan finished, path: " + path);
             dispatchScanResult(path);
         } else {
             // U盘路径
-            // TODO: 2019/5/15 通知上层U盘扫描完成
+            onUsbDeviceScanned(path);
         }
     }
 
     @Override
     public void onUsbDeviceMount(String path) {
+        Log.d(TAG, "USB device mounted, path: " + path);
         if (mScanner != null) {
+            // 扫描U盘路径, 更新数据库
             mScanner.scan(path);
         }
-        // TODO: 2019/5/15 通知上层U盘挂载事件
+        UsbStatus.mounted(path);
+        // 通知上层U盘挂载事件
+        for (IFileWatchSubscriber subscriber : SUBSCRIBED_PATH.keySet()) {
+            if (subscriber != null) {
+                subscriber.onUsbDeviceMount(path);
+            }
+        }
     }
 
     @Override
     public void onUsbDeviceUnmount(String path) {
-        // TODO: 2019/5/15 通知上层U盘接触挂载事件
+        Log.d(TAG, "USB device unmounted, path: " + path);
+        if (mScanner != null) {
+            // 扫描U盘路径, 更新数据库
+            mScanner.scan(path);
+        }
+        UsbStatus.unmounted(path);
+        // 通知上层U盘解除挂载事件
+        for (IFileWatchSubscriber subscriber : SUBSCRIBED_PATH.keySet()) {
+            if (subscriber != null) {
+                subscriber.onUsbDeviceUnmount(path);
+            }
+        }
+    }
+
+    @Override
+    public void onUsbDeviceScanned(String path) {
+        Log.d(TAG, "USB device scan finished, path: " + path);
+        UsbStatus.scanned(path);
+        // 通知上层U盘扫描完成
+        for (IFileWatchSubscriber subscriber : SUBSCRIBED_PATH.keySet()) {
+            if (subscriber != null) {
+                subscriber.onUsbDeviceScanned(path);
+            }
+        }
     }
 
     /**

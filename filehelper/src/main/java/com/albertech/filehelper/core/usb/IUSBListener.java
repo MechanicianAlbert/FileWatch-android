@@ -17,4 +17,10 @@ public interface IUSBListener {
      */
     void onUsbDeviceUnmount(String path);
 
+    /**
+     * U盘扫描完成
+     * @param path U盘路径
+     */
+    void onUsbDeviceScanned(String path);
+
 }
