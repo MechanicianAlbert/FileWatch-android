@@ -19,17 +19,37 @@ import com.albertech.filehelper.core.query.cursor.impl.ZipCursorFactory;
  */
 public class FileQueryer implements IFileQuery {
 
+    //*** Singleton
+    public enum Singleton {
+        INSTANCE;
+
+        private final FileQueryer FILE_QUERYER;
+
+        Singleton() {
+            FILE_QUERYER = new FileQueryer();
+        }
+    }
+
+    private FileQueryer() {
+        if (Singleton.INSTANCE != null && Singleton.INSTANCE.FILE_QUERYER != null){
+            throw new RuntimeException("This class should not be instanciate more than once");
+        }
+        initCursorFactories();
+    }
+
+    public static FileQueryer getInstance() {
+        return Singleton.INSTANCE.FILE_QUERYER;
+    }
+    // *** Singleton
+
+
     /**
      * 游标工厂集合
      * 键为查询文件类型
      * 值为游标工厂
      */
-    private static final SparseArray<ICursorFactory> CURSOR_FACTORIES = new SparseArray<>();
+    private final SparseArray<ICursorFactory> CURSOR_FACTORIES = new SparseArray<>();
 
-
-    public FileQueryer() {
-        initCursorFactories();
-    }
 
     /**
      * 初始化游标工厂

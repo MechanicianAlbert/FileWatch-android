@@ -40,7 +40,7 @@ public abstract class BaseFileModel<Bean extends BaseFileBean>
 
     @Override
     public void query(Context context) {
-        QueryHelper.getInstance().query(context, this);
+        QueryHelper.query(context, this);
     }
 
 }

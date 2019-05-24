@@ -60,7 +60,7 @@ public class HierarchyQueryMission extends AbsQueryMission<HierarchyBean> implem
     @Override
     public void query(Context context, String path) {
         mPath = path;
-        QueryHelper.getInstance().query(context, this);
+        QueryHelper.query(context, this);
     }
 
 }

@@ -63,8 +63,8 @@ public class FileHelper implements IFileConstant {
      * 构建文件查询器
      * @return 文件查询器
      */
-    public static IFileQuery createDefaultFileQuery() {
-        return new FileQueryer();
+    public static IFileQuery getDefaultFileQuery() {
+        return FileQueryer.getInstance();
     }
 
     /**
