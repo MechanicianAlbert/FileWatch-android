@@ -72,33 +72,16 @@ public class FileHelper implements IFileConstant {
      * @param path U盘路径
      * @return U盘是否挂载
      */
-    public static boolean hasMounted(String path) {
-        return UsbStatus.hasMounted(path);
-    }
-
-    /**
-     * 判断U盘是否扫描完成
-     * @param path U盘路径
-     * @return U盘是否扫描完成
-     */
-    public static boolean hasScanned(String path) {
-        return UsbStatus.hasScanned(path);
+    public static boolean hasUsbDeviceMounted(Context context, String path) {
+        return UsbStatus.hasMounted(context, path);
     }
 
     /**
      * 获得所有已挂载的U盘路径集合
      * @return 所有已挂载的U盘路径集合
      */
-    public static Set<String> getMountedUsbDevices() {
-        return UsbStatus.getMountedUsbDevices();
-    }
-
-    /**
-     * 获得所有已扫描的U盘路径集合
-     * @return 所有已扫描的U盘路径集合
-     */
-    public static Set<String> getScannedUsbDevices() {
-        return UsbStatus.getScannedUsbDevices();
+    public static Set<String> getMountedUsbDevices(Context context) {
+        return UsbStatus.getMountedDevices(context);
     }
 
 

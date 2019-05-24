@@ -179,7 +179,6 @@ public class FileWatchDispatcher extends Binder implements IFileWatchDispatch,
             // 扫描U盘路径, 更新数据库
             mScanner.scan(path);
         }
-        UsbStatus.mounted(path);
         // 通知上层U盘挂载事件
         for (IFileWatchSubscriber subscriber : SUBSCRIBED_PATH.keySet()) {
             if (subscriber != null) {
@@ -195,7 +194,6 @@ public class FileWatchDispatcher extends Binder implements IFileWatchDispatch,
             // 扫描U盘路径, 更新数据库
             mScanner.scan(path);
         }
-        UsbStatus.unmounted(path);
         // 通知上层U盘解除挂载事件
         for (IFileWatchSubscriber subscriber : SUBSCRIBED_PATH.keySet()) {
             if (subscriber != null) {
@@ -207,7 +205,6 @@ public class FileWatchDispatcher extends Binder implements IFileWatchDispatch,
     @Override
     public void onUsbDeviceScanned(String path) {
         Log.d(TAG, "USB device scan finished, path: " + path);
-        UsbStatus.scanned(path);
         // 通知上层U盘扫描完成
         for (IFileWatchSubscriber subscriber : SUBSCRIBED_PATH.keySet()) {
             if (subscriber != null) {
