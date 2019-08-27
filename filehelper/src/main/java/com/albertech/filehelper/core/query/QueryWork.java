@@ -3,8 +3,10 @@ package com.albertech.filehelper.core.query;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.albertech.filehelper.api.IFileQueryMisson;
+import com.albertech.filehelper.log.LogUtil;
 import com.albertech.filehelper.core.query.cursor.ICursorFactory;
+import com.albertech.filehelper.api.IFileQueryMisson;
+import com.albertech.filehelper.log.ITAG;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -17,7 +19,6 @@ import java.util.List;
  * @param <Bean> 描述文件的Bean类
  */
 public class QueryWork<Bean> implements Runnable {
-
 
     private Context mContext;
     /**
@@ -58,6 +59,11 @@ public class QueryWork<Bean> implements Runnable {
             close(cursor);
             // 回调查询结果
             mMission.onQueryResult(mParentPath, list);
+            LogUtil.d(ITAG.QUERY,
+                    "Query finished:",
+                    "Path: " + mParentPath,
+                    "List: " + list
+            );
         }
         // 释放引用
         mMission = null;

@@ -1,19 +1,23 @@
 package com.albertech.filehelper.api;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.FileObserver;
 
 import com.albertech.filehelper.core.dispatch.FileWatchService;
+import com.albertech.filehelper.core.dispatch.FileWatchServiceConnection;
 import com.albertech.filehelper.core.query.FileQueryer;
 import com.albertech.filehelper.core.query.IFileQuery;
-import com.albertech.filehelper.core.dispatch.FileWatchServiceConnection;
+import com.albertech.filehelper.core.scan.ScanTaskGroupFactory;
+import com.albertech.filehelper.core.scan.commit.ScanCommitter;
+import com.albertech.filehelper.core.usb.UsbDeviceInfo;
 import com.albertech.filehelper.core.usb.UsbStatus;
 
 import java.util.Set;
 
-
-public class FileHelper implements IFileConstant {
+/**
+ * 文件操作辅助类
+ */
+public final class FileHelper implements IFileConstant {
 
     private FileHelper() {
         // 不支持反射创建实例
@@ -29,11 +33,11 @@ public class FileHelper implements IFileConstant {
      *
      * @param context 上下文
      */
-    public static void init(Context context) {
+    public static void init(Context context, String... watchPath) {
         if (context == null) {
             throw new NullPointerException("Context should not be null");
         }
-        context.startService(new Intent(context, FileWatchService.class));
+        FileWatchService.start(context, watchPath);
     }
 
     /**
@@ -68,6 +72,15 @@ public class FileHelper implements IFileConstant {
     }
 
     /**
+     * 向扫描器的任务队列追加提交扫描任务
+     * @param context 上下文
+     * @param paths 扫描任务的路径
+     */
+    public static void commitScanMission(Context context, String...paths) {
+        new ScanCommitter(context, paths);
+    }
+
+    /**
      * 判断U盘是否挂载
      * @param path U盘路径
      * @return U盘是否挂载
@@ -77,11 +90,52 @@ public class FileHelper implements IFileConstant {
     }
 
     /**
+     * 根据路径获得U盘盘符名称
+     * @param path U盘路径
+     * @return U盘盘符名称
+     */
+    public static String getUsbDeviceNameByPath(Context context, String path) {
+        return UsbStatus.getUsbDeviceNameByPath(context, path);
+    }
+
+  /**
+     * 判断U盘是否被媒体库扫描完成
+     * @param path U盘路径
+     * @return U盘是否被媒体库扫描完成
+     */
+    public static boolean hasUsbDeviceBeenScanned(Context context, String path) {
+        return UsbStatus.hasBeenScanned(context, path);
+    }
+
+    /**
      * 获得所有已挂载的U盘路径集合
      * @return 所有已挂载的U盘路径集合
      */
-    public static Set<String> getMountedUsbDevices(Context context) {
-        return UsbStatus.getMountedDevices(context);
+    public static Set<UsbDeviceInfo> getMountedUsbDevicesInfo(Context context) {
+        return UsbStatus.getMountedDevicesInfo(context);
+    }
+
+    /**
+     * 获得已挂载的U盘數量
+     * @return 已挂载的U盘數量
+     */
+    public static int getMountedUsbDevicesCount(Context context) {
+        return getMountedUsbDevicesInfo(context).size();
+    }
+
+    /**
+     * @return 是否存在已挂载的U盘
+     */
+    public static boolean existMountedUsbDevices(Context context) {
+        return getMountedUsbDevicesCount(context) > 0;
+    }
+
+    /**
+     * 设置扫描批量上报的批量规模数量
+     * @param size 批量数量
+     */
+    public static void setScanReportBatchSize(int size) {
+        ScanTaskGroupFactory.setScanBatchSize(size);
     }
 
 

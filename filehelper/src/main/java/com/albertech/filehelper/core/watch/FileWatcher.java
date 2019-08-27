@@ -8,14 +8,17 @@ import com.albertech.filehelper.core.IConstant;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 可递归文件观察者, 递归观察逻辑实现类
- *
+ * <p>
  * 组织管理对观察根路径及其子路径进行观察的所有非递归观察者,
  * 收集其上报信息, 并传递给事件监听者
  */
@@ -47,34 +50,8 @@ public class FileWatcher implements IFileWatch, IFileWatchListener {
 
         @Override
         public void run() {
-            // 使用栈容器递归创建观察者
-            Stack<String> s = new Stack<>();
-            // 在栈中首先压入观察根路径
-            s.push(WATCH_PATH);
-            // 栈非空时
-            while (!s.isEmpty()) {
-                // 获得栈顶路径
-                String path = s.pop();
-
-                // 从集合中查询是否有已经创建好的观察者
-                FileObserver o = OBSERVERS.get(path);
-                if (o != null) {
-                    // 如果观察者可用则开启观察
-                    o.startWatching();
-                } else {
-                    // 对此路径创建观察者
-                    createSingleDirectoryObserver(path);
-                }
-
-                // 如果此路径是合法目录
-                File f = new File(path);
-                File[] children = f.listFiles(VALID_READABLE_DIRECTORY_FILTER);
-                if (children != null) {
-                    // 遍历子目录, 将所有子目录路径压入栈
-                    for (File child : children) {
-                        s.push(child.getAbsolutePath());
-                    }
-                }
+            for (String path : WATCH_PATH) {
+                createObserverRecursivelyByPath(path);
             }
         }
     };
@@ -123,7 +100,7 @@ public class FileWatcher implements IFileWatch, IFileWatchListener {
     /**
      * 观察根路径
      */
-    private final String WATCH_PATH;
+    private final List<String> WATCH_PATH = new ArrayList<>();
     /**
      * 文件操作事件掩码
      */
@@ -135,14 +112,52 @@ public class FileWatcher implements IFileWatch, IFileWatchListener {
     private IFileWatchListener mListener;
 
 
-    private FileWatcher(String path, int eventMask, IFileWatchListener listener) {
-        WATCH_PATH = path;
+    private FileWatcher(int eventMask, IFileWatchListener listener, String... paths) {
+        WATCH_PATH.addAll(Arrays.asList(paths));
         EVENT_MASK = eventMask & FileObserver.ALL_EVENTS;
         mListener = listener;
     }
 
     /**
+     * 对要监听的根路径以深度优先方式递归创建观察者
+     *
+     * @param path 路径
+     */
+    private void createObserverRecursivelyByPath(String path) {
+        // 使用栈容器递归创建观察者
+        Stack<String> s = new Stack<>();
+        // 在栈中首先压入观察根路径
+        s.push(path);
+        // 栈非空时
+        while (!s.isEmpty()) {
+            // 获得栈顶路径
+            String next = s.pop();
+
+            // 从集合中查询是否有已经创建好的观察者
+            FileObserver o = OBSERVERS.get(next);
+            if (o != null) {
+                // 如果观察者可用则开启观察
+                o.startWatching();
+            } else {
+                // 对此路径创建观察者
+                createSingleDirectoryObserver(next);
+            }
+
+            // 如果此路径是合法目录
+            File f = new File(next);
+            File[] children = f.listFiles(VALID_READABLE_DIRECTORY_FILTER);
+            if (children != null) {
+                // 遍历子目录, 将所有子目录路径压入栈
+                for (File child : children) {
+                    s.push(child.getAbsolutePath());
+                }
+            }
+        }
+    }
+
+    /**
      * 对单一路径创建观察者
+     *
      * @param path 路径
      */
     private void createSingleDirectoryObserver(String path) {
@@ -152,6 +167,7 @@ public class FileWatcher implements IFileWatch, IFileWatchListener {
 
     /**
      * 释放对已失效的路径进行观察的观察者
+     *
      * @param path 路径
      */
     private void releaseInvalidPathObserver(String path) {
@@ -165,6 +181,7 @@ public class FileWatcher implements IFileWatch, IFileWatchListener {
 
     /**
      * 判断路径是否为合法的目录
+     *
      * @param path 路径
      * @return
      */
@@ -179,6 +196,7 @@ public class FileWatcher implements IFileWatch, IFileWatchListener {
 
     /**
      * 判断文件是否为合法的目录
+     *
      * @param f 文件
      * @return
      */
@@ -193,22 +211,22 @@ public class FileWatcher implements IFileWatch, IFileWatchListener {
 
     @Override
     public final void startWatching() {
-        CommonExecutor.get().execute(OBSERVER_CREATER);
+        CommonExecutor.exe(OBSERVER_CREATER);
     }
 
     @Override
     public void resumeWatching() {
-        CommonExecutor.get().execute(RESUME_WATCHING);
+        CommonExecutor.exe(RESUME_WATCHING);
     }
 
     @Override
     public final void pauseWatching() {
-        CommonExecutor.get().execute(PAUSE_WATCHING);
+        CommonExecutor.exe(PAUSE_WATCHING);
     }
 
     @Override
     public final void stopWatching() {
-        CommonExecutor.get().execute(OBSERVER_DESTROYER);
+        CommonExecutor.exe(OBSERVER_DESTROYER);
     }
 
     @Override
@@ -237,6 +255,7 @@ public class FileWatcher implements IFileWatch, IFileWatchListener {
         }
     }
 
+
     /**
      * 递归观察者的建造器
      */
@@ -250,7 +269,7 @@ public class FileWatcher implements IFileWatch, IFileWatchListener {
         /**
          * 观察根路径默认为SD卡
          */
-        private String mWatchPath = SD_CARD_PATH;
+        private String[] mWatchPath = {};
         /**
          * 事件掩码默认为所有事件
          */
@@ -262,16 +281,18 @@ public class FileWatcher implements IFileWatch, IFileWatchListener {
 
         /**
          * 设置观察根路径
+         *
          * @param path 路径
          * @return
          */
-        public Builder path(String path) {
+        public Builder path(String... path) {
             mWatchPath = path;
             return this;
         }
 
         /**
          * 设置事件掩码
+         *
          * @param eventMask
          * @return
          */
@@ -282,6 +303,7 @@ public class FileWatcher implements IFileWatch, IFileWatchListener {
 
         /**
          * 设置事件监听
+         *
          * @param listener
          * @return
          */
@@ -292,11 +314,12 @@ public class FileWatcher implements IFileWatch, IFileWatchListener {
 
         /**
          * 建造
+         *
          * @return 可递归文件观察者
          */
         public FileWatcher build() {
             try {
-                return new FileWatcher(mWatchPath, mEventMask, mListener);
+                return new FileWatcher(mEventMask, mListener, mWatchPath);
             } finally {
                 mListener = null;
             }

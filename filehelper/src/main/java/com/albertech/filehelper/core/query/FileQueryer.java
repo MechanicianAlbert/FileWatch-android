@@ -3,8 +3,6 @@ package com.albertech.filehelper.core.query;
 import android.content.Context;
 import android.util.SparseArray;
 
-import com.albertech.filehelper.api.IFileQueryMisson;
-import com.albertech.filehelper.core.CommonExecutor;
 import com.albertech.filehelper.core.query.cursor.ICursorFactory;
 import com.albertech.filehelper.core.query.cursor.impl.ApkCursorFactory;
 import com.albertech.filehelper.core.query.cursor.impl.AudioCursorFactory;
@@ -13,6 +11,8 @@ import com.albertech.filehelper.core.query.cursor.impl.FileCursorFactory;
 import com.albertech.filehelper.core.query.cursor.impl.ImageCursorFactory;
 import com.albertech.filehelper.core.query.cursor.impl.VideoCursorFactory;
 import com.albertech.filehelper.core.query.cursor.impl.ZipCursorFactory;
+import com.albertech.filehelper.api.IFileQueryMisson;
+import com.albertech.filehelper.core.CommonExecutor;
 
 /**
  * 文件查询器类
@@ -82,7 +82,7 @@ public class FileQueryer implements IFileQuery {
         // 获取游标工厂, 递归查询时, 键取负值, 获取的工厂即支持递归查询
         ICursorFactory factory = CURSOR_FACTORIES.get(mission.recursive() ? -type : type);
         // 执行查询
-        CommonExecutor.get().execute(new QueryWork<>(context, factory, mission));
+        CommonExecutor.exe(new QueryWork<>(context, factory, mission));
     }
 
 }

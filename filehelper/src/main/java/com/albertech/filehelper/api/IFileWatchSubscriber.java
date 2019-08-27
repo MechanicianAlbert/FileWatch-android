@@ -12,4 +12,6 @@ public interface IFileWatchSubscriber
         IFileScanListener,
         IUSBListener {
 
+    String PATH_USB_ONLY = "USB_ONLY";
+
 }

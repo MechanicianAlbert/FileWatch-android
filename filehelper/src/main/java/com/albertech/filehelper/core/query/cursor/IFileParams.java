@@ -1,5 +1,6 @@
 package com.albertech.filehelper.core.query.cursor;
 
+import android.net.Uri;
 import android.provider.MediaStore;
 
 import com.albertech.filehelper.core.IConstant;
@@ -8,6 +9,11 @@ import com.albertech.filehelper.core.IConstant;
  * 文件查询常量接口
  */
 public interface IFileParams extends IConstant {
+
+    /**
+     * 系统媒体库文件列表资源标识符
+     */
+    Uri URI_FILES = MediaStore.Files.getContentUri("external");
 
     /**
      * 系统文件数据库路径字段名

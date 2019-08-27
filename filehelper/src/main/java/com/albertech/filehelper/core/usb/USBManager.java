@@ -5,15 +5,17 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.hardware.usb.UsbConstants;
+import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 
-import java.io.File;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import com.albertech.filehelper.log.LogUtil;
+import com.albertech.filehelper.core.scan.IFileScan;
+import com.albertech.filehelper.log.ITAG;
+
+import java.util.Set;
 
 /**
  * U盘管理类
@@ -27,44 +29,49 @@ public class USBManager implements IUSB {
     /**
      * U盘插拔状态广播接收者
      */
-    private final BroadcastReceiver mUsbAttachmentBroadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver USB_ATTACHMENT = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "Receive usb broadcast"
-                    + "\nAction: " + intent.getAction()
+            String action = "";
+            UsbDevice device = null;
+            if (intent != null) {
+                action = intent.getAction();
+                device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+            }
+            action = action != null ? action : "";
+            LogUtil.d(ITAG.USB,
+                    "Receive usb event broadcast",
+                    "Action: " + action,
+                    "UsbDevice: " + (device != null ? device.toString() : "")
             );
+            handleUsbAttach(action, device);
         }
     };
 
     /**
-     * U盘挂载状态广播接收者
+     * U盘挂载移除解挂状态广播接收者
      */
-    private final BroadcastReceiver mUsbMountBroadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver USB_EVENT_RECEIVER = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String action = null;
+            String action = "";
             Uri data = null;
-            String path = null;
-
-            Log.d(TAG, "Receive usb broadcast");
-            if (intent != null
+            String path = "";
+            boolean isValidEvent = intent != null
                     && (action = intent.getAction()) != null
                     && (data = intent.getData()) != null
                     && (path = data.getPath()) != null
                     && (path = data.getPath()) != null
-                    && !TextUtils.isEmpty(path)) {
-
-                handleUsbEvents(action, path);
-            } else if (intent == null) {
-                Log.e(TAG, "intent is null");
-            } else if (action == null) {
-                Log.e(TAG, "action is null");
-            } else if (data == null) {
-                Log.e(TAG, "data is null");
-            } else if (path == null) {
-                Log.e(TAG, "path is null");
-            } else if (TextUtils.isEmpty(path)) {
-                Log.e(TAG, "path is invalid");
+                    && !TextUtils.isEmpty(path);
+            action = action != null ? action : "";
+            LogUtil.d(ITAG.USB,
+                    "Receive usb event broadcast",
+                    "Action: " + action,
+                    "Data: " + (data != null ? data.toString() : ""),
+                    "Path: " + path
+            );
+            if (isValidEvent) {
+                handleUsbEvent(action, path);
             }
         }
     };
@@ -101,6 +108,7 @@ public class USBManager implements IUSB {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_MEDIA_MOUNTED);
         filter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
+        filter.addAction(Intent.ACTION_MEDIA_EJECT);
         filter.addAction(Intent.ACTION_MEDIA_REMOVED);
         filter.addAction(Intent.ACTION_MEDIA_BAD_REMOVAL);
         filter.addDataScheme(ContentResolver.SCHEME_FILE);
@@ -111,38 +119,96 @@ public class USBManager implements IUSB {
      * 注册U盘状态广播
      */
     private void registerUsbBroadcast() {
-        mContext.registerReceiver(mUsbMountBroadcastReceiver, createUsbMountBroadcastFilter());
-        mContext.registerReceiver(mUsbAttachmentBroadcastReceiver, createUsbAttachmentBroadcastFilter());
+        mContext.registerReceiver(USB_EVENT_RECEIVER, createUsbMountBroadcastFilter());
+        mContext.registerReceiver(USB_ATTACHMENT, createUsbAttachmentBroadcastFilter());
     }
 
     /**
      * 注销U盘状态广播
      */
     private void unregisterUsbBroadcast() {
-        try {
-            mContext.unregisterReceiver(mUsbMountBroadcastReceiver);
-            mContext.unregisterReceiver(mUsbAttachmentBroadcastReceiver);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        mContext.unregisterReceiver(USB_EVENT_RECEIVER);
+        mContext.unregisterReceiver(USB_ATTACHMENT);
     }
 
     /**
-     * 处理U盘挂载状态变换事件
+     * 通知系统对已挂载U盘进行媒体库扫描
+     */
+    private void scanMountedUsbPath(IFileScan scanner) {
+        if (scanner != null) {
+            Set<UsbDeviceInfo> devices = UsbStatus.getMountedDevicesInfo(mContext);
+            if (devices != null && devices.size() > 0) {
+                for (UsbDeviceInfo device : devices) {
+                    scanner.scan(device.PATH);
+                }
+            }
+        }
+    }
+
+
+    private void handleUsbAttach(String action, UsbDevice device) {
+        if (!TextUtils.equals(action, UsbManager.ACTION_USB_DEVICE_ATTACHED)) {
+            return;
+        }
+        if (device == null) {
+            return;
+        }
+        int usbType = -1;
+        for (int i = 0; i < device.getInterfaceCount(); i++) {
+            usbType = device.getInterface(i).getInterfaceClass();
+            if (usbType == UsbConstants.USB_CLASS_VENDOR_SPEC) {
+                break;
+            }
+        }
+        boolean shouldNotify = (usbType == UsbConstants.USB_CLASS_MASS_STORAGE
+                || (usbType == UsbConstants.USB_CLASS_VENDOR_SPEC && device.getSerialNumber() != null));
+        LogUtil.d(ITAG.USB,
+                "Handle usb event, action: " + action,
+                "Device: " + device,
+                "Type: " + usbType,
+                "Should notify: " + shouldNotify
+        );
+        if (shouldNotify && mListener != null) {
+            LogUtil.d(ITAG.USB, "USB device attached");
+            mListener.onUsbDeviceAttach();
+        }
+    }
+    /**
+     * 处理U盘状态变换事件
+     *
      * @param action
      * @param path
      */
-    private void handleUsbEvents(@NonNull String action, @NonNull String path) {
-        Log.d(TAG, "Handle usb event, action: " + action + ", path: " + path);
+    private void handleUsbEvent(String action, String path) {
+        LogUtil.d(ITAG.USB,
+                "Handle usb event",
+                "action: " + action,
+                "path: " + path
+        );
         switch (action) {
             case Intent.ACTION_MEDIA_MOUNTED:
-                Log.d(TAG, "USB device mounted, path: " + path);
+                LogUtil.d(ITAG.USB,
+                        "USB device mounted",
+                        "path: " + path
+                );
                 if (mListener != null) {
                     mListener.onUsbDeviceMount(path);
                 }
                 break;
+            case Intent.ACTION_MEDIA_EJECT:
+                LogUtil.d(ITAG.USB,
+                        "USB device ejected",
+                        "path: " + path
+                );
+                if (mListener != null) {
+                    mListener.onUsbDeviceEject(path);
+                }
+                break;
             case Intent.ACTION_MEDIA_UNMOUNTED:
-                Log.d(TAG, "USB device unmounted, path: " + path);
+                LogUtil.d(ITAG.USB,
+                        "USB device unmounted",
+                        "path: " + path
+                );
                 if (mListener != null) {
                     mListener.onUsbDeviceUnmount(path);
                 }
@@ -152,13 +218,28 @@ public class USBManager implements IUSB {
 
 
     @Override
-    public void init() {
-        registerUsbBroadcast();
+    public void init(IFileScan scanner) {
+        try {
+            LogUtil.d(ITAG.USB, "USBManager init started");
+            registerUsbBroadcast();
+            // 在初始化时进触发已行挂载U盘的媒体库扫描
+            // 以便向UsbStatus中的已扫描集合同步最新的状态, 使已扫描判断方法返回准确的结果
+            scanMountedUsbPath(scanner);
+            LogUtil.d(ITAG.USB, "USBManager init success");
+        } catch (Exception e) {
+            LogUtil.e(ITAG.USB, "USBManager init exception: ", e);
+        }
     }
 
     @Override
     public void release() {
-        unregisterUsbBroadcast();
+        try {
+            LogUtil.d(ITAG.USB, "USBManager release started");
+            unregisterUsbBroadcast();
+            LogUtil.d(ITAG.USB, "USBManager release success");
+        } catch (Exception e) {
+            LogUtil.e(ITAG.USB, "USBManager release exception: ", e);
+        }
     }
 
 }

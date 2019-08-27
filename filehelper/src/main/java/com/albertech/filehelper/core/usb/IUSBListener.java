@@ -6,10 +6,21 @@ package com.albertech.filehelper.core.usb;
 public interface IUSBListener {
 
     /**
+     * U盘插入
+     */
+    void onUsbDeviceAttach();
+
+    /**
      * U盘挂载
      * @param path U盘路径
      */
     void onUsbDeviceMount(String path);
+
+    /**
+     * U盘移除
+     * @param path U盘路径
+     */
+    void onUsbDeviceEject(String path);
 
     /**
      * U盘解除挂载
